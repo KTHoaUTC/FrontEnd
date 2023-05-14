@@ -1,0 +1,40 @@
+.title_dang_ky {
+    text-align: center;
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 50%;
+    text-align: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.step_1 {
+    position: relative;
+    border: 1px solid rgba(88, 108, 187, 0.12);
+    border-radius: 8px;
+    margin: 3rem auto;
+    max-width: 100%;
+    width: 60%;
+    align-items: center;
+
+    .form_title {
+        padding-inline: 1rem;
+        position: absolute;
+        top: -1.4rem;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .form {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        margin: 3rem auto 2rem;
+    }
+}

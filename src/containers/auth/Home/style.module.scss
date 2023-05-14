@@ -1,0 +1,307 @@
+.img_header {
+    margin-left: 10rem;
+}
+
+.btn_login_auth {
+    height: 2.5rem;
+    border: 1px solid rgb(216, 108, 108);
+    margin-right: 3rem;
+    padding: 0 2rem;
+    font-size: 1.1rem;
+
+}
+
+.btn_logout_auth {
+    height: 2.5rem;
+    border: 1px solid rgb(216, 108, 108);
+    padding: 0 2rem;
+    font-size: 1.1rem;
+    margin-right: 5rem;
+}
+
+.tabs {
+    margin-top: 2rem;
+
+    div:nth-child(1) {
+        margin-top: 0 !important;
+    }
+
+    p:nth-child(1) {
+        font-size: 1.3rem !important;
+
+    }
+}
+
+.carousel_img {
+    margin-top: 4.5rem;
+
+    div:nth-child(1) {
+        text-align: center;
+        align-items: center;
+        display: flex !important;
+        justify-content: center;
+        background-size: cover;
+    }
+
+    .img {
+        background-size: cover;
+        // width: 100%;
+        // height: 100%;
+        object-fit: cover;
+        background-size: cover;
+    }
+}
+
+.list {
+    margin: 2rem 4rem !important;
+
+    .card_item {
+        .meta {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .img {}
+
+    .book_ticket {
+        margin-left: 1rem;
+        background-color: rgb(185, 65, 65);
+        text-align: right;
+        justify-items: right;
+    }
+}
+
+//modal detail 
+.modal_detail {
+    .modal_title {
+        color: rgb(221, 25, 25);
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 1.9rem;
+        padding-bottom: 1rem;
+    }
+
+    .col_content {
+        .movie_title_name {
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.5rem;
+
+        }
+
+        .movie_title {
+            font-weight: 600;
+            padding-top: 1rem;
+            font-size: 1.1rem;
+
+            span {
+                font-weight: 400;
+                padding-left: 1rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        .btn {
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+
+            .book_ticket {
+                margin-top: 1rem;
+                background-color: rgb(53, 197, 197);
+                padding: 0 2rem;
+                height: 3rem;
+                font-size: 1.3rem;
+                border-radius: 2rem;
+                border: none;
+
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+
+    }
+
+    .content {
+        padding-top: 2rem;
+        font-size: 1.1rem;
+        width: 70%;
+        text-align: center;
+        align-items: center;
+        margin: 0 auto;
+    }
+}
+
+//bookticker
+.title_book{
+    text-align: center;
+    font-size: 2rem;
+}
+.step {
+    margin-top: 1rem;
+    padding: 1rem 19rem;
+
+}
+
+.btn_next {
+    font-size: 1.2rem;
+    padding: 0 2rem;
+    height: 2.5rem;
+}
+
+.step_1 {
+    h1 {
+
+        text-align: center;
+        text-transform: uppercase;
+        color: rgb(206, 64, 64);
+        font-size: 2rem;
+        margin: 1rem auto 0;
+    }
+
+    margin: 0 auto;
+    background-color: rgb(255, 255, 255);
+    // border-radius: 20px;
+    // border: 1px solid rgb(219, 42, 42);
+    width: 70%;
+
+    .step_ {
+        .step_img {
+
+            margin: 2rem 0rem;
+            text-align: center;
+            align-items: center;
+        }
+
+        .step_content {
+            margin-top: 3rem;
+
+
+
+            h2 {
+                font-size: 1.4rem;
+                padding-bottom: 2rem;
+            }
+
+            .list_scroll {
+                overflow: scroll;
+                border-radius: 20px;
+                border: 1px solid rgb(206, 41, 41);
+
+                .list_date {
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    width: 140px;
+                    height: 70px;
+                    text-align: center;
+                    line-height: 20px;
+                    cursor: pointer;
+                    padding: 1rem 0.3rem;
+                    margin: 15px;
+                }
+            }
+
+            .panel {
+                font-size: 1.2rem;
+
+                .btn_time {
+                    margin-left: 1rem;
+                }
+            }
+
+        }
+    }
+
+
+}
+
+/* Lớp CSS cho ghế trống */
+.empty-seat {
+    background-color: green;
+}
+
+/* Lớp CSS cho ghế đã chọn */
+.selected-seat {
+    background-color: yellow;
+}
+
+/* Lớp CSS cho ghế đã bán */
+.booked-seat {
+    background-color: red;
+}
+
+.note_seat {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    .icon_seat {
+        margin-left: 2rem;
+
+
+        .icon_seat_empty {
+            font-size: 2rem;
+            background-color: green;
+            border: none;
+        }
+
+        .icon_seat_booked {
+            background-color: yellow;
+            font-size: 2rem;
+        }
+
+        .icon_seat_select {
+            background-color: red;
+            font-size: 2rem;
+        }
+    }
+}
+
+.col_list {
+    width: 20rem;
+    margin-top: 6rem;
+    padding: 1rem 1rem;
+    border: 2px solid rgb(224, 62, 41);
+    border-radius: 10px;
+
+    h2 {
+        margin-bottom: 1rem;
+    }
+
+    p {
+
+        text-align: center;
+        margin-bottom: 0.5rem;
+
+    }
+
+    .list_seat {
+        display: flex;
+        text-align: center;
+        align-items: center;
+        list-style-type: none;
+        margin-top: 1rem;
+
+        li {
+            text-align: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+    }
+hr{
+    color: azure;
+    margin: 2rem 1rem;
+}
+    .sum_price {
+        margin-top: 1rem;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: rgb(18, 163, 189);
+    }
+}
