@@ -15,7 +15,7 @@ const HeaderLoginAuth = () => {
         <Col className={styles.col_left} offset={1} span={8}>
           <Search
             size="large"
-            placeholder="Nhap tim kiem"
+            placeholder="Nhập tìm kiếm"
             onSearch={onSearch}
             enterButton
           />
@@ -25,7 +25,7 @@ const HeaderLoginAuth = () => {
         </Col>
         <Col className={styles.col_right} span={7}>
           <Link href={"/login"}>
-            <Button className={styles.btn_login_auth}>Đăng Nhập</Button>
+            <Button className={styles.btn_login_auth}>Đăng Xuất</Button>
           </Link>
         </Col>
       </Row>

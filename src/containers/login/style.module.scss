@@ -34,7 +34,7 @@
                 font-style: normal;
                 font-weight: 600;
                 font-size: 2.5rem;
-                line-height: 5rem;
+                line-height: 2rem;
                 color: #212121;
             }
 
@@ -43,7 +43,7 @@
                 width: 100%;
 
                 .form1 {
-                    margin-top: 1rem;
+                    margin-top: 0.6rem;
                     width: 100%;
 
                     .form_item {
@@ -119,4 +119,12 @@
         cursor: pointer;
         color: red;
     }
+}
+.vadidate{
+    float: left;
+}
+.text_error{
+    color: rgb(202, 55, 55);
+    
+    margin-top: 1rem;
 }

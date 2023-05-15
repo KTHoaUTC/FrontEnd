@@ -1,16 +1,3 @@
-// import Layout from "@/containers/auth/layout";
-// import type { AppProps } from "next/app";
-
-// function MyApp({ Component, pageProps }: AppProps) {
-//   return (
-//     <Layout>
-//       <Component {...pageProps} />
-//     </Layout>
-//   );
-// }
-
-// export default MyApp;
-
 import "../styles/globals.scss";
 
 import type { ReactElement, ReactNode } from "react";
@@ -30,13 +17,12 @@ export default function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
-  // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
     <>
       {/* <SessionProvider session={session}> */}
-        <Component {...pageProps} />
+      <Component {...pageProps} />
       {/* </SessionProvider> */}
     </>
     // <Component {...pageProps} />

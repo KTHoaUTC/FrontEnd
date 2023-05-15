@@ -87,8 +87,14 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Khuat Thi Hoa 191240436 CNTT6K60
+        <Footer
+          style={{
+            textAlign: "center",
+            background: "white",
+            fontSize: "1.5rem",
+          }}
+        >
+          Khuất Thị Hoa 191240436 CNTT6K60
         </Footer>
       </Layout>
     </Layout>
