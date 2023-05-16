@@ -31,11 +31,24 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("Trang Chủ", "1", <PieChartOutlined />),
-  getItem("QL Nhân Viên", "2",<Link href={'/listNhanVien'}><DesktopOutlined /></Link> ),
+  getItem(
+    "QL Nhân Viên",
+    "2",
+    <Link href={"/listNhanVien"}>
+      <DesktopOutlined />
+    </Link>
+  ),
   getItem("QL Khách Hàng", "3", <UserOutlined />),
   getItem("QL Phim", "4", <TeamOutlined />),
-  getItem("QL Lịch Chiếu Phim", "5", <FileOutlined />),
-  getItem("QL Phòng Chiếu", "6", <FileOutlined />),
+  getItem(
+    "QL Thể Loại",
+    "5",
+    <Link href={"/listTheLoai"}>
+      <DesktopOutlined />
+    </Link>
+  ),
+  getItem("QL Lịch Chiếu Phim", "6", <FileOutlined />),
+  getItem("QL Phòng Chiếu", "7", <FileOutlined />),
 ];
 
 const SiderAdmin: React.FC = () => {
@@ -51,18 +64,17 @@ const SiderAdmin: React.FC = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      <Link legacyBehavior href={'/admin/infor'}>
-       <div
-        style={{
-          height: 22,
-          margin: 26,
-          textAlign:'center'
-        }}
-      >
-       <Button>Thông tin </Button> 
-      </div>
+      <Link legacyBehavior href={"/admin/infor"}>
+        <div
+          style={{
+            height: 22,
+            margin: 26,
+            textAlign: "center",
+          }}
+        >
+          <Button>Thông tin </Button>
+        </div>
       </Link>
-     
 
       <Menu
         theme="light"

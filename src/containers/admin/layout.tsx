@@ -57,8 +57,9 @@ const items: MenuItem[] = [
   getItem("QL Nhân Viên", "2", <DesktopOutlined />),
   getItem("QL Khách Hàng", "3", <UserOutlined />),
   getItem("QL Phim", "4", <TeamOutlined />),
-  getItem("QL Lịch Chiếu Phim", "5", <FileOutlined />),
-  getItem("QL Phòng Chiếu", "6", <FileOutlined />),
+  getItem("QL Thể Loại", "5", <TeamOutlined />),
+  getItem("QL Lịch Chiếu Phim", "6", <FileOutlined />),
+  getItem("QL Phòng Chiếu", "7", <FileOutlined />),
 ];
 
 const LayoutAdmin = ({ children }: LayoutProps) => {
@@ -72,7 +73,7 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
       <SiderAdmin></SiderAdmin>
       <Layout className="site-layout">
         <HeaderLoginAuth></HeaderLoginAuth>
-        <Content style={{ margin: "0 0px" }}>
+        <Content style={{ margin: "0 0px", background:'white' }}>
           {/* <Breadcrumb style={{ margin: "26px 0" }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>

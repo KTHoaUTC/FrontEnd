@@ -1,42 +1,71 @@
-// import { apis } from "@/apis/ApiNhanVien";
-// import CreateUser from "@/components/admin/CreateUser";
-// import EditUser from "@/components/admin/EditUser";
+import User from "@/apis/auth";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import ModalAdd from "./addList";
-import User from "@/apis/auth";
 
-interface DataType {
-  id: number;
-  email: string;
-  username: string;
-  password: string;
-  phone: number;
-}
 export default function NhanVien({}: any, props: any) {
-  const [listUsers, setListUsers] = useState<DataType[]>([]);
-  const [id, setId] = useState("");
-
+  const [listUsers, setListUsers] = useState<AdminCore.User[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
       try {
         const response = await User.getAll("ALL");
-        setListUsers(response.users);
+        setListUsers(
+          response.users?.map(
+            (account: {
+              key: string;
+              id: string;
+              first_name: string;
+              last_name: string;
+              email: string;
+              gender: boolean;
+              address: string;
+              phone_number: string;
+              RoleId: string;
+              avatar: Blob;
+            }) => ({
+              key: account.id,
+              id: account.id,
+              first_name: account.first_name,
+              last_name: account.last_name,
+              email: account.email,
+              gender: account.gender,
+              address: account.address,
+              phone_number: account.phone_number,
+              RoleId: account.RoleId,
+              avatar: account.avatar,
+            })
+          )
+        );
       } catch (e) {
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
-  // const handleDelete = async (id: number) => {
-  //   //  await apis.DeleteDataNhanVien(id);
-  //   setNhanViens(nhanviens.filter((item) => item.id !== id));
-  // };
-  const columns: ColumnsType<DataType> = [
+  const [imageUrl, setImageUrl] = useState("");
+
+  const renderImage = (text: any, record: any) => {
+    const file = new File([record.image], "filename.jpg", {
+      type: "image/jpeg",
+    });
+    const imageUrl = URL.createObjectURL(file);
+    return <Avatar src={imageUrl} />;
+  };
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(imageUrl);
+    };
+  }, [imageUrl]);
+  const handleDelete = async (id: number) => {
+    await User.deleteUser(id);
+    setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
+  };
+  const columns: ColumnsType<AdminCore.User> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -78,34 +107,30 @@ export default function NhanVien({}: any, props: any) {
     },
     {
       title: "Ảnh",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "avatar",
+      key: "avatar",
+      // render: renderImage,
+    },
+    {
+      title: "Phân Quyền",
+      dataIndex: "RoleId",
+      key: "RoleId",
     },
     {
       title: "Action",
-      key: "action",
-      render: (infoUers, item: { id: number }) => (
+      key: "",
+      render: (_, record: any) => (
         <Space size="middle">
           <a>
-            {/* <EditUser
-              infoUers={infoUers}
-              resetData={(id: Number, userUpdate: DataType) => {
-                setNhanViens((state) => {
-                  const newData = [...state].map((infoUers) => {
-                    if (id == infoUers.id) {
-                      return userUpdate;
-                    }
-                    return infoUers;
-                  });
-                  return newData;
-                });
-              }}
-            /> */}
-            <EditOutlined />
+            <Link href={`/listNhanVien/${record.id}`}>
+              <Button style={{ float: "right", margin: "0px" }} type="primary">
+                <EditOutlined />
+              </Button>
+            </Link>
           </a>
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
-            // onConfirm={() => handleDelete(item.id)}
+            onConfirm={() => handleDelete(record.id)}
           >
             <Button style={{ float: "right", margin: "0px" }} type="primary">
               <DeleteOutlined />
@@ -121,16 +146,12 @@ export default function NhanVien({}: any, props: any) {
   return (
     <>
       <h1 className={styles.title}> Danh Sách Nhân Viên</h1>
-      {/* <CreateUser
-        resetData={(newUser: DataType) => {
-          setNhanViens((state) => {
-            const newData = [...state];
-            newData.push(newUser);
-            return newData;
-          });
-        }}
-      /> */}
-      <ModalAdd></ModalAdd>
+      <Link href={"/listNhanVien/create"}>
+        <Button className={styles.btn_add} type="primary">
+          + Thêm Nhân Viên
+        </Button>
+      </Link>
+
       <Table
         className={styles.table_list}
         columns={columns}

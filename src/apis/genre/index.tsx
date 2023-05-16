@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getAll = async (inputId: any) => {
   const response = await axios.get(
-    `http://localhost:8888/gateway/api/v1/get-all-users?id=${inputId}`
+    `http://localhost:8888/gateway/api/v1/get-all-genres?id=${inputId}`
   );
   return response.data;
 };
@@ -25,10 +25,10 @@ const editUser = (updateData: any) => {
     updateData
   );
 };
-const User = {
+const Genre = {
   getAll,
   creatUser,
   deleteUser,
   editUser,
 };
-export default User;
+export default Genre;

@@ -1,29 +1,33 @@
-import HeaderLoginAuth from "@/layouts/dashboard/header";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  Row,
-  message,
-  notification,
-} from "antd";
-import Link from "next/link";
-import styles from "./style.module.scss";
 import AuthApi from "@/apis/login";
-import { useState } from "react";
+import { Button, Checkbox, Col, Form, Input, Row, notification } from "antd";
+import { setCookie } from "cookies-next";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import styles from "./style.module.scss";
+
 const AuthLogin = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
-
   const [email, setEmail] = useState("");
   const [pass_word, setPassword] = useState("");
+  const [token, setToken] = useState(""); // Thêm state token
+
+  // useEffect(() => {
+  //   const loggedInToken = localStorage.getItem("token");
+  //   if (loggedInToken) {
+  //     if (JSON.parse(loggedInToken).userData.user.RoleId == 3) {
+  //       router.push("/auth");
+  //     } else {
+  //       router.push("/admin");
+  //     }
+  //   }
+  // }, []);
+
   const handleSubmit = async () => {
     try {
       const response = await AuthApi.signIn({ input: { email, pass_word } });
-      // ...
+
       if (response.errCode === 3) {
         setErrorMessage("Sai mật khẩu. Vui lòng nhập lại!");
         return;
@@ -36,18 +40,18 @@ const AuthLogin = () => {
         setErrorMessage("Người dùng không tồn tại!");
         return;
       }
+
       if (response.errCode === 0) {
+        const token = response.accessToken;
+        localStorage.setItem("token", JSON.stringify(token));
         if (response.userData.user.RoleId == 3) {
           router.push("/auth");
           notification.success({ message: "Đăng nhập thành công" });
-          // console.log("role", response.userData.user.RoleId);
         } else {
           router.push("/admin");
           notification.success({ message: "Đăng nhập thành công" });
-          // console.log("role", response.userData.user.RoleId);
         }
       }
-      // console.log("adds", response.data);
     } catch (error) {
       console.error(error);
     }
