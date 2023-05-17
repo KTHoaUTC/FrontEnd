@@ -1,5 +1,74 @@
+.title{
+    font-size: 2.5rem;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    color: rgb(226, 48, 48);
+}
 .table_list {
     margin-top: 2rem;
     border: 1px solid rgb(128, 72, 72);
     border-radius: 10px;
+}
+.btn_add{
+    float: right;
+    margin-top: -1rem;
+    background-color: rgb(158, 95, 95);
+    color: white;
+    height: 2.5rem;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+.title_dang_ky {
+    text-align: center;
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 40%;
+   // text-align: center;
+//align-items: center;
+    margin: 0 auto;
+}
+
+.step_1 {
+    position: relative;
+    border: 1px solid rgba(88, 108, 187, 0.12);
+    border-radius: 8px;
+    margin: 3rem auto;
+    max-width: 100%;
+    width: 60%;
+    align-items: center;
+
+    .form_title {
+        padding-inline: 1rem;
+        position: absolute;
+        top: -1.4rem;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .form {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        margin: 3rem auto 2rem;
+    }
+}
+.btn_return{
+    padding: 0 2rem !important;
+    background-color: rgb(226, 81, 81);
+    margin-right: 3rem;
+
+}
+.btn_next{
+    padding: 0 2rem !important;
+        background-color: rgb(226, 81, 81);
+}
+.vadidate{
+    float: left
 }

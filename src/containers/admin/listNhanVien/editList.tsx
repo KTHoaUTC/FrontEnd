@@ -102,8 +102,8 @@ const EditNhanVien: React.FC = () => {
     const updatedAccount = { id, ...updateData };
     const response = await User.editUser(updatedAccount);
     setUpdateAccount(response.data);
-    console.log("fff", response.data.errCode);
-    // console.log("update", updateAccount);
+    // console.log("fff", response.data.errCode);
+    // // console.log("update", updateAccount);
 
     if (response.data.errCode == 0) {
       notification.success({

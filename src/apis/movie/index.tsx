@@ -2,13 +2,13 @@ import axios from "axios";
 
 const getAll = async (inputId: any) => {
   const response = await axios.get(
-    `http://localhost:8888/gateway/api/v1/get-all-genres?id=${inputId}`
+    `http://localhost:8888/gateway/api/v1/get-all-movies?id=${inputId}`
   );
   return response.data;
 };
-const creatGenre = (newData: AdminCore.User) => {
+const createMovie = (newData: AdminCore.Movie) => {
   return axios.post(
-    "http://localhost:8888/gateway/api/v1/create-genre",
+    "http://localhost:8888/gateway/api/v1/create-movie",
     newData
   );
 };
@@ -25,10 +25,10 @@ const editGenre = (updateData: any) => {
     updateData
   );
 };
-const Genre = {
+const Movie = {
   getAll,
-  creatGenre,
+  createMovie,
   deleteGenre,
   editGenre,
 };
-export default Genre;
+export default Movie;

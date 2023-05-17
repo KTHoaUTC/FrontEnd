@@ -1,12 +1,11 @@
-
-import AdminIndex from "@/containers/admin";
 import LayoutAdmin from "@/containers/admin/layout";
+import CreateMovie from "@/containers/admin/listMovie/createMovie";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
 const Page: NextPageWithLayout = () => {
   return (
     <>
-      <AdminIndex />
+      <CreateMovie />
     </>
   );
 };
@@ -14,6 +13,4 @@ const Page: NextPageWithLayout = () => {
 Page.getLayout = function getLayout(page: ReactElement) {
   return <LayoutAdmin>{page}</LayoutAdmin>;
 };
-
 export default Page;
-  

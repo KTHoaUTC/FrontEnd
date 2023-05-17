@@ -1,34 +1,7 @@
-// import HomeFooter from "@/layouts/dashboardNonUser/Footer";
-// import Header from "@/layouts/dashboardNonUser/Header";
-// import { ReactNode } from "react";
 
-// type LayoutProps = {
-//   children: ReactNode;
-// };
-
-// const LayoutAdmin = ({ children }: LayoutProps) => {
-//   return (
-//     <div>
-//       {/* <Header></Header> */}
-//       <main>{children}</main>
-//       {/* <HomeFooter></HomeFooter> */}
-//     </div>
-//   );
-// };
-
-// export default LayoutAdmin;
-
-import React, { ReactNode, useState } from "react";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
 import HeaderLoginAuth from "@/layouts/dashboard/header";
+import { Layout, theme } from "antd";
+import { ReactNode } from "react";
 import SiderAdmin from "./sider";
 type LayoutProps = {
   children: ReactNode;
@@ -36,34 +9,8 @@ type LayoutProps = {
 
 const { Header, Content, Footer, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
-const items: MenuItem[] = [
-  getItem("Trang Chủ", "1", <PieChartOutlined />),
-  getItem("QL Nhân Viên", "2", <DesktopOutlined />),
-  getItem("QL Khách Hàng", "3", <UserOutlined />),
-  getItem("QL Phim", "4", <TeamOutlined />),
-  getItem("QL Thể Loại", "5", <TeamOutlined />),
-  getItem("QL Lịch Chiếu Phim", "6", <FileOutlined />),
-  getItem("QL Phòng Chiếu", "7", <FileOutlined />),
-];
 
 const LayoutAdmin = ({ children }: LayoutProps) => {
-  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -74,10 +21,6 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
       <Layout className="site-layout">
         <HeaderLoginAuth></HeaderLoginAuth>
         <Content style={{ margin: "0 0px", background:'white' }}>
-          {/* <Breadcrumb style={{ margin: "26px 0" }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb> */}
           <div
             style={{
               padding: 24,

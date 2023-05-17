@@ -1,75 +1,99 @@
-import User from "@/apis/auth";
+import Genre from "@/apis/genre";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import { Button, Popconfirm, Skeleton, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import styles from "./style.module.scss";
-import Genre from "@/apis/genre";
 import ModalAdd from "./addTheLoai";
+import styles from "./style.module.scss";
+import moment from "moment";
 
 export default function TheLoai({}: any, props: any) {
-  const [listUsers, setListUsers] = useState<AdminCore.User[] | any>([]);
+  const [listGenres, setListGenres] = useState<AdminCore.Genre[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await Genre.getAll("ALL");
+  //       setListGenres(
+  //         response.genres?.map(
+  //           (account: {
+  //             key: string;
+  //             id: string;
+  //             name: string;
+  //             updatedAt: Date;
+  //           }) => ({
+  //             key: account.id,
+  //             id: account.id,
+  //             name: account.name,
+  //             updatedAt: account.updatedAt,
+  //           })
+  //         )
+  //       );
+  //     } catch (e) {
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   })();
+  // }, []);
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await Genre.getAll("ALL");
-        setListUsers(
-          response.genres?.map(
-            (account: {
-              key: string;
-              id: string;
-              name: string;
-              updatedAt: Date;
-            }) => ({
-              key: account.id,
-              id: account.id,
-              name: account.name,
-              updatedAt: account.updatedAt,
-            })
-          )
-        );
-      } catch (e) {
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+    fetchGenres();
   }, []);
 
+  const fetchGenres = async () => {
+    try {
+      const response = await Genre.getAll("ALL");
+      const genres =
+        response.genres?.map((account: any) => ({
+          key: account.id,
+          id: account.id,
+          name: account.name,
+          updatedAt: account.updatedAt,
+        })) || [];
+      setListGenres(genres);
+    } catch (error) {
+      console.log("Error fetching genres:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleDelete = async (id: number) => {
-    await User.deleteUser(id);
-    setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
+    await Genre.deleteGenre(id);
+    setListGenres(listGenres.filter((item: { id: number }) => item.id !== id));
+  };
+
+  const formattedDate = (date: Date) => {
+    return moment(date).format("DD/MM/YYYY");
   };
   const columns: ColumnsType<AdminCore.Genre> = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
+      align: "center",
     },
     {
       title: "Tên Thể Loại",
       dataIndex: "name",
       key: "name",
+      align: "center",
     },
     {
       title: "Ngày Cập Nhật",
       dataIndex: "updatedAt",
       key: "updatedAt",
+      align: "center",
+
+      render: (date: Date) => formattedDate(date),
     },
     {
       title: "Action",
       key: "",
+      align: "center",
+      
       render: (_, record: any) => (
         <Space size="middle">
-          <a>
-            <Link href={`/listNhanVien/${record.id}`}>
-              <Button style={{ float: "right", margin: "0px" }} type="primary">
-                <EditOutlined />
-              </Button>
-            </Link>
-          </a>
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={() => handleDelete(record.id)}
@@ -88,16 +112,12 @@ export default function TheLoai({}: any, props: any) {
   return (
     <>
       <h1 className={styles.title}> Danh Sách Thể Loại Phim</h1>
-      <ModalAdd></ModalAdd>
-      {/* <Link href={"/listNhanVien/create"}>
-        <Button className={styles.btn_add} type="primary">
-          + Thêm Thể Loại
-        </Button>
-      </Link> */}
+      <ModalAdd onSuccess={fetchGenres} />
       <Table
+        bordered
         className={styles.table_list}
         columns={columns}
-        dataSource={listUsers}
+        dataSource={listGenres}
       />
     </>
   );

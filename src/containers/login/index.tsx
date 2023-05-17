@@ -13,20 +13,11 @@ const AuthLogin = () => {
   const [pass_word, setPassword] = useState("");
   const [token, setToken] = useState(""); // Thêm state token
 
-  // useEffect(() => {
-  //   const loggedInToken = localStorage.getItem("token");
-  //   if (loggedInToken) {
-  //     if (JSON.parse(loggedInToken).userData.user.RoleId == 3) {
-  //       router.push("/auth");
-  //     } else {
-  //       router.push("/admin");
-  //     }
-  //   }
-  // }, []);
-
   const handleSubmit = async () => {
     try {
       const response = await AuthApi.signIn({ input: { email, pass_word } });
+      console.log("reee", response.token);
+      const token = response.token;
 
       if (response.errCode === 3) {
         setErrorMessage("Sai mật khẩu. Vui lòng nhập lại!");
@@ -40,15 +31,20 @@ const AuthLogin = () => {
         setErrorMessage("Người dùng không tồn tại!");
         return;
       }
-
+      setCookie("AUTHEN_TOKEN_KEY", token, { path: "/login" });
+      console.log("token", token);
       if (response.errCode === 0) {
         const token = response.accessToken;
         localStorage.setItem("token", JSON.stringify(token));
-        if (response.userData.user.RoleId == 3) {
-          router.push("/auth");
+        if (
+          response.userData.user.RoleId == "admin" ||
+          response.userData.user.RoleId == "Nhân Viên"
+        ) {
+          setToken(token);
+          router.push("/admin");
           notification.success({ message: "Đăng nhập thành công" });
         } else {
-          router.push("/admin");
+          router.push("/auth");
           notification.success({ message: "Đăng nhập thành công" });
         }
       }

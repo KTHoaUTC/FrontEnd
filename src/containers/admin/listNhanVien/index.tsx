@@ -70,11 +70,13 @@ export default function NhanVien({}: any, props: any) {
       title: "ID",
       dataIndex: "id",
       key: "id",
+      align: "center",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      
     },
     {
       title: "Họ",
@@ -153,6 +155,7 @@ export default function NhanVien({}: any, props: any) {
       </Link>
 
       <Table
+        bordered
         className={styles.table_list}
         columns={columns}
         dataSource={listUsers}

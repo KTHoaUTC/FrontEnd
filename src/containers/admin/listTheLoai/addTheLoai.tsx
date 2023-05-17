@@ -1,73 +1,99 @@
+import Genre from "@/apis/genre";
+import { Button, Form, Input, Modal, notification } from "antd";
 import React, { useState } from "react";
-import { Button, Form, Input, Modal } from "antd";
 import styles from "./style.module.scss";
+import router from "next/router";
 
-const ModalAdd: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  type SizeType = Parameters<typeof Form>[0]["size"];
+interface CollectionCreateFormProps {
+  visible: boolean;
+  onCreate: any;
+  onCancel: () => void;
+  onSuccess: () => void;
+}
 
-  const [componentSize, setComponentSize] = useState<SizeType | "default">(
-    "default"
+const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
+  visible,
+  onCreate,
+  onCancel,
+  onSuccess,
+}) => {
+  const [form] = Form.useForm();
+  const handleCreate = async (values: any) => {
+    await onCreate(values);
+    form.resetFields();
+    onSuccess(); 
+    // Call onSuccess after successful creation
+    
+  };
+  return (
+    <Modal
+      title="Thêm Thể Loại"
+      visible={visible}
+      cancelText="Cancel"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            handleCreate(values);
+          })
+          .catch((info) => {
+            console.log("Validate Failed:", info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        className={styles.form}
+        size="large"
+        labelCol={{ span: 7 }}
+        wrapperCol={{ span: 16 }}
+        layout="horizontal"
+        initialValues={{ modifier: "public" }}
+      >
+        <Form.Item
+          name="name"
+          label="Tên Thể Loại"
+          required
+          rules={[
+            {
+              required: true,
+              message: <p className={styles.vadidate}>Không để trống ô này</p>,
+            },
+          ]}
+        >
+          <Input placeholder="Nhập tên thể loại" />
+        </Form.Item>
+      </Form>
+    </Modal>
   );
+};
 
-  const onFormLayoutChange = ({ size }: { size: SizeType }) => {
-    setComponentSize(size);
+const ModalAdd = ({ onSuccess }: { onSuccess: () => void }) => {
+  const [visible, setVisible] = useState(false); 
+  const handleCreate = async (newData: AdminCore.Genre) => {
+    await Genre.creatGenre(newData);
+      setVisible(false);
   };
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <>
-      <Button className={styles.btn_add} onClick={showModal} type="primary">
+      <Button
+        className={styles.btn_add}
+        onClick={() => {
+          setVisible(true);
+        }}
+        type="primary"
+      >
         + Thêm Thể Loại
       </Button>
-      {/* <Button type="primary" onClick={showModal}>
-        Open Modal
-      </Button> */}
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form
-        //   onFinish={handleCreateStep1}
-          className={styles.form}
-          size="large"
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 16 }}
-          layout="horizontal"
-          initialValues={{ size: componentSize }}
-          onValuesChange={onFormLayoutChange}
-        >
-          
-          <Form.Item
-            name="last_name"
-            label="Họ"
-            required
-            rules={[
-              {
-                required: true,
-                message: (
-                  <p className={styles.vadidate}>Không để trống ô này</p>
-                ),
-              },
-            ]}
-          >
-            <Input placeholder="Nhập họ" />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <CollectionCreateForm
+        visible={visible}
+        onCreate={handleCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        onSuccess={onSuccess}
+      />
     </>
   );
 };

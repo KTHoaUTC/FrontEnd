@@ -1,15 +1,13 @@
-import React, { useState } from "react";
 import {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Button, MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
-import HeaderLoginAuth from "@/layouts/dashboard/header";
+import { Button, Layout, Menu, MenuProps, theme } from "antd";
 import Link from "next/link";
+import React, { useState } from "react";
+import styles from "./style.module.scss";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -39,7 +37,13 @@ const items: MenuItem[] = [
     </Link>
   ),
   getItem("QL Khách Hàng", "3", <UserOutlined />),
-  getItem("QL Phim", "4", <TeamOutlined />),
+  getItem(
+    "QL Phim",
+    "4",
+    <Link href={"/listPhim"}>
+      <DesktopOutlined />
+    </Link>
+  ),
   getItem(
     "QL Thể Loại",
     "5",
@@ -59,6 +63,7 @@ const SiderAdmin: React.FC = () => {
 
   return (
     <Sider
+      className={styles.sider}
       style={{ backgroundColor: "white " }}
       collapsible
       collapsed={collapsed}

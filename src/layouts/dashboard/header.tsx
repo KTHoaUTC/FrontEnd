@@ -1,14 +1,15 @@
-import { Button, Col, Layout, Row } from "antd";
-import styles from "./style.module.scss";
+import { Button, Col, Row } from "antd";
 import Link from "next/link";
-
-const { Header, Footer, Sider, Content } = Layout;
-type AuthContainerProps = {};
-import { Input, Space } from "antd";
+import { useRouter } from "next/router";
+import styles from "./style.module.scss";
+import { Input } from "antd";
 
 const { Search } = Input;
 const onSearch = (value: string) => console.log(value);
 const HeaderLoginAuth = () => {
+   const router = useRouter();
+   const { user } = router.query;
+   console.log('fff',user);
   return (
     <>
       <Row className={styles.row_header}>
