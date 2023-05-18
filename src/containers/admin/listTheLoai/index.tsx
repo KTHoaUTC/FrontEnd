@@ -11,32 +11,6 @@ import moment from "moment";
 export default function TheLoai({}: any, props: any) {
   const [listGenres, setListGenres] = useState<AdminCore.Genre[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await Genre.getAll("ALL");
-  //       setListGenres(
-  //         response.genres?.map(
-  //           (account: {
-  //             key: string;
-  //             id: string;
-  //             name: string;
-  //             updatedAt: Date;
-  //           }) => ({
-  //             key: account.id,
-  //             id: account.id,
-  //             name: account.name,
-  //             updatedAt: account.updatedAt,
-  //           })
-  //         )
-  //       );
-  //     } catch (e) {
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   })();
-  // }, []);
   useEffect(() => {
     fetchGenres();
   }, []);

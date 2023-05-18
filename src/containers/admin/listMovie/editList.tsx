@@ -7,7 +7,6 @@ import {
   Col,
   Collapse,
   Form,
-  Image,
   Input,
   List,
   message,
@@ -15,26 +14,43 @@ import {
   Progress,
   Row,
   Select,
-  Steps,
   Typography,
 } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Link from "next/link";
-import router from "next/router";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { storage } from "../../../../firebase";
 import styles from "./style.module.scss";
+import { Image } from "antd";
+
+const { TextArea } = Input;
 
 const { Panel } = Collapse;
-const { TextArea } = Input;
+
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 type SizeType = Parameters<typeof Form>[0]["size"];
 
-const CreateMovie: React.FC = () => {
+const EditPhim: React.FC = () => {
+  const [componentSize, setComponentSize] = useState<SizeType | "default">(
+    "default"
+  );
+
+  const onFormLayoutChange = ({ size }: { size: SizeType }) => {
+    setComponentSize(size);
+  };
+
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [current, setCurrent] = useState(0);
+  const router = useRouter();
+
+  const id = router.query.id as string;
+  const [accountId, setAccountId] = useState<string>("");
+  const [form] = Form.useForm();
+  const [detail, setDetail] = useState<AdminCore.Movie>();
+
+  //upload anh
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [posterFile, setPosterFile] = useState<File | null>(null);
   const [trailerFile, setTrailerFile] = useState<File | null>(null);
@@ -189,65 +205,98 @@ const CreateMovie: React.FC = () => {
       message.error("notFOubd");
     }
   };
-  const prev = () => {
-    setCurrent(current - 1);
-  };
-  const [componentSize, setComponentSize] = useState<SizeType | "default">(
-    "default"
-  );
+  //
 
-  const onFormLayoutChange = ({ size }: { size: SizeType }) => {
-    setComponentSize(size);
-  };
+  useEffect(() => {
+    if (router.query) {
+      setAccountId(id);
+      console.log("id", id);
+    }
+  }, [router, id]);
 
-  const [movie, setMovie] = useState<AdminCore.Movie>();
-  const [createMovie, setCreateMovie] = useState<AdminCore.Movie[]>([]);
+  useEffect(() => {
+    async function fetchData() {
+      if (id) {
+        const result = await Movie.getAll(id);
+        setDetail(result.movies);
+        form.setFieldValue("id", result?.movies!.id);
+        form.setFieldValue("title", result?.movies!.title);
+        form.setFieldValue("description", result?.movies!.description);
+        form.setFieldValue("countries", result?.movies!.countries);
+        form.setFieldValue("genres_id", result?.movies!.genres_id);
+        form.setFieldValue("run_time", result?.movies!.run_time);
+        form.setFieldValue("director", result?.movies!.director);
+        form.setFieldValue("image_url", result?.movies!.image_url);
+        form.setFieldValue("trailer_url", result?.movies!.trailer_url);
+        form.setFieldValue("poster_url", result?.movies!.poster_url);
+      }
+      console.log('image', detail?.image_url)
+    }
+    fetchData();
+  }, [form, id]);
+  const [updateMovie, setUpdateMovie] = useState<AdminCore.Movie[]>([]);
+
   const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await Genre.getAll("ALL");
-        setGenreList(response.genres);
-      } catch (e) {}
-    })();
+    fetchGenres();
   }, []);
-  const handleCreateStep1 = async (newData: AdminCore.Movie) => {
-    setMovie({
-      ...newData,
-    });
-    setCurrent(1);
-    console.log("dddd", movie);
-  };
 
-  const handleCreateStep3 = async (newData: AdminCore.Movie) => {
-    if (movie && imageFile) {
-      const updatedMovie = {
-        ...movie,
-        image_url: `${dowloadURL}`,
-        poster_url: `${dowloadPoterURL}`,
-        trailer_url: `${downloadTrailerURL}`,
-      };
-      const result = await Movie.createMovie(updatedMovie);
-      setCreateMovie([...createMovie, newData]);
-      if (result.data.errCode === 0) {
+  const fetchGenres = async () => {
+    try {
+      const response = await Genre.getAll("ALL");
+      setGenreList(response.genres);
+    } catch (error) {
+      console.log("Error fetching genres:", error);
+    } finally {
+    }
+  };
+  const handleUpdate = async (updateData: AdminCore.Movie) => {
+    const updateMovie = { id, ...updateData };
+    const response = await Movie.editMovie(updateMovie);
+    setUpdateMovie(response.data);
+
+    if (response.data.errCode == 0) {
+      notification.success({
+        message: "Cập nhật thông tin thành công",
+      });
+      router.push("/listPhim");
+    }
+  };
+    const handleUpdateFile = async (updateData: AdminCore.Movie) => {
+       const updatedMovie = {
+         id,
+         image_url: `${dowloadURL}`,
+         poster_url: `${dowloadPoterURL}`,
+         trailer_url: `${downloadTrailerURL}`,
+       };
+      const response = await Movie.editMovie(updatedMovie);
+      setUpdateMovie(response.data);
+
+      if (response.data.errCode == 0) {
         notification.success({
-          message: "Thêm phim thành công",
+          message: "Cập nhật thông tin thành công",
         });
         router.push("/listPhim");
       }
-      console.log("data", result.data);
-    }
-  };
-  const steps = [
-    {
-      title: "Thông tin phim",
-      content: (
-        <div className={styles.step_1}>
-          <Typography.Title className={styles.form_title} level={2}>
-            Thông tin phim
-          </Typography.Title>
+    };
+  return (
+    <>
+      <Link className={styles.link} href="/listPhim">
+        <p style={{ fontSize: "1.3rem" }}>
+          <LeftOutlined />
+          Quay lại
+        </p>
+      </Link>
+      <h1 className={styles.title}>Chỉnh sửa thông tin Phim</h1>
+
+      <div className={styles.step_1}>
+        <Typography.Title className={styles.form_title} level={2}>
+          Thông tin Phim
+        </Typography.Title>
+        {detail && (
           <Form
-            onFinish={handleCreateStep1}
+            form={form}
+            onFinish={handleUpdate}
             className={styles.form}
             size="large"
             labelCol={{ span: 5 }}
@@ -269,10 +318,7 @@ const CreateMovie: React.FC = () => {
                 },
               ]}
             >
-              <Input
-                //   onChange={(e) => setEmail(e.target.value as string)}
-                placeholder="Nhập tên phim"
-              />
+              <Input placeholder="Nhập tên phim" />
             </Form.Item>
             <Form.Item
               name="description"
@@ -305,20 +351,7 @@ const CreateMovie: React.FC = () => {
             >
               <Input placeholder="Nhập quốc gia" />
             </Form.Item>
-            <Form.Item
-              name="genres_id"
-              label="Thể Loại"
-              required
-              rules={[
-                {
-                  required: true,
-                  message: (
-                    <p className={styles.vadidate}>Không để trống ô này</p>
-                  ),
-                },
-              ]}
-            >
-              {/* <Input placeholder="Nhập thể loại" /> */}
+            <Form.Item name="genres_id" label="Thể Loại">
               <Select
                 mode="multiple"
                 placeholder="Nhập thể loại"
@@ -367,23 +400,22 @@ const CreateMovie: React.FC = () => {
                 type="primary"
                 htmlType="submit"
               >
-                Tiếp theo
+                Lưu cập nhật
               </Button>
             </Form.Item>
           </Form>
-        </div>
-      ),
-    },
+        )}
+      </div>
 
-    {
-      title: "Hình Ảnh",
-      content: (
-        <div className={styles.step_1}>
-          <Typography.Title className={styles.form_title} level={2}>
-            Thông tin Hình Ảnh
-          </Typography.Title>
-
+      <br></br>
+      <br></br>
+      <div className={styles.step_1}>
+        <Typography.Title className={styles.form_title} level={2}>
+          Thay Đổi Hình Ảnh
+        </Typography.Title>
+        {detail && (
           <Form
+            form={form}
             className={styles.form}
             size="large"
             labelCol={{ span: 5 }}
@@ -392,15 +424,13 @@ const CreateMovie: React.FC = () => {
             initialValues={{ size: componentSize }}
             onValuesChange={onFormLayoutChange}
           >
-            <Form.Item
-              label="Ảnh"
-              name="image_url"
-              //   rules={[{ required: true, message: "Không để trống ô này" }]}
-            >
+            <Form.Item label="Ảnh" name="image_url">
+              <img src={detail.image_url}></img>
               <Input
                 type="file"
                 onChange={(files) => handleSelectedFile(files.target.files)} // onChange={(e) => {
               />
+             
               <Card className={styles.card}>
                 <Row className={styles.row}>
                   <Col className={styles.col_right} span={12}>
@@ -428,7 +458,6 @@ const CreateMovie: React.FC = () => {
                     {dowloadURL && (
                       <>
                         <Image src={dowloadURL} alt={dowloadURL} />
-                        {/* <p> {dowloadURL}</p> */}
                       </>
                     )}
                   </Col>
@@ -439,7 +468,6 @@ const CreateMovie: React.FC = () => {
             <Form.Item
               label="Poster"
               name="poster_url"
-              //   rules={[{ required: true, message: "Không để trống ô này" }]}
             >
               <Input
                 type="file"
@@ -505,62 +533,27 @@ const CreateMovie: React.FC = () => {
                     <Progress percent={progressUploadTrailer}> </Progress>
                   </>
                 )}
-                {/* {downloadTrailerURL && (
-                  <>
-                    <ReactPlayer
-                      src={downloadTrailerURL}
-                      alt={downloadTrailerURL}
-                    />
-                    <p> {downloadTrailerURL}</p>
-                  </>
-                )} */}
               </Card>
             </Form.Item>
+
             <Form.Item
               className={styles.form_item_submit}
               wrapperCol={{ span: 24 }}
             >
-              {current > 0 && (
-                <Button
-                  className={styles.btn_return}
-                  type="primary"
-                  onClick={() => prev()}
-                >
-                  Quay lại
-                </Button>
-              )}
               <Button
-                onClick={handleCreateStep3}
+                onClick={handleUpdateFile}
+                className={styles.btn_next}
                 type="primary"
                 htmlType="submit"
               >
-                Thêm Phim
+                Lưu cập nhật
               </Button>
             </Form.Item>
           </Form>
-        </div>
-      ),
-    },
-  ];
-  const items = steps.map((item) => ({ key: item.title, title: item.title }));
-
-  const contentStyle: React.CSSProperties = {
-    marginTop: 46,
-  };
-
-  return (
-    <>
-      <Link className={styles.link} href="/listNhanVien">
-        <p style={{ fontSize: "1.3rem" }}>
-          <LeftOutlined />
-          Quay lại
-        </p>
-      </Link>
-      <h1 className={styles.title}>Thêm Phim</h1>
-      <Steps className={styles.step} current={current} items={items} />
-      <div style={contentStyle}>{steps[current].content}</div>
+        )}
+      </div>
     </>
   );
 };
 
-export default CreateMovie;
+export default EditPhim;

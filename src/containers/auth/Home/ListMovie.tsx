@@ -1,22 +1,60 @@
 import { Button, Card, List } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import ModalDetail from "./ModalDetail";
 import Link from "next/link";
+import Movie from "@/apis/movie";
 const { Meta } = Card;
-const data = Array.from({ length: 23 }).map((_, i) => ({
-  href: "https://ant.design",
-  title: `ant design part ${i}`,
-  avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
-  description:
-    "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-  content:
-    "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-}));
+
 const ListMovie: React.FC = () => {
+  const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await Movie.getAll("ALL");
+        setListMovies(
+          response.movies?.map(
+            (account: {
+              key: string;
+              id: string;
+              title: string;
+              image_url: string;
+              countries: string;
+              poster_url: boolean;
+              trailer_url: string;
+              release_date: string;
+              run_time: number;
+              director: string;
+              genres_id: number;
+              description: string;
+            }) => ({
+              key: account.id,
+              id: account.id,
+              title: account.title,
+              image_url: account.image_url,
+              countries: account.countries,
+              poster_url: account.poster_url,
+              trailer_url: account.trailer_url,
+              release_date: account.release_date,
+              run_time: account.run_time,
+              director: account.director,
+              genres_id: account.genres_id,
+              description: account.description,
+            })
+          )
+        );
+        // console.log("fff", listMovies);
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
+
   return (
     <>
-      <p> </p>
       <List
         className={styles.list}
         grid={{
@@ -34,20 +72,22 @@ const ListMovie: React.FC = () => {
           },
           pageSize: 6,
         }}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
+        dataSource={listMovies}
+        renderItem={(item: any) => (
+          <List.Item key={item.id}>
             <Card
               className={styles.card_item}
               hoverable
-              cover={<img alt="example" src="/movie1movie1.jpg" />}
+              cover={<img alt="example" src={item.image_url} />}
             >
-              {/* <Meta title="Batman" description="www.instagram.com" /> */}
-              <Meta className={styles.meta} title="Batman" />
+              <Meta
+                className={styles.meta}
+                title={<p style={{ fontSize: "2.5rem" }}>{item.title}</p>}
+              />
 
-              <div>
-                <ModalDetail></ModalDetail>
-                <Link legacyBehavior href={"/bookticker"}>
+              <div className={styles.btnMovie}>
+                <ModalDetail movieId={item.id}></ModalDetail>
+                <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
                   <Button className={styles.book_ticket}>Đặt Vé</Button>
                 </Link>
               </div>

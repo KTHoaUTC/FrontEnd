@@ -29,30 +29,50 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("Trang Chủ", "1", <PieChartOutlined />),
-  getItem(
-    "QL Nhân Viên",
-    "2",
-    <Link href={"/listNhanVien"}>
-      <DesktopOutlined />
-    </Link>
-  ),
-  getItem("QL Khách Hàng", "3", <UserOutlined />),
-  getItem(
-    "QL Phim",
-    "4",
-    <Link href={"/listPhim"}>
-      <DesktopOutlined />
-    </Link>
-  ),
-  getItem(
-    "QL Thể Loại",
-    "5",
-    <Link href={"/listTheLoai"}>
-      <DesktopOutlined />
-    </Link>
-  ),
-  getItem("QL Lịch Chiếu Phim", "6", <FileOutlined />),
-  getItem("QL Phòng Chiếu", "7", <FileOutlined />),
+  getItem("User", "sub1", <UserOutlined />, [
+    getItem(
+      "QL Nhân Viên",
+      "2",
+      <Link href={"/listNhanVien"}>
+        <UserOutlined />
+      </Link>
+    ),
+    getItem(
+      "QL Khách Hàng",
+      "3",
+      <Link href={"/listKhachHang"}>
+        <UserOutlined />
+      </Link>
+    ),
+  ]),
+  getItem("QL Phim", "sub2", <DesktopOutlined />, [
+    getItem(
+      "QL Phim",
+      "4",
+      <Link href={"/listPhim"}>
+        <DesktopOutlined />
+      </Link>
+    ),
+    getItem(
+      "QL Thể Loại",
+      "5",
+      <Link href={"/listTheLoai"}>
+        <DesktopOutlined />
+      </Link>
+    ),
+  ]),
+
+  getItem("Rạp", "sub3", <FileOutlined />, [
+    getItem("QL Lịch Chiếu Phim", "6", <FileOutlined />),
+    getItem("QL Phòng Chiếu", "7", <FileOutlined />),
+    getItem(
+      "QL Rạp",
+      "7",
+      <Link href={"/listRap"}>
+        <FileOutlined />
+      </Link>
+    ),
+  ]),
 ];
 
 const SiderAdmin: React.FC = () => {

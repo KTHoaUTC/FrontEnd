@@ -12,23 +12,23 @@ const createMovie = (newData: AdminCore.Movie) => {
     newData
   );
 };
-const deleteGenre = (genreId: any) => {
-  return axios.delete("http://localhost:8888/gateway/api/v1/delete-genre", {
+const deleteMoive = (movieId: any) => {
+  return axios.delete("http://localhost:8888/gateway/api/v1/delete-movie", {
     data: {
-      id: genreId,
+      id: movieId,
     },
   });
 };
-const editGenre = (updateData: any) => {
+const editMovie = (updateData: any) => {
   return axios.put(
-    "http://localhost:8888/gateway/api/v1/edit-genre",
+    "http://localhost:8888/gateway/api/v1/edit-movie",
     updateData
   );
 };
 const Movie = {
   getAll,
   createMovie,
-  deleteGenre,
-  editGenre,
+  deleteMoive,
+  editMovie,
 };
 export default Movie;

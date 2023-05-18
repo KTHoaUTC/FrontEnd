@@ -8,7 +8,7 @@ import styles from "./style.module.scss";
 import Movie from "@/apis/movie";
 import Genre from "@/apis/genre";
 
-export default function Phim({}: any, props: any) {
+export default function Rap({}: any, props: any) {
   const [listUsers, setListUsers] = useState<AdminCore.Movie[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,7 +43,7 @@ export default function Phim({}: any, props: any) {
               run_time: account.run_time,
               director: account.director,
               genres_id: account.genres_id,
-              description: account.description
+              description: account.description,
             })
           )
         );
@@ -53,23 +53,22 @@ export default function Phim({}: any, props: any) {
       }
     })();
   }, []);
-  
-const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
-    useEffect(() => {
-      fetchGenres();
-    }, []);
 
-    const fetchGenres = async () => {
-      try {
-        const response = await Genre.getAll("ALL");
-             setGenreList(response.genres);
+  const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
+  useEffect(() => {
+    fetchGenres();
+  }, []);
 
-      } catch (error) {
-        console.log("Error fetching genres:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchGenres = async () => {
+    try {
+      const response = await Genre.getAll("ALL");
+      setGenreList(response.genres);
+    } catch (error) {
+      console.log("Error fetching genres:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleDelete = async (id: number) => {
     await Movie.deleteMoive(id);
     setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));

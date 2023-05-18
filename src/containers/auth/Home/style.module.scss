@@ -57,18 +57,36 @@
 
     .card_item {
         .meta {
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-size: 3rem !important;
+            text-align: center;
         }
     }
 
     .img {}
 
-    .book_ticket {
-        margin-left: 1rem;
-        background-color: rgb(185, 65, 65);
-        text-align: right;
-        justify-items: right;
+    .btnMovie {
+        text-align: center;
+
+
+        .book_ticket {
+            margin-left: 1rem;
+            background-color: rgb(185, 65, 65);
+            text-align: right;
+            justify-items: right;
+            padding: 0rem 2rem;
+            height: 3rem;
+            color: rgb(204, 218, 230);
+            font-size: 1.4rem;
+            border: none;
+
+            &:hover {
+                background-color: rgb(99, 75, 204);
+            }
+        }
+
     }
+
 }
 
 //modal detail 
@@ -135,10 +153,11 @@
 }
 
 //bookticker
-.title_book{
+.title_book {
     text-align: center;
     font-size: 2rem;
 }
+
 .step {
     margin-top: 1rem;
     padding: 1rem 19rem;
@@ -294,10 +313,12 @@
             margin: 0 auto;
         }
     }
-hr{
-    color: azure;
-    margin: 2rem 1rem;
-}
+
+    hr {
+        color: azure;
+        margin: 2rem 1rem;
+    }
+
     .sum_price {
         margin-top: 1rem;
         font-size: 1.3rem;

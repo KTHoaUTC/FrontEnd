@@ -84,7 +84,7 @@ const EditNhanVien: React.FC = () => {
       if (id) {
         const result = await User.getAll(id);
         setDetail(result.users);
-        console.log("ddd", result.users);
+        // console.log("ddd", result.users);
         form.setFieldValue("id", result?.users!.id);
         form.setFieldValue("email", result?.users!.email);
         form.setFieldValue("last_name", result?.users!.last_name);

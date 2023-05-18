@@ -1,16 +1,18 @@
-.title{
+.title {
     font-size: 2.5rem;
     text-align: center;
     margin-top: 1rem;
     margin-bottom: 2rem;
     color: rgb(226, 48, 48);
 }
+
 .table_list {
     margin-top: 2rem;
     border: 1px solid rgb(128, 72, 72);
     border-radius: 10px;
 }
-.btn_add{
+
+.btn_add {
     float: right;
     margin-top: -1rem;
     background-color: rgb(158, 95, 95);
@@ -19,6 +21,7 @@
     font-size: 1rem;
     margin-bottom: 2rem;
 }
+
 .title_dang_ky {
     text-align: center;
     margin-top: 7rem;
@@ -27,8 +30,8 @@
 
 .step {
     width: 40%;
-   // text-align: center;
-//align-items: center;
+    // text-align: center;
+    //align-items: center;
     margin: 0 auto;
 }
 
@@ -59,16 +62,36 @@
         margin: 3rem auto 2rem;
     }
 }
-.btn_return{
+
+.btn_return {
     padding: 0 2rem !important;
     background-color: rgb(226, 81, 81);
     margin-right: 3rem;
 
 }
-.btn_next{
+
+.btn_next {
     padding: 0 2rem !important;
-        background-color: rgb(226, 81, 81);
+    background-color: rgb(226, 81, 81);
 }
-.vadidate{
+
+.vadidate {
     float: left
+}
+
+.card {
+    margin-top: 1rem;
+
+    .row {
+        text-align: left;
+        align-items: center;
+
+        .col_right {
+            margin: 0 auto;
+
+            justify-content: center;
+
+        }
+    }
+
 }
