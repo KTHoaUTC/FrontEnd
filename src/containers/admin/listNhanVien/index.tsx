@@ -76,7 +76,6 @@ export default function NhanVien({}: any, props: any) {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      
     },
     {
       title: "Họ",
@@ -119,7 +118,7 @@ export default function NhanVien({}: any, props: any) {
       key: "RoleId",
     },
     {
-      title: "Action",
+      title: "Thao Tác",
       key: "",
       render: (_, record: any) => (
         <Space size="middle">

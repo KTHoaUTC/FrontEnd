@@ -64,12 +64,31 @@ const items: MenuItem[] = [
   ]),
 
   getItem("Rạp", "sub3", <FileOutlined />, [
-    getItem("QL Lịch Chiếu Phim", "6", <FileOutlined />),
-    getItem("QL Phòng Chiếu", "7", <FileOutlined />),
+    getItem(
+      "QL Lịch Chiếu Phim",
+      "6",
+      <Link href={"/listShowTime"}>
+        <FileOutlined />
+      </Link>
+    ),
+    getItem(
+      "QL Phòng Chiếu",
+      "7",
+      <Link href={"/listRoom"}>
+        <FileOutlined />
+      </Link>
+    ),
     getItem(
       "QL Rạp",
       "8",
       <Link href={"/listRap"}>
+        <FileOutlined />
+      </Link>
+    ),
+    getItem(
+      "QL Ghế",
+      "9",
+      <Link href={"/listSeat"}>
         <FileOutlined />
       </Link>
     ),

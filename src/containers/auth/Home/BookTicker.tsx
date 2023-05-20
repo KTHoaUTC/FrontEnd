@@ -30,7 +30,6 @@ const BookTicker: React.FC = () => {
   useEffect(() => {
     if (router.query) {
       setAccountId(id);
-      console.log("id", accountId);
     }
   }, [router, id]);
 

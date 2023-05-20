@@ -216,7 +216,7 @@ const CreateMovie: React.FC = () => {
       ...newData,
     });
     setCurrent(1);
-    console.log("dddd", movie);
+    // console.log("dddd", movie);
   };
 
   const handleCreateStep3 = async (newData: AdminCore.Movie) => {
@@ -235,7 +235,7 @@ const CreateMovie: React.FC = () => {
         });
         router.push("/listPhim");
       }
-      console.log("data", result.data);
+      // console.log("data", result.data);
     }
   };
   const steps = [

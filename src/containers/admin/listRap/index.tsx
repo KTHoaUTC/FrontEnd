@@ -87,7 +87,7 @@ export default function Rap({}: any, props: any) {
     },
 
     {
-      title: "Action",
+      title: "Thao Tác",
       key: "",
       align: "center",
       width: "10%",

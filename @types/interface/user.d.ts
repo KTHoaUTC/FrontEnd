@@ -44,7 +44,48 @@ declare global {
       description?: string;
       image?: string;
       address?: string;
-      id?: string |undefined |any;
+      id?: string | undefined | any;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+    }
+
+    export interface TypeSeat {
+      name?: string;
+      id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+    }
+    export interface Seat {
+      name?: string;
+      phongchieu_id?: any | number;
+      seat_type_id?: any | number;
+      row?: number;
+      status: ?boolean;
+      id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+    }
+    export interface Room {
+      name?: string;
+      theater_id?: any | number;
+      seat_id?: any | number;
+      sum_seat?: any | number;
+      id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+    }
+    export interface ShowTime {
+      movie_id?: any | number;
+      theater_id?: any | number;
+      phongchieu_id?: any | number;
+      ngay_chieu?: Date;
+      gio_chieu?: string | any;
+      money?: string;
+      id?: number;
       map?: any;
       key?: string;
       updatedAt?: Date;

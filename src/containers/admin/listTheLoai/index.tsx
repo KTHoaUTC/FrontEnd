@@ -62,10 +62,10 @@ export default function TheLoai({}: any, props: any) {
       render: (date: Date) => formattedDate(date),
     },
     {
-      title: "Action",
+      title: "Thao Tác",
       key: "",
       align: "center",
-      
+
       render: (_, record: any) => (
         <Space size="middle">
           <Popconfirm

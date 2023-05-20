@@ -1,16 +1,16 @@
-import CumRap from "@/containers/auth/Theater";
-import Layout from "@/containers/auth/layout";
+import LayoutAdmin from "@/containers/admin/layout";
+import ShowTime from "@/containers/admin/listLichChieu";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
 const Page: NextPageWithLayout = () => {
   return (
     <>
-      <CumRap />
+      <ShowTime />
     </>
   );
 };
 
 Page.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return <LayoutAdmin>{page}</LayoutAdmin>;
 };
 export default Page;
