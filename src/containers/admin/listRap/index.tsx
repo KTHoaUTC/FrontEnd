@@ -1,79 +1,55 @@
-import User from "@/apis/auth";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import Theater from "@/apis/rap";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Button, Popconfirm, Skeleton, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import ModalAddTheater from "./createTheater";
+import ModalEditTheater from "./editTheater";
 import styles from "./style.module.scss";
-import Movie from "@/apis/movie";
-import Genre from "@/apis/genre";
 
 export default function Rap({}: any, props: any) {
-  const [listUsers, setListUsers] = useState<AdminCore.Movie[] | any>([]);
+  const [listTheaters, setListTheaters] = useState<AdminCore.Rap[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await Movie.getAll("ALL");
-        setListUsers(
-          response.movies?.map(
-            (account: {
-              key: string;
-              id: string;
-              title: string;
-              image_url: string;
-              countries: string;
-              poster_url: boolean;
-              trailer_url: string;
-              release_date: string;
-              run_time: number;
-              director: string;
-              genres_id: number;
-              description: string;
-            }) => ({
-              key: account.id,
-              id: account.id,
-              title: account.title,
-              image_url: account.image_url,
-              countries: account.countries,
-              poster_url: account.poster_url,
-              trailer_url: account.trailer_url,
-              release_date: account.release_date,
-              run_time: account.run_time,
-              director: account.director,
-              genres_id: account.genres_id,
-              description: account.description,
-            })
-          )
-        );
-      } catch (e) {
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+    fetchTheaters();
   }, []);
 
-  const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
-  useEffect(() => {
-    fetchGenres();
-  }, []);
-
-  const fetchGenres = async () => {
+  const fetchTheaters = async () => {
     try {
-      const response = await Genre.getAll("ALL");
-      setGenreList(response.genres);
-    } catch (error) {
-      console.log("Error fetching genres:", error);
+      const response = await Theater.getAll("ALL");
+      setListTheaters(
+        response.theaters?.map(
+          (theater: {
+            key: string;
+            id: string;
+            name: string;
+            image: string;
+            address: string;
+            description: string;
+          }) => ({
+            key: theater.id,
+            id: theater.id,
+            name: theater.name,
+            image: theater.image,
+            address: theater.address,
+            description: theater.description,
+          })
+        )
+      );
+    } catch (e) {
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleDelete = async (id: number) => {
-    await Movie.deleteMoive(id);
-    setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
+    await Theater.deleteTheater(id);
+    setListTheaters(
+      listTheaters.filter((item: { id: number }) => item.id !== id)
+    );
   };
-  const columns: ColumnsType<AdminCore.Movie> = [
+  const columns: ColumnsType<AdminCore.Rap> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -82,17 +58,16 @@ export default function Rap({}: any, props: any) {
       width: "5%",
     },
     {
-      title: "Tên Phim",
-      dataIndex: "title",
-      key: "title",
+      title: "Tên Rạp",
+      dataIndex: "name",
+      key: "name",
       width: "15%",
     },
     {
       title: "Ảnh",
       align: "center",
-
-      dataIndex: "image_url",
-      key: "image_url",
+      dataIndex: "image",
+      key: "image",
       render: (text) => (
         <img src={text} alt="Image" style={{ width: "100px" }} />
       ),
@@ -101,53 +76,39 @@ export default function Rap({}: any, props: any) {
       title: "Nội Dung",
       dataIndex: "description",
       key: "description",
-      width: "30%",
-      render: (text) => <a>{text}</a>,
+      width: "40%",
     },
 
     {
-      title: "Quốc Gia ",
-      dataIndex: "countries",
-      key: "countries",
+      title: "Địa Chỉ",
+      dataIndex: "address",
+      key: "address",
+      width: "25%",
     },
-    {
-      title: "Thể Loại",
-      dataIndex: "genres_id",
-      key: "genres_id",
-      render: (genresId) => {
-        const genre = genreList.find((genre) => genre.id === genresId);
-        return genre ? genre.name : null;
-      },
-    },
-    {
-      title: "Thời Lượng",
-      dataIndex: "run_time",
-      key: "run_time",
-      render: (text) => <p>{text} phút</p>,
-    },
-    {
-      title: "Diễn Viên",
-      dataIndex: "director",
-      key: "director",
-    },
+
     {
       title: "Action",
       key: "",
+      align: "center",
+      width: "10%",
       render: (_, record: any) => (
         <Space size="middle">
           <a>
-            <Link href={`/listPhim/${record.id}`}>
-              <Button style={{ float: "right", margin: "0px" }} type="primary">
-                <EditOutlined />
-              </Button>
-            </Link>
+            <ModalEditTheater
+              onSuccess={fetchTheaters}
+              currentTheater={null}
+            ></ModalEditTheater>
           </a>
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={() => handleDelete(record.id)}
           >
-            <Button style={{ float: "right", margin: "0px" }} type="primary">
-              <DeleteOutlined />
+            <Button
+              className={styles.btn_delete}
+              style={{ float: "right", margin: "0px" }}
+              type="primary"
+            >
+              <DeleteOutlined className={styles.icon} />
             </Button>
           </Popconfirm>
         </Space>
@@ -159,18 +120,14 @@ export default function Rap({}: any, props: any) {
   }
   return (
     <>
-      <h1 className={styles.title}> Danh Sách Phim</h1>
-      <Link href={"/listPhim/create"}>
-        <Button className={styles.btn_add} type="primary">
-          + Thêm Phim
-        </Button>
-      </Link>
+      <h1 className={styles.title}> Danh Sách Rạp Chiếu Phim</h1>
 
+      <ModalAddTheater onSuccess={fetchTheaters}></ModalAddTheater>
       <Table
         bordered
         className={styles.table_list}
         columns={columns}
-        dataSource={listUsers}
+        dataSource={listTheaters}
       />
     </>
   );

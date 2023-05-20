@@ -15,18 +15,25 @@ const SlideHome: React.FC = () => (
     <div className={styles.img}>
       <img
         className={styles.img}
-        src="/1-5451.jpg"
+        src="/banner1807.jpg"
+        style={{ width: "1700px", height: "800px" }}
+      ></img>
+    </div>
+
+    <div>
+      <img
+        src="/bannere1.jpg"
         style={{ width: "1700px", height: "800px" }}
       ></img>
     </div>
     <div>
-      <img src="/RRR.jpg" style={{ width: "1700px", height: "800px" }}></img>
+      <img
+        src="/posterphim.jpg"
+        style={{ width: "1700px", height: "800px" }}
+      ></img>
     </div>
     <div>
-      <img src="/1-5451.jpg" style={{ width: "1700px", height: "800px" }}></img>
-    </div>
-    <div>
-      <img src="/1-5451.jpg" style={{ width: "1700px", height: "800px" }}></img>
+      <img src="/Joker.jpg" style={{ width: "1700px", height: "800px" }}></img>
     </div>
   </Carousel>
 );

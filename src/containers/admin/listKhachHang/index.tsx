@@ -53,9 +53,16 @@ export default function KhachHang({}: any, props: any) {
     await User.deleteUser(id);
     setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
   };
-  const filteredUsers = listUsers.filter(
-    (user: { RoleId: string }) => user.RoleId === ""
+  const filteredUsers = listUsers.reduce(
+    (result: any[], users:any) => {
+      if (users.RoleId === "") {
+        result.push(users);
+      }
+      return result;
+    },
+    []
   );
+  console.log("ffsfadf", filteredUsers);
 
   const columns: ColumnsType<AdminCore.User> = [
     {
@@ -112,6 +119,8 @@ export default function KhachHang({}: any, props: any) {
     {
       title: "Action",
       key: "",
+      align: "center",
+
       render: (_, record: any) => (
         <Space size="middle">
           <a>

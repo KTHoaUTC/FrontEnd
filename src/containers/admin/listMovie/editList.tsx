@@ -353,7 +353,7 @@ const EditPhim: React.FC = () => {
             </Form.Item>
             <Form.Item name="genres_id" label="Thể Loại">
               <Select
-                mode="multiple"
+              //  mode="multiple"
                 placeholder="Nhập thể loại"
                 value={selectedItems}
                 onChange={setSelectedItems}
@@ -409,7 +409,7 @@ const EditPhim: React.FC = () => {
 
       <br></br>
       <br></br>
-      <div className={styles.step_1}>
+      {/* <div className={styles.step_1}>
         <Typography.Title className={styles.form_title} level={2}>
           Thay Đổi Hình Ảnh
         </Typography.Title>
@@ -551,7 +551,7 @@ const EditPhim: React.FC = () => {
             </Form.Item>
           </Form>
         )}
-      </div>
+      </div> */}
     </>
   );
 };

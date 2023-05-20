@@ -1,4 +1,4 @@
-import { Button, Card, List } from "antd";
+import { Button, Card, Divider, List } from "antd";
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import ModalDetail from "./ModalDetail";
@@ -45,7 +45,6 @@ const ListMovie: React.FC = () => {
             })
           )
         );
-        // console.log("fff", listMovies);
       } catch (e) {
       } finally {
         setIsLoading(false);
@@ -84,7 +83,6 @@ const ListMovie: React.FC = () => {
                 className={styles.meta}
                 title={<p style={{ fontSize: "2.5rem" }}>{item.title}</p>}
               />
-
               <div className={styles.btnMovie}>
                 <ModalDetail movieId={item.id}></ModalDetail>
                 <Link legacyBehavior href={`/bookticker?id=${item.id}`}>

@@ -1,8 +1,27 @@
 import { Button, Col, Row } from "antd";
 import Link from "next/link";
 import styles from "./style.module.scss";
+import router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const router = useRouter();
+  const { email } = router.query;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && email) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [email]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
   return (
     <>
       <Row className={styles.row_header}>
@@ -17,24 +36,67 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              {/* <Link legacyBehavior href="/admin"> */}
-              <a>Cụm Rạp</a>
-              {/* </Link> */}
-            </li>
-            <li>
-              <Link legacyBehavior href="/login">
-                <a>Lịch sử</a>
+              <Link legacyBehavior href="/cumrap">
+                <a>Hệ Thống Rạp</a>
               </Link>
             </li>
+            {isLoggedIn && (
+              <li>
+                <Link legacyBehavior href="/lich-su">
+                  <a>Lịch sử</a>
+                </Link>
+              </li>
+            )}
           </ul>
         </Col>
         <Col className={styles.right} span={8}>
-          <Link legacyBehavior href="/login">
-            <Button className={styles.btn_login_auth}>Đăng Nhập</Button>
-          </Link>
-          <Link legacyBehavior href="/dangky">
-            <Button className={styles.btn_logout_auth}>Đăng Ký</Button>
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Row>
+                <Col
+                  style={{
+                    textAlign: "center",
+                    alignItems: "center",
+                    alignContent: "center",
+                    display: "flex",
+                  }}
+                  span={15}
+                >
+                  <p
+                    style={{
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Xin Chào {email}
+                  </p>
+                </Col>
+                <Col span={9}>
+                  <Link legacyBehavior href="/login">
+                    <Button
+                      className={styles.btn_login_auth}
+                      onClick={handleLogout}
+                    >
+                      Đăng Xuất
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <>
+              <Link legacyBehavior href="/login">
+                <Button
+                  className={styles.btn_login_auth}
+                  onClick={handleLogout}
+                >
+                  Đăng Nhập
+                </Button>
+              </Link>
+              <Link legacyBehavior href="/dangky">
+                <Button className={styles.btn_logout_auth}>Đăng Ký</Button>
+              </Link>
+            </>
+          )}
         </Col>
       </Row>
       {/* <hr></hr> */}

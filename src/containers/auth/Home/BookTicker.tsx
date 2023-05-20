@@ -1,15 +1,91 @@
-import { Button, Col, Collapse, Image, message, Row, Steps, theme } from "antd";
+import {
+  Button,
+  Col,
+  Collapse,
+  Form,
+  Image,
+  message,
+  Row,
+  Steps,
+  theme,
+} from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SeatButtons from "./Seat";
 import styles from "./style.module.scss";
+import router, { useRouter } from "next/router";
+import Movie from "@/apis/movie";
+import Theater from "@/apis/rap";
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 
 const BookTicker: React.FC = () => {
   const { token } = theme.useToken();
+  const id = router.query.id as string;
+  const [accountId, setAccountId] = useState<string>("");
+  const [detail, setDetail] = useState<AdminCore.Movie>();
+
+  useEffect(() => {
+    if (router.query) {
+      setAccountId(id);
+      console.log("id", accountId);
+    }
+  }, [router, id]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await Movie.getAll(accountId);
+        console.log("data", response.movies);
+        setDetail(response.movies);
+        console.log("detail", detail);
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [accountId]);
+
+  //rap chieu
+  const [listTheaters, setListTheaters] = useState<AdminCore.Rap[] | any>([]);
+
+  useEffect(() => {
+    fetchTheaters();
+  }, []);
+
+  const fetchTheaters = async () => {
+    try {
+      const response = await Theater.getAll("ALL");
+      setListTheaters(
+        response.theaters?.map(
+          (theater: {
+            key: string;
+            id?: string |undefined;
+            name: string;
+            image: string;
+            address: string;
+            description: string;
+          }) => ({
+            key: theater.id,
+            id: theater.id,
+            name: theater.name,
+            image: theater.image,
+            address: theater.address,
+            description: theater.description,
+          })
+        )
+      );
+    } catch (e) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  //
   const [current, setCurrent] = useState(0);
   const next = () => {
     setCurrent(current + 1);
@@ -41,7 +117,7 @@ const BookTicker: React.FC = () => {
           </Row>
           <Row className={styles.step_}>
             <Col className={styles.step_img} span={10} offset={2}>
-              <Image width={450} height={500} src="/doremon.jpg" />
+              <Image width={450} height={500} src={detail?.poster_url} />
             </Col>
             <Col className={styles.step_content} span={11} offset={2}>
               <h2>Chọn ngày xem phim:</h2>
@@ -71,30 +147,22 @@ const BookTicker: React.FC = () => {
                 Danh sách các rạp chiếu phim:
               </h2>
               <Collapse accordion>
-                <Panel
-                  className={styles.panel}
-                  header="BHH Star 3.2 Quận 10, TPHCM"
-                  key="1"
-                >
-                  <Button className={styles.btn_time}>09:00 AM</Button>
-                  <Button className={styles.btn_time}>11:00 AM</Button>
-                </Panel>
-                <Panel
-                  className={styles.panel}
-                  header="BHH Star 3.2 Cầu Giấy, Hà Nội"
-                  key="2"
-                >
-                  <Button className={styles.btn_time}>09:00 AM</Button>
-                  <Button className={styles.btn_time}>11:00 AM</Button>
-                </Panel>
-                <Panel
-                  className={styles.panel}
-                  header="BHH Star 3.4 Hồ Tây, Hà Nội"
-                  key="3"
-                >
-                  <Button className={styles.btn_time}>09:00 AM</Button>
-                  <Button className={styles.btn_time}>11:00 AM</Button>
-                </Panel>
+                {listTheaters.map((theater: AdminCore.Rap) => (
+                  <Panel
+                    className={styles.panel}
+                    header={theater.name}
+                    key={theater?.id}
+                  >
+                    {/* Render danh sách thời gian chiếu của rạp */}
+                    {/* {theater.showtimes.map((showtime: string) => (
+                      <Button className={styles.btn_time} key={showtime}>
+                        {showtime}
+                      </Button>
+                    ))} */}
+                    <Button className={styles.btn_time}>09:00 AM</Button>
+                    <Button className={styles.btn_time}>11:00 AM</Button>
+                  </Panel>
+                ))}
               </Collapse>
             </Col>
           </Row>

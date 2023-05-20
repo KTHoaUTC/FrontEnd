@@ -3,7 +3,7 @@ import { Button, Checkbox, Col, Form, Input, Row, notification } from "antd";
 import { setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./style.module.scss";
 
 const AuthLogin = () => {
@@ -11,12 +11,11 @@ const AuthLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
   const [pass_word, setPassword] = useState("");
-  const [token, setToken] = useState(""); // Thêm state token
+  const [token, setToken] = useState("");
 
   const handleSubmit = async () => {
     try {
       const response = await AuthApi.signIn({ input: { email, pass_word } });
-      console.log("reee", response.token);
       const token = response.token;
 
       if (response.errCode === 3) {
@@ -34,8 +33,8 @@ const AuthLogin = () => {
       setCookie("AUTHEN_TOKEN_KEY", token, { path: "/login" });
       console.log("token", token);
       if (response.errCode === 0) {
-        const token = response.accessToken;
         localStorage.setItem("token", JSON.stringify(token));
+
         if (
           response.userData.user.RoleId == "admin" ||
           response.userData.user.RoleId == "Nhân Viên"
@@ -44,7 +43,10 @@ const AuthLogin = () => {
           router.push("/admin");
           notification.success({ message: "Đăng nhập thành công" });
         } else {
-          router.push("/auth");
+          router.push({
+            pathname: "/auth",
+            query: { email: email },
+          });
           notification.success({ message: "Đăng nhập thành công" });
         }
       }

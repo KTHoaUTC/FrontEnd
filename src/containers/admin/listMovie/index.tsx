@@ -134,6 +134,8 @@ const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
     {
       title: "Action",
       key: "",
+      align: "center",
+
       render: (_, record: any) => (
         <Space size="middle">
           <a>

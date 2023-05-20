@@ -27,7 +27,8 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   };
   return (
     <Modal
-      title="Thêm Thể Loại"
+    
+      title={<p style={{textAlign:'center', margin:'1rem 0rem', fontSize:'1.7rem'}}>Thêm Thể Loại</p>}
       visible={visible}
       cancelText="Cancel"
       onCancel={onCancel}

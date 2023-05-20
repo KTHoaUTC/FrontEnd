@@ -33,8 +33,18 @@ declare global {
       poster_url?: string;
       trailer_url?: string;
       release_date?: string;
-      run_time?: number |any;
+      run_time?: number | any;
       id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+    }
+    export interface Rap {
+      name?: string;
+      description?: string;
+      image?: string;
+      address?: string;
+      id?: string |undefined |any;
       map?: any;
       key?: string;
       updatedAt?: Date;

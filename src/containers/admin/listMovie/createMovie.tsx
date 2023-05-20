@@ -276,6 +276,7 @@ const CreateMovie: React.FC = () => {
             </Form.Item>
             <Form.Item
               name="description"
+              style={{ whiteSpace: "pre-line" }}
               label="Nội Dung"
               required
               rules={[
@@ -320,8 +321,18 @@ const CreateMovie: React.FC = () => {
             >
               {/* <Input placeholder="Nhập thể loại" /> */}
               <Select
-                mode="multiple"
+                //mode="multiple"
+                showSearch
                 placeholder="Nhập thể loại"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? "")
+                    .toLowerCase()
+                    .localeCompare((optionB?.label ?? "").toLowerCase())
+                }
                 value={selectedItems}
                 onChange={setSelectedItems}
                 style={{ width: "100%" }}
@@ -550,7 +561,7 @@ const CreateMovie: React.FC = () => {
 
   return (
     <>
-      <Link className={styles.link} href="/listNhanVien">
+      <Link className={styles.link} href="/listPhim">
         <p style={{ fontSize: "1.3rem" }}>
           <LeftOutlined />
           Quay lại

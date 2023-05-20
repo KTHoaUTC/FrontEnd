@@ -6,8 +6,9 @@ import {
 } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps, theme } from "antd";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
+import { useRouter } from "next/router";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -67,7 +68,7 @@ const items: MenuItem[] = [
     getItem("QL Phòng Chiếu", "7", <FileOutlined />),
     getItem(
       "QL Rạp",
-      "7",
+      "8",
       <Link href={"/listRap"}>
         <FileOutlined />
       </Link>
@@ -80,6 +81,8 @@ const SiderAdmin: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const router = useRouter();
+  const { email } = router.query;
 
   return (
     <Sider
