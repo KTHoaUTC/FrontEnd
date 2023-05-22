@@ -1,5 +1,5 @@
 import Genre from "@/apis/genre";
-import { Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import { Button, Popconfirm, Skeleton, Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 
@@ -12,7 +12,6 @@ import { DeleteOutlined } from "@ant-design/icons";
 export default function ListSeat({}: any, props: any) {
   const [listSeats, setListSeats] = useState<AdminCore.Seat[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     fetchGenres();
@@ -39,7 +38,6 @@ export default function ListSeat({}: any, props: any) {
     }
   };
 
-
   const [roomList, setRoomList] = useState<AdminCore.Room[]>([]);
   useEffect(() => {
     (async () => {
@@ -50,7 +48,6 @@ export default function ListSeat({}: any, props: any) {
       } catch (e) {}
     })();
   }, []);
-
 
   const handleDelete = async (id: number) => {
     await Seat.deleteSeat(id);
@@ -91,6 +88,17 @@ export default function ListSeat({}: any, props: any) {
       dataIndex: "status",
       key: "status",
       align: "center",
+      render: (status) => {
+        return status ? (
+          <Tag style={{ padding: "0 1rem" }} color="red">
+            Đã bán
+          </Tag>
+        ) : (
+          <Tag style={{ padding: "0 1rem" }} color="#2db7f5">
+            Chưa bán
+          </Tag>
+        );
+      },
     },
     {
       title: "Thao Tác",

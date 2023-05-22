@@ -3,8 +3,10 @@ import { Button, Checkbox, Col, Form, Input, Row, notification } from "antd";
 import { setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./style.module.scss";
+import { EditOutlined } from "@ant-design/icons";
+// import { signIn } from "next-auth/react";
 
 const AuthLogin = () => {
   const router = useRouter();
@@ -12,8 +14,15 @@ const AuthLogin = () => {
   const [email, setEmail] = useState("");
   const [pass_word, setPassword] = useState("");
   const [token, setToken] = useState("");
-
+  // const email = useRef("");
+  // const pass_word = useRef("");
   const handleSubmit = async () => {
+    // const result = await signIn("credentials", {
+    //   email: email.current,
+    //   pass_word: pass_word.current,
+    //   redirect: true,
+    //   callbackUrl: "/",
+    // });
     try {
       const response = await AuthApi.signIn({ input: { email, pass_word } });
       const token = response.token;
@@ -30,22 +39,25 @@ const AuthLogin = () => {
         setErrorMessage("Người dùng không tồn tại!");
         return;
       }
-      setCookie("AUTHEN_TOKEN_KEY", token, { path: "/login" });
+      setCookie("token", token, { path: "/admin" });
       console.log("token", token);
       if (response.errCode === 0) {
-        localStorage.setItem("token", JSON.stringify(token));
+        // localStorage.setItem("token", JSON.stringify(token));
 
         if (
           response.userData.user.RoleId == "admin" ||
           response.userData.user.RoleId == "Nhân Viên"
         ) {
+          localStorage.setItem("token", JSON.stringify(token));
           setToken(token);
           router.push("/admin");
           notification.success({ message: "Đăng nhập thành công" });
         } else {
+          localStorage.setItem("token", JSON.stringify(token));
+
           router.push({
             pathname: "/auth",
-            query: { email: email },
+            // query: { email: email },
           });
           notification.success({ message: "Đăng nhập thành công" });
         }
@@ -92,6 +104,7 @@ const AuthLogin = () => {
                 ]}
               >
                 <Input
+                  suffix={<EditOutlined />}
                   onChange={(e) => setEmail(e.target.value)}
                   className={styles.form_input}
                   type="email"

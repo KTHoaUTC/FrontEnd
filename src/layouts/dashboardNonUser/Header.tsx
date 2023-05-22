@@ -8,7 +8,7 @@ const Header = () => {
   const router = useRouter();
   const { email } = router.query;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token && email) {

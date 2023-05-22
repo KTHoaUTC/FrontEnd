@@ -1,5 +1,5 @@
 import User from "@/apis/auth";
-import { LeftOutlined } from "@ant-design/icons";
+import { EditOutlined, LeftOutlined } from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -133,6 +133,7 @@ const AddNhanVien: React.FC = () => {
               ]}
             >
               <Input
+                suffix={<EditOutlined />}
                 onChange={(e) => setEmail(e.target.value as string)}
                 placeholder="Nhập email"
                 type="email"
@@ -151,7 +152,7 @@ const AddNhanVien: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Nhập họ" />
+              <Input suffix={<EditOutlined />} placeholder="Nhập họ" />
             </Form.Item>
 
             <Form.Item
@@ -167,7 +168,7 @@ const AddNhanVien: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Nhập tên" />
+              <Input suffix={<EditOutlined />} placeholder="Nhập tên" />
             </Form.Item>
             <Form.Item
               name="address"
@@ -182,7 +183,7 @@ const AddNhanVien: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Nhập dịa chỉ" />
+              <Input suffix={<EditOutlined />} placeholder="Nhập dịa chỉ" />
             </Form.Item>
             <Form.Item
               name="gender"
@@ -199,15 +200,52 @@ const AddNhanVien: React.FC = () => {
             >
               <Select
                 placeholder="Chọn giới tính"
-                style={{ width: "100%" }}
+                style={{ float: "left", width: "100%" }}
                 options={[
                   { value: 0, label: "Nữ" },
                   { value: 1, label: "Nam" },
                 ]}
               />
             </Form.Item>
-            <Form.Item name="phone_number" label="Số Điện Thoại">
-              <Input placeholder="Nhập số diện thoại" />
+          
+            <Form.Item
+              label="Số điện thoại"
+              name="phone_number"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <p className={styles.vadidate}>Không để trống ô này</p>
+                  ),
+                },
+                {
+                  pattern: /^[0-9]+$/,
+                  message: <p className={styles.vadidate}>Chỉ nhập kí tự số</p>,
+                },
+                {
+                  pattern: /^(0\d{9})$/,
+                  message: (
+                    <p className={styles.vadidate}>
+                      Nhập đúng định dạng số điện thoại 0xxx-xxx-xx
+                    </p>
+                  ),
+                },
+              ]}
+              validateFirst
+            >
+              <Input
+                // onBlur={handlePhoneBlur}
+                type="text"
+                onKeyPress={(event) => {
+                  const keyCode = event.which || event.keyCode;
+                  if (keyCode < 48 || keyCode > 57) {
+                    event.preventDefault();
+                  }
+                }}
+                // onChange={(e) => setPhone(e.target.value as unknown as number)}
+                placeholder="Nhập số điện thoại"
+                suffix={<EditOutlined />}
+              />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
@@ -293,7 +331,7 @@ const AddNhanVien: React.FC = () => {
                   Quay lại
                 </Button>
               )}
-             
+
               <Button
                 className={styles.btn_add}
                 type="primary"
@@ -315,7 +353,7 @@ const AddNhanVien: React.FC = () => {
 
   return (
     <>
-      <Link className={styles.link} href="/listNhanVien">
+      <Link className={styles.link} href="/auth">
         <p style={{ fontSize: "1.3rem" }}>
           <LeftOutlined />
           Quay lại

@@ -10,7 +10,7 @@ declare global {
       phone_number?: number;
       RoleId?: string;
       rePassword?: string;
-      image?: any;
+      image?: string | any;
       columns?: any;
       id?: number;
       map?: any;
@@ -58,6 +58,7 @@ declare global {
       updatedAt?: Date;
     }
     export interface Seat {
+      seat_number: any;
       name?: string;
       phongchieu_id?: any | number;
       seat_type_id?: any | number;
@@ -77,8 +78,11 @@ declare global {
       map?: any;
       key?: string;
       updatedAt?: Date;
+      selectedRoom?: any;
     }
     export interface ShowTime {
+      [key: string]: any;
+
       movie_id?: any | number;
       theater_id?: any | number;
       phongchieu_id?: any | number;
@@ -89,6 +93,26 @@ declare global {
       map?: any;
       key?: string;
       updatedAt?: Date;
+    }
+    export interface Booking {
+      movie_id?: any | number;
+      theater_id?: any | number;
+      show_time_id?: any | number;
+      user_id?: any | number;
+      seat_id?: any;
+      booking_time?: Date;
+      booking_status?: string | any;
+      total_price?: string;
+      payment_status?: boolean;
+      id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+        //   time?: string;
+  //   date?: string;
+  //   theater?: string;
+  //   gia_ve?: number;
+  //   phongchieu_id?: number;
     }
   }
 }

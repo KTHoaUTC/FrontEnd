@@ -10,20 +10,7 @@ const SeatButtons = () => {
   const bookedSeats = [5, 10, 15];
   // const selectedSeat = 20;
 
-  const [ticketQuantity, setTicketQuantity] = useState(1);
   const defaultTicketPrice = 60000;
-
-  const handleIncreaseQuantity = () => {
-    setTicketQuantity(ticketQuantity + 1);
-  };
-
-  const handleDecreaseQuantity = () => {
-    if (ticketQuantity > 1) {
-      setTicketQuantity(ticketQuantity - 1);
-    }
-  };
-
-  const ticketPrice = defaultTicketPrice * ticketQuantity;
   const seatButtons = [];
   for (let i = 1; i <= 50; i++) {
     let seatClass = "empty-seat";

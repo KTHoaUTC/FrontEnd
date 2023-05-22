@@ -1,5 +1,5 @@
 import User from "@/apis/auth";
-import { LeftOutlined } from "@ant-design/icons";
+import { EditOutlined, LeftOutlined } from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -39,31 +39,7 @@ const AddNhanVien: React.FC = () => {
     setComponentSize(size);
   };
 
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
-  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-  const onPreview = async (file: UploadFile) => {
-    let src = file.url as string;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj as RcFile);
-        reader.onload = () => resolve(reader.result as string);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
+
   const [account, setAccount] = useState<AdminCore.User>();
   const [createUser, setCreateUser] = useState<AdminCore.User[]>([]);
 
@@ -71,7 +47,6 @@ const AddNhanVien: React.FC = () => {
     // setAccount(newData);
     setAccount({
       ...newData,
-      avatar: fileList.length > 0 ? fileList[0].url : undefined,
     });
     setCurrent(1);
     console.log("dddd", account);
@@ -134,6 +109,7 @@ const AddNhanVien: React.FC = () => {
               ]}
             >
               <Input
+                suffix={<EditOutlined />}
                 onChange={(e) => setEmail(e.target.value as string)}
                 placeholder="Nhập email"
                 type="email"
@@ -152,7 +128,7 @@ const AddNhanVien: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Nhập họ" />
+              <Input suffix={<EditOutlined />} placeholder="Nhập họ" />
             </Form.Item>
 
             <Form.Item
@@ -168,7 +144,7 @@ const AddNhanVien: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Nhập tên" />
+              <Input suffix={<EditOutlined />} placeholder="Nhập tên" />
             </Form.Item>
             <Form.Item
               name="address"
@@ -183,7 +159,7 @@ const AddNhanVien: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Nhập dịa chỉ" />
+              <Input suffix={<EditOutlined />} placeholder="Nhập dịa chỉ" />
             </Form.Item>
             <Form.Item
               name="gender"
@@ -207,10 +183,46 @@ const AddNhanVien: React.FC = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item name="phone_number" label="Số Điện Thoại">
-              <Input placeholder="Nhập số diện thoại" />
+            <Form.Item
+              label="Số điện thoại"
+              name="phone_number"
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <p className={styles.vadidate}>Không để trống ô này</p>
+                  ),
+                },
+                {
+                  pattern: /^[0-9]+$/,
+                  message: <p className={styles.vadidate}>Chỉ nhập kí tự số</p>,
+                },
+                {
+                  pattern: /^(0\d{9})$/,
+                  message: (
+                    <p className={styles.vadidate}>
+                      Nhập đúng định dạng số điện thoại 0xxx-xxx-xx
+                    </p>
+                  ),
+                },
+              ]}
+              validateFirst
+            >
+              <Input
+                // onBlur={handlePhoneBlur}
+                type="text"
+                onKeyPress={(event) => {
+                  const keyCode = event.which || event.keyCode;
+                  if (keyCode < 48 || keyCode > 57) {
+                    event.preventDefault();
+                  }
+                }}
+                // onChange={(e) => setPhone(e.target.value as unknown as number)}
+                placeholder="Nhập số điện thoại"
+                suffix={<EditOutlined />}
+              />
             </Form.Item>
-            <Form.Item name="image" label="Ảnh">
+            {/* <Form.Item name="image" label="Ảnh">
               <ImgCrop rotationSlider>
                 <Upload
                   action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -222,7 +234,7 @@ const AddNhanVien: React.FC = () => {
                   {fileList.length < 5 && "+ Upload"}
                 </Upload>
               </ImgCrop>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
                 className={styles.btn_next}

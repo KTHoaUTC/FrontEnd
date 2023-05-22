@@ -54,7 +54,8 @@
 
 .list {
     margin: 2rem 4rem !important;
-white-space: pre-line;
+    white-space: pre-line;
+
     .card_item {
         .meta {
             margin-bottom: 2rem;
@@ -63,7 +64,7 @@ white-space: pre-line;
         }
     }
 
-    .img {}
+
 
     .btnMovie {
         text-align: center;
@@ -171,24 +172,27 @@ white-space: pre-line;
 }
 
 .step_1 {
-    h1 {
+    margin: 0 auto;
+    background-color: rgb(216, 192, 192);
+    border: 1px solid rgb(235, 174, 61);
+    width: 70%;
+    border-radius: 10px;
 
-        text-align: center;
-        text-transform: uppercase;
-        color: rgb(206, 64, 64);
-        font-size: 2rem;
-        margin: 1rem auto 0;
+    .form_title {
+        h1 {
+
+            text-align: center;
+            text-transform: uppercase;
+            color: rgb(206, 64, 64);
+            font-size: 2rem;
+            margin: 1rem auto 0;
+        }
     }
 
-    margin: 0 auto;
-    background-color: rgb(255, 255, 255);
-    // border-radius: 20px;
-    // border: 1px solid rgb(219, 42, 42);
-    width: 70%;
-
     .step_ {
-        .step_img {
+        justify-content: center;
 
+        .step_img {
             margin: 2rem 0rem;
             text-align: center;
             align-items: center;
@@ -233,20 +237,125 @@ white-space: pre-line;
         }
     }
 
+    .step_2_ {
+        .seat {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+
+            .img {
+                margin-top: 1rem;
+                width: 70%;
+                height: 5rem;
+            }
+
+            .seat_icon {
+                justify-content: center;
+
+                text-align: center;
+                align-items: center;
+                margin: 0 atuo;
+                max-width: 60%;
+            }
+        }
+    }
+
+    .btn {
+        margin: 2rem auto;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+
+        .btn_return {
+            margin-right: 1rem;
+            background-color: rgb(216, 51, 51);
+            font-size: 1.2rem;
+            padding: 0 2rem;
+            height: 3rem;
+        }
+
+        .btn_next {
+            background-color: rgb(216, 51, 51);
+            font-size: 1.2rem;
+            padding: 0 2rem;
+            height: 3rem;
+        }
+    }
+
+    .row_step3 {
+        .title {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        div {
+            // border: 1px solid black;
+            padding-left: 3rem;
+            p {
+                font-size: 1.2rem;
+              
+                padding-top: 1rem;
+            }
+
+        }
+
+    }
+
 
 }
 
-/* Lớp CSS cho ghế trống */
-.empty-seat {
-    background-color: green;
+
+
+.link {
+    p {
+        font-size: 1.3rem;
+        margin-top: 7rem;
+        margin-left: 4rem;
+    }
+
 }
 
-/* Lớp CSS cho ghế đã chọn */
-.selected-seat {
-    background-color: yellow;
-}
+
 
 /* Lớp CSS cho ghế đã bán */
+.list_seat {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    max-width: 70%;
+
+    .button_ {
+        margin-left: 1rem;
+        margin-bottom: 1rem;
+
+        .seat_button {
+            display: flex;
+            background-color: green;
+            text-align: center;
+            align-items: center;
+            height: 3rem;
+            width: 3rem;
+
+        }
+    }
+}
+
+.seat_button_selected {
+    background-color: yellow;
+    height: 3rem;
+    width: 3rem;
+}
+
 .booked-seat {
     background-color: red;
 }
@@ -262,56 +371,100 @@ white-space: pre-line;
 
     .icon_seat {
         margin-left: 2rem;
+        text-align: center;
+        align-items: center;
+        display: flex;
 
 
         .icon_seat_empty {
             font-size: 2rem;
             background-color: green;
             border: none;
+            cursor: default;
+            margin-right: 0.5rem;
         }
 
         .icon_seat_booked {
             background-color: yellow;
             font-size: 2rem;
+            border: none;
+            cursor: default;
+            margin-right: 0.5rem;
         }
 
         .icon_seat_select {
             background-color: red;
             font-size: 2rem;
+            border: none;
+            cursor: default;
+            margin-right: 0.5rem;
         }
     }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.blink {
+    animation: blink 2s infinite;
 }
 
 .col_list {
     width: 20rem;
     margin-top: 6rem;
     padding: 1rem 1rem;
-    border: 2px solid rgb(224, 62, 41);
+    border: 2px solid rgb(170, 95, 85);
     border-radius: 10px;
+    text-align: center;
+
+    .ticket_price {
+        color: rgb(147, 14, 235);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
 
     h2 {
         margin-bottom: 1rem;
     }
 
-    p {
 
-        text-align: center;
-        margin-bottom: 0.5rem;
 
-    }
 
     .list_seat {
-        display: flex;
-        text-align: center;
-        align-items: center;
         list-style-type: none;
+        display: flex;
+        margin: 0 auto;
         margin-top: 1rem;
 
-        li {
-            text-align: center;
-            align-items: center;
-            margin: 0 auto;
+        .btn_seat {
+            background-color: rgb(179, 179, 62);
+            border: none;
+            cursor: default;
+            color: black;
+
+            li {
+                text-align: center;
+                align-items: center;
+                margin: 0 auto;
+            }
+
+            &:hover {
+                color: black;
+            }
         }
+
     }
 
     hr {
@@ -323,6 +476,28 @@ white-space: pre-line;
         margin-top: 1rem;
         font-size: 1.3rem;
         font-weight: 400;
-        color: rgb(18, 163, 189);
+        color: rgb(147, 14, 235);
+        font-weight: 600;
+        margin-bottom: 1rem;
     }
+}
+
+.btn_date {
+    height: 3rem;
+    font-size: 1.2rem;
+    border: 1px solid;
+    color: rgb(211, 39, 39);
+    margin-bottom: 1rem;
+    padding: 0 2rem;
+}
+
+.btn_time {
+    margin-left: 5rem !important;
+    margin-bottom: 1rem;
+    height: 3rem;
+    padding: 0 2rem;
+    font-size: 1.2rem;
+    border: 1px solid;
+    color: rgb(202, 118, 39);
+
 }

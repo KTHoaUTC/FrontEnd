@@ -6,6 +6,15 @@ const getAll = async (inputId: any) => {
   );
   return response.data;
 };
+
+const getAllAuth = async (inputId: any) => {
+  const response = await axios.get(
+    `http://localhost:8888/gateway/api/v1/get-all-auths?id=${inputId}`
+  );
+  return response.data;
+};
+
+
 const creatUser = (newData: AdminCore.User) => {
   return axios.post(
     "http://localhost:8888/gateway/api/v1/create-user",
@@ -26,6 +35,7 @@ const editUser = (updateData: any) => {
   );
 };
 const User = {
+  getAllAuth,
   getAll,
   creatUser,
   deleteUser,

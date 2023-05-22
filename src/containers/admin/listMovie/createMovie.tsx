@@ -27,7 +27,6 @@ import React, { useEffect, useState } from "react";
 import { storage } from "../../../../firebase";
 import styles from "./style.module.scss";
 
-const { Panel } = Collapse;
 const { TextArea } = Input;
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 type SizeType = Parameters<typeof Form>[0]["size"];
@@ -153,7 +152,6 @@ const CreateMovie: React.FC = () => {
   const handleUploadTrailer = () => {
     if (trailerFile) {
       const trailerFileName = trailerFile.name;
-
       // Upload trailer
       const trailerStorageRef = ref(storage, `trailers/${trailerFileName}`);
       const trailerUploadTask = uploadBytesResumable(
@@ -216,7 +214,6 @@ const CreateMovie: React.FC = () => {
       ...newData,
     });
     setCurrent(1);
-    // console.log("dddd", movie);
   };
 
   const handleCreateStep3 = async (newData: AdminCore.Movie) => {

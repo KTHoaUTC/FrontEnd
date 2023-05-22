@@ -13,7 +13,7 @@ export default function KhachHang({}: any, props: any) {
   useEffect(() => {
     (async () => {
       try {
-        const response = await User.getAll("ALL");
+        const response = await User.getAllAuth("ALL");
         setListUsers(
           response.users?.map(
             (account: {
@@ -41,25 +41,26 @@ export default function KhachHang({}: any, props: any) {
             })
           )
         );
+        console.log('testlsit',listUsers)
       } catch (e) {
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
-  const [imageUrl, setImageUrl] = useState("");
+  // const [imageUrl, setImageUrl] = useState("");
 
-  const handleDelete = async (id: number) => {
-    await User.deleteUser(id);
-    setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
-  };
-  const filteredUsers = listUsers.reduce((result: any[], users: any) => {
-    if (users.RoleId === "") {
-      result.push(users);
-    }
-    return result;
-  }, []);
-  console.log("ffsfadf", filteredUsers);
+  // const handleDelete = async (id: number) => {
+  //   await User.deleteUser(id);
+  //   setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
+  // };
+  // const filteredUsers = listUsers.reduce((result: any[], users: any) => {
+  //   if (users.RoleId === "") {
+  //     result.push(users);
+  //   }
+  //   return result;
+  // }, []);
+  // console.log("ffsfadf", filteredUsers);
 
   const columns: ColumnsType<AdminCore.User> = [
     {
@@ -108,36 +109,32 @@ export default function KhachHang({}: any, props: any) {
       key: "avatar",
       // render: renderImage,
     },
-    {
-      title: "Phân Quyền",
-      dataIndex: "RoleId",
-      key: "RoleId",
-    },
-    {
-      title: "Thao Tác",
-      key: "",
-      align: "center",
+   
+    // {
+    //   title: "Thao Tác",
+    //   key: "",
+    //   align: "center",
 
-      render: (_, record: any) => (
-        <Space size="middle">
-          <a>
-            <Link href={`/listNhanVien/${record.id}`}>
-              <Button style={{ float: "right", margin: "0px" }} type="primary">
-                <EditOutlined />
-              </Button>
-            </Link>
-          </a>
-          <Popconfirm
-            title="Bạn chắc chắn muốn xóa?"
-            onConfirm={() => handleDelete(record.id)}
-          >
-            <Button style={{ float: "right", margin: "0px" }} type="primary">
-              <DeleteOutlined />
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
+    //   render: (_, record: any) => (
+    //     <Space size="middle">
+    //       <a>
+    //         <Link href={`/listNhanVien/${record.id}`}>
+    //           <Button style={{ float: "right", margin: "0px" }} type="primary">
+    //             <EditOutlined />
+    //           </Button>
+    //         </Link>
+    //       </a>
+    //       <Popconfirm
+    //         title="Bạn chắc chắn muốn xóa?"
+    //         onConfirm={() => handleDelete(record.id)}
+    //       >
+    //         <Button style={{ float: "right", margin: "0px" }} type="primary">
+    //           <DeleteOutlined />
+    //         </Button>
+    //       </Popconfirm>
+    //     </Space>
+    //   ),
+    // },
   ];
   if (isLoading) {
     return <Skeleton active> </Skeleton>;
@@ -155,7 +152,7 @@ export default function KhachHang({}: any, props: any) {
         bordered
         className={styles.table_list}
         columns={columns}
-        dataSource={filteredUsers}
+        dataSource={listUsers}
       />
     </>
   );

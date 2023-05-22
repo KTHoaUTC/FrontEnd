@@ -94,24 +94,29 @@ export default function NhanVien({}: any, props: any) {
       title: "Giới Tính",
       dataIndex: "gender",
       key: "gender",
-      render: (value) => (value ? "Nam" : "Nữ"),
+      render: (value) => (value ? "Nữ" : "Nam"),
     },
     {
       title: "Số Điện Thoại",
       dataIndex: "phone_number",
       key: "phone_number",
+      align: "center",
     },
     {
       title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
     },
-    {
-      title: "Ảnh",
-      dataIndex: "avatar",
-      key: "avatar",
-      // render: renderImage,
-    },
+    // {
+    //   title: "Ảnh",
+    //   dataIndex: "image",
+    //   key: "image",
+    //   align: "center",
+
+    //   render: (text) => (
+    //     <img src={text} alt="Image" style={{ width: "100px" }} />
+    //   ),
+    // },
     {
       title: "Phân Quyền",
       dataIndex: "RoleId",

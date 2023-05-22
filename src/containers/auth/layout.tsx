@@ -1,17 +1,21 @@
 import HomeFooter from "@/layouts/dashboardNonUser/Footer";
 import Header from "@/layouts/dashboardNonUser/Header";
 import { ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
 
-type LayoutProps = {
+type IProps = {
   children: ReactNode;
+  session: any;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, session }: IProps) => {
   return (
     <div>
-      <Header></Header>
-      <main>{children}</main>
-      <HomeFooter></HomeFooter>
+      <SessionProvider session={session}>
+        <Header></Header>
+        <main>{children}</main>
+        <HomeFooter></HomeFooter>
+      </SessionProvider>
     </div>
   );
 };
