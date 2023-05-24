@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Player } from "video-react";
 import "video-react/dist/video-react.css";
 import styles from "./style.module.scss";
+import moment from "moment";
 interface ModalDetailProps {
   movieId?: any;
 }
@@ -29,7 +30,7 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await Genre.getAll("ALL"); // Thay "Genre" bằng tên API của bạn để lấy danh sách thể loại
+        const response = await Genre.getAll("ALL");
         setGenreList(response.genres);
       } catch (e) {
         // Xử lý lỗi
@@ -42,7 +43,11 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
   };
   return (
     <>
-      <Button className={styles.book_ticket} type="primary" onClick={() => setOpen(true)}>
+      <Button
+        className={styles.book_ticket}
+        type="primary"
+        onClick={() => setOpen(true)}
+      >
         Xem Chi Tiết
       </Button>
       <Modal
@@ -70,6 +75,7 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
               <p className={styles.movie_title}>
                 Thể loại: <span>{getGenreName(detail.genres_id)}</span>
               </p>
+              
               <p className={styles.movie_title}>
                 Thời lượng: <span> {detail.run_time} phút </span>
               </p>
@@ -77,7 +83,11 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
                 Quốc Gia: <span> {detail.countries}</span>
               </p>
               <p className={styles.movie_title}>
-                Ngày Phát Hành: <span> {detail.countries}</span>
+                Đạo Diễn: <span> {detail.release_date}</span>
+              </p>
+              <p className={styles.movie_title}>
+                Ngày Phát Hành:{" "}
+                <span>{moment(detail.day_start).format("DD/MM/YYYY")}</span>
               </p>
               <div className={styles.btn}>
                 <Link legacyBehavior href={`/bookticker?id=${detail.id}`}>

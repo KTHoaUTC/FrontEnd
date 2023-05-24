@@ -6,7 +6,7 @@ import Link from "next/link";
 import Movie from "@/apis/movie";
 const { Meta } = Card;
 
-const ListMovieStop: React.FC = () => {
+const ListMovieHot: React.FC = () => {
   const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,7 +57,7 @@ const ListMovieStop: React.FC = () => {
   }, []);
 
   const filteredMovies = listMovies.filter(
-    (item: any) => item.status === "coming_soon"
+    (item: any) => item.status === "hot"
   );
 
   return (
@@ -105,4 +105,4 @@ const ListMovieStop: React.FC = () => {
   );
 };
 
-export default ListMovieStop;
+export default ListMovieHot;

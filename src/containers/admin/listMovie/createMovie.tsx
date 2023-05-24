@@ -6,6 +6,8 @@ import {
   Card,
   Col,
   Collapse,
+  DatePicker,
+  DatePickerProps,
   Form,
   Image,
   Input,
@@ -209,6 +211,10 @@ const CreateMovie: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
+   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+     console.log(date, dateString);
+   };
+
   const handleCreateStep1 = async (newData: AdminCore.Movie) => {
     setMovie({
       ...newData,
@@ -266,10 +272,7 @@ const CreateMovie: React.FC = () => {
                 },
               ]}
             >
-              <Input
-                //   onChange={(e) => setEmail(e.target.value as string)}
-                placeholder="Nhập tên phim"
-              />
+              <Input placeholder="Nhập tên phim" />
             </Form.Item>
             <Form.Item
               name="description"
@@ -316,9 +319,7 @@ const CreateMovie: React.FC = () => {
                 },
               ]}
             >
-              {/* <Input placeholder="Nhập thể loại" /> */}
               <Select
-                //mode="multiple"
                 showSearch
                 placeholder="Nhập thể loại"
                 optionFilterProp="children"
@@ -368,7 +369,63 @@ const CreateMovie: React.FC = () => {
             >
               <Input placeholder="Nhập diễn viên" />
             </Form.Item>
-
+            <Form.Item
+              name="release_date"
+              label="Đạo Diễn"
+              required
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <p className={styles.vadidate}>Không để trống ô này</p>
+                  ),
+                },
+              ]}
+            >
+              <Input placeholder="Nhập Đạo diễn" />
+            </Form.Item>
+            <Form.Item
+              name="day_start"
+              label="Ngày Khởi Chiếu"
+              required
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <p className={styles.vadidate}>Không để trống ô này</p>
+                  ),
+                },
+              ]}
+            >
+              <DatePicker
+                placeholder="Chọn Ngày Chiếu "
+                style={{ width: "100%" }}
+                onChange={onChange}
+              />
+            </Form.Item>
+            <Form.Item
+              name="status"
+              label="Trạng Thái"
+              required
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <p className={styles.validate}>Không để trống ô này</p>
+                  ),
+                },
+              ]}
+            >
+              <Select
+                showSearch
+                placeholder="Chọn trạng thái"
+                options={[
+                  { value: "hot", label: "Hot" },
+                  { value: "coming_soon", label: "Sắp Chiếu" },
+                  { value: "now_showing", label: "Đang Chiếu" },
+                ]}
+              />
+            </Form.Item>
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
                 className={styles.btn_next}

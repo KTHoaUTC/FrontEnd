@@ -6,7 +6,7 @@ import Link from "next/link";
 import Movie from "@/apis/movie";
 const { Meta } = Card;
 
-const ListMovie: React.FC = () => {
+const ListMovieStop: React.FC = () => {
   const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,6 +29,8 @@ const ListMovie: React.FC = () => {
               director: string;
               genres_id: number;
               description: string;
+              day_start: Date;
+              status: string;
             }) => ({
               key: account.id,
               id: account.id,
@@ -42,6 +44,8 @@ const ListMovie: React.FC = () => {
               director: account.director,
               genres_id: account.genres_id,
               description: account.description,
+              day_start: account.day_start,
+              status: account.status,
             })
           )
         );
@@ -51,6 +55,10 @@ const ListMovie: React.FC = () => {
       }
     })();
   }, []);
+
+  const filteredMovies = listMovies.filter(
+    (item: any) => item.status === "now_showing"
+  );
 
   return (
     <>
@@ -71,7 +79,7 @@ const ListMovie: React.FC = () => {
           },
           pageSize: 6,
         }}
-        dataSource={listMovies}
+        dataSource={filteredMovies}
         renderItem={(item: any) => (
           <List.Item key={item.id}>
             <Card
@@ -97,4 +105,4 @@ const ListMovie: React.FC = () => {
   );
 };
 
-export default ListMovie;
+export default ListMovieStop;

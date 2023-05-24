@@ -33,6 +33,9 @@ declare global {
       poster_url?: string;
       trailer_url?: string;
       release_date?: string;
+      status?: string;
+      director?:string;
+      day_start?: Date;
       run_time?: number | any;
       id?: number;
       map?: any;
@@ -108,11 +111,11 @@ declare global {
       map?: any;
       key?: string;
       updatedAt?: Date;
-        //   time?: string;
-  //   date?: string;
-  //   theater?: string;
-  //   gia_ve?: number;
-  //   phongchieu_id?: number;
+      //   time?: string;
+      //   date?: string;
+      //   theater?: string;
+      //   gia_ve?: number;
+      //   phongchieu_id?: number;
     }
   }
 }

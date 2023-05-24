@@ -1,22 +1,30 @@
+import UserContext from "@/contexts/context";
 import HomeFooter from "@/layouts/dashboardNonUser/Footer";
 import Header from "@/layouts/dashboardNonUser/Header";
-import { ReactNode } from "react";
-import { SessionProvider } from "next-auth/react";
+import { ReactNode, useEffect, useState } from "react";
 
-type IProps = {
+type LayoutProps = {
   children: ReactNode;
-  session: any;
 };
 
-const Layout = ({ children, session }: IProps) => {
+const Layout = ({ children }: LayoutProps) => {
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && email) {
+      setEmail(email);
+    }
+  }, [email]);
+  console.log("emaillayout", email);
   return (
-    <div>
-      <SessionProvider session={session}>
+    <UserContext.Provider value={{ email, setEmail }}>
+      <div>
         <Header></Header>
         <main>{children}</main>
         <HomeFooter></HomeFooter>
-      </SessionProvider>
-    </div>
+      </div>
+    </UserContext.Provider>
   );
 };
 

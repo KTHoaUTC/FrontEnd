@@ -3,26 +3,21 @@ import { Button, Checkbox, Col, Form, Input, Row, notification } from "antd";
 import { setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import styles from "./style.module.scss";
 import { EditOutlined } from "@ant-design/icons";
-// import { signIn } from "next-auth/react";
+import UserContext from "@/contexts/context";
+import AdminContext from "@/contexts/authContex";
 
 const AuthLogin = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
   const [pass_word, setPassword] = useState("");
-  const [token, setToken] = useState("");
-  // const email = useRef("");
-  // const pass_word = useRef("");
+  const { setEmail: setEmailContext } = useContext(UserContext);
+  const { setEmail: setEmailContextAdmin } = useContext(AdminContext);
+
   const handleSubmit = async () => {
-    // const result = await signIn("credentials", {
-    //   email: email.current,
-    //   pass_word: pass_word.current,
-    //   redirect: true,
-    //   callbackUrl: "/",
-    // });
     try {
       const response = await AuthApi.signIn({ input: { email, pass_word } });
       const token = response.token;
@@ -39,26 +34,24 @@ const AuthLogin = () => {
         setErrorMessage("Người dùng không tồn tại!");
         return;
       }
-      setCookie("token", token, { path: "/admin" });
+      localStorage.setItem("token", token);
+
+      setCookie("token", token, { path: "/login" });
       console.log("token", token);
       if (response.errCode === 0) {
-        // localStorage.setItem("token", JSON.stringify(token));
-
         if (
-          response.userData.user.RoleId == "admin" ||
-          response.userData.user.RoleId == "Nhân Viên"
+          response.userData.RoleId == "admin" ||
+          response.userData.RoleId == "Nhân Viên"
         ) {
           localStorage.setItem("token", JSON.stringify(token));
-          setToken(token);
           router.push("/admin");
+          setEmailContextAdmin(email);
+
           notification.success({ message: "Đăng nhập thành công" });
         } else {
           localStorage.setItem("token", JSON.stringify(token));
-
-          router.push({
-            pathname: "/auth",
-            // query: { email: email },
-          });
+          router.push("/auth");
+          setEmailContext(email);
           notification.success({ message: "Đăng nhập thành công" });
         }
       }
@@ -90,7 +83,7 @@ const AuthLogin = () => {
             <div className={styles.form1}>
               <Form.Item
                 label="Email"
-                name="username"
+                name="email"
                 rules={[
                   {
                     required: true,
@@ -116,7 +109,7 @@ const AuthLogin = () => {
             <div className={styles.form1}>
               <Form.Item
                 label="Mật khẩu"
-                name="password"
+                name="pass_word"
                 rules={[
                   {
                     required: true,
@@ -131,7 +124,7 @@ const AuthLogin = () => {
                 <Input.Password
                   onChange={(e) => setPassword(e.target.value)}
                   className={styles.form_input}
-                  type="email"
+                  // type="email"
                   size="large"
                   placeholder="Nhập mật khẩu"
                 />
@@ -167,7 +160,7 @@ const AuthLogin = () => {
                   type="primary"
                   htmlType="submit"
                 >
-                  GibHub
+                  GitHub
                 </Button>
               </div>
             </Form.Item>

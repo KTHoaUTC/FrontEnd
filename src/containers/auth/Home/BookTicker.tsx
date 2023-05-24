@@ -3,6 +3,7 @@ import Theater from "@/apis/rap";
 import Room from "@/apis/room";
 import Seat from "@/apis/seat";
 import ShowTimeApi from "@/apis/showtime";
+import UserContext from "@/contexts/context";
 import { LeftOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -18,9 +19,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import Booking from "@/apis/booking";
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
@@ -28,7 +28,8 @@ dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 const BookTicker: React.FC = () => {
   const { token } = theme.useToken();
   const router = useRouter();
-
+  const { email, setEmail } = useContext(UserContext);
+  console.log("bookemail", email);
   const id = router.query.id as string;
   const [accountId, setAccountId] = useState<string>("");
   const [detail, setDetail] = useState<AdminCore.Movie>();
@@ -137,8 +138,8 @@ const BookTicker: React.FC = () => {
     theater?: string;
     gia_ve?: number;
     phongchieu_id?: number;
-    theater_id?: string |any;
-    movie_id?: string |any;
+    theater_id?: string | any;
+    movie_id?: string | any;
   }>({
     time: "",
     date: "",
@@ -213,7 +214,6 @@ const BookTicker: React.FC = () => {
   };
 
   const hanledBookStep3 = async (newData: AdminCore.Booking) => {
- 
     const updatedShowtime = {
       ...selectedShowtime,
       total_price: total_price,
@@ -230,7 +230,7 @@ const BookTicker: React.FC = () => {
     }
     //   const result = await Booking.creatBooking(selectedShowtime);
     //   setCurrent(3);
-            console.log("step2", selectedShowtime);
+    console.log("step2", selectedShowtime);
   };
 
   const steps = [
@@ -405,6 +405,7 @@ const BookTicker: React.FC = () => {
                           </div>
                         );
                       })}
+                      
                     </div>
                     <div className={styles.note_seat}>
                       <div className={styles.icon_seat}>
@@ -499,7 +500,7 @@ const BookTicker: React.FC = () => {
             <Col span={12}>
               <div className={styles.title}> Thông Tin Cá Nhân</div>
               <div>
-                <p> Email : Khuat Thi Hoa</p>
+                <p> Email {email}</p>
                 <p>Phone: 339242 </p>
               </div>
             </Col>

@@ -1,16 +1,18 @@
 import { Button, Col, Row } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import router, { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import UserContext from "@/contexts/context";
 
 const Header = () => {
   const router = useRouter();
-  const { email } = router.query;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+  const { email, setEmail } = useContext(UserContext);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
+    
     if (token && email) {
       setIsLoggedIn(true);
     } else {
@@ -18,8 +20,12 @@ const Header = () => {
     }
   }, [email]);
 
+  console.log("emailheader", email);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setEmail("");
+
     router.push("/login");
   };
   return (

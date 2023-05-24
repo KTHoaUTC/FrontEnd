@@ -1,12 +1,21 @@
 import User from "@/apis/auth";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import {
+  Avatar,
+  Button,
+  Modal,
+  Popconfirm,
+  Skeleton,
+  Space,
+  Table,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Movie from "@/apis/movie";
 import Genre from "@/apis/genre";
+import moment from "moment";
 
 export default function Phim({}: any, props: any) {
   const [listUsers, setListUsers] = useState<AdminCore.Movie[] | any>([]);
@@ -31,6 +40,8 @@ export default function Phim({}: any, props: any) {
               director: string;
               genres_id: number;
               description: string;
+              day_start: Date;
+              status: string;
             }) => ({
               key: account.id,
               id: account.id,
@@ -44,6 +55,8 @@ export default function Phim({}: any, props: any) {
               director: account.director,
               genres_id: account.genres_id,
               description: account.description,
+              day_start: account.day_start,
+              status: account.status,
             })
           )
         );
@@ -73,6 +86,33 @@ export default function Phim({}: any, props: any) {
     await Movie.deleteMoive(id);
     setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
   };
+  const formattedDate = (date: Date) => {
+    return moment(date).format("DD/MM/YYYY");
+  };
+  const [selectedMovie, setSelectedMovie] = useState<AdminCore.Movie | null>(
+    null
+  );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleOpenModal = (movie: AdminCore.Movie) => {
+    setSelectedMovie(movie);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+const renderStatus = (status: string | undefined) => {
+  let label = "";
+  if (status === "hot") {
+    label = "Hot";
+  } else if (status === "coming_soon") {
+    label = "Sắp Chiếu";
+  } else if (status === "now_showing") {
+    label = "Đang Chiếu";
+  }
+  return <span>{label}</span>;
+};
   const columns: ColumnsType<AdminCore.Movie> = [
     {
       title: "ID",
@@ -86,11 +126,15 @@ export default function Phim({}: any, props: any) {
       dataIndex: "title",
       key: "title",
       width: "15%",
+      render: (text, record) => (
+        <Button type="link" onClick={() => handleOpenModal(record)}>
+          {text}
+        </Button>
+      ),
     },
     {
       title: "Ảnh",
       align: "center",
-
       dataIndex: "image_url",
       key: "image_url",
       render: (text) => (
@@ -104,7 +148,6 @@ export default function Phim({}: any, props: any) {
       width: "30%",
       render: (text) => <a>{text}</a>,
     },
-
     {
       title: "Quốc Gia ",
       dataIndex: "countries",
@@ -167,7 +210,38 @@ export default function Phim({}: any, props: any) {
           + Thêm Phim
         </Button>
       </Link>
+      <Modal
+        className={styles.modal}
+        title={selectedMovie?.title ?? "Thông tin chi tiết"}
+        visible={isModalVisible}
+        onCancel={handleCloseModal}
+        footer={null}
+      >
+        <p> Nội Dung: {selectedMovie?.description}</p>
+        <p>
+          Ngày Khởi Chiếu:{" "}
+          {selectedMovie
+            ? moment(selectedMovie.day_start).format("DD/MM/YYYY")
+            : ""}
+        </p>
+        <p>
+          Trạng Thái: {selectedMovie ? renderStatus(selectedMovie.status) : ""}
+        </p>
 
+        <p>Đạo Diễn: {selectedMovie?.release_date}</p>
+        <p>Quốc Gia: {selectedMovie?.countries}</p>
+        <p>
+          Thể Loại:{" "}
+          {selectedMovie
+            ? genreList.find((genre) => genre.id === selectedMovie.genres_id)
+                ?.name
+            : ""}
+        </p>
+        <p>Thời Lượng: {selectedMovie?.run_time} phút</p>
+        <p>Diễn Viên: {selectedMovie?.director}</p>
+
+        {/* Hiển thị nội dung modal */}
+      </Modal>
       <Table
         bordered
         className={styles.table_list}

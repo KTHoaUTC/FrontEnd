@@ -1,16 +1,19 @@
-import { Button, Col, Row } from "antd";
+import AuthContext from "@/contexts/authContex";
+import { Button, Col, Input, Row } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import { Input } from "antd";
-import { useEffect, useState } from "react";
+import UserContext from "@/contexts/context";
 
 const { Search } = Input;
 const onSearch = (value: string) => console.log(value);
 const HeaderLoginAuth = () => {
   const router = useRouter();
-  const { email } = router.query;
+  // const email = router.query.email;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { email, setEmail } = useContext(UserContext);
+  // console.log("email", email);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,10 +22,14 @@ const HeaderLoginAuth = () => {
     } else {
       setIsLoggedIn(false);
     }
+    console.log("token", token);
   }, [email]);
+  console.log("emailadmin", email);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setEmail(""); // Reset the email value in the context
+
     router.push("/login");
   };
   return (
