@@ -21,12 +21,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
+import Booking from "@/apis/booking";
+import QRCode from "qrcode.react";
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 
 const BookTicker: React.FC = () => {
   const { token } = theme.useToken();
+  const [qrCodeData, setQRCodeData] = useState("");
+
   const router = useRouter();
   const { email, setEmail } = useContext(UserContext);
   console.log("bookemail", email);
@@ -91,7 +95,7 @@ const BookTicker: React.FC = () => {
     (async () => {
       try {
         const response = await Seat.getAllSeat("ALL");
-        setSeatList(response.seats);
+        setSeatList(response.seat);
       } catch (e) {}
     })();
   }, []);
@@ -147,11 +151,6 @@ const BookTicker: React.FC = () => {
     gia_ve: 0,
   });
 
-  // console.log("state1", selectedShowtime);
-
-  //luu tru state
-  // const [booking, setBooking] = useState<AdminCore.Booking>();
-
   const hanledBookStep1 = async (newData: AdminCore.Booking) => {
     setSelectedShowtime({
       ...selectedShowtime,
@@ -199,9 +198,6 @@ const BookTicker: React.FC = () => {
   const tenPhongChieu = selectedRoom ? selectedRoom.name : "";
   const sum_seat = selectedRoom ? selectedRoom.sum_seat : "";
 
-  const test = seatList.find(
-    (seat) => seat.phongchieu_id === selectedShowtime.phongchieu_id
-  );
   const seatString = selectedSeats.join(", ");
 
   const hanledBookStep2 = async (newData: AdminCore.Booking) => {
@@ -214,24 +210,32 @@ const BookTicker: React.FC = () => {
   };
 
   const hanledBookStep3 = async (newData: AdminCore.Booking) => {
-    const updatedShowtime = {
-      ...selectedShowtime,
+    setSelectedShowtime((prevShowtime) => ({
+      ...prevShowtime,
       total_price: total_price,
       selectedSeats: selectedSeats,
-    };
+      phongchieu_id: selectedRoom?.id,
+    }));
     try {
-      // const result = await Booking.creatBooking(updatedShowtime);
+      const result = await Booking.creatBooking(selectedShowtime);
       setCurrent(3);
-      // console.log('bookingtest',result.data)
-      // console.log("step3", updatedShowtime);
     } catch (error) {
       console.error("Error booking:", error);
-      // Xử lý lỗi khi đặt vé không thành công
     }
-    //   const result = await Booking.creatBooking(selectedShowtime);
-    //   setCurrent(3);
+    const qrCodeData = JSON.stringify({
+      title: detail?.title,
+      theater: selectedShowtime.theater,
+      date: selectedShowtime.date,
+      time: selectedShowtime.time,
+      room: tenPhongChieu,
+      seats: seatString,
+      totalPrice: total_price,
+    });
+    setQRCodeData(qrCodeData);
+
     console.log("step2", selectedShowtime);
   };
+  const [selectedButton, setSelectedButton] = useState<string>("");
 
   const steps = [
     {
@@ -306,11 +310,23 @@ const BookTicker: React.FC = () => {
                                         const formattedTime = dayjs(
                                           showtime.gio_chieu
                                         ).format("HH:mm");
+                                        const isButtonSelected =
+                                          selectedShowtime?.time ===
+                                            formattedTime &&
+                                          selectedShowtime?.date ===
+                                            formattedDate;
+
                                         return (
                                           <>
                                             <div key={showtime.id}>
                                               <Button
-                                                className={styles.btn_time}
+                                                className={`${
+                                                  styles.btn_time
+                                                } ${
+                                                  isButtonSelected
+                                                    ? styles.selected
+                                                    : ""
+                                                }`}
                                                 onClick={() =>
                                                   setSelectedShowtime({
                                                     time: formattedTime,
@@ -383,7 +399,6 @@ const BookTicker: React.FC = () => {
                       <img style={{ width: "100%" }} src="/gggg.jpg"></img>
                     </p>
                     <h2>Phòng: {tenPhongChieu}</h2>
-                    {/* <h2> tong ghe: {sum_seat}</h2> */}
 
                     <div className={styles.list_seat}>
                       {Array.from({ length: sum_seat }, (_, index) => {
@@ -405,8 +420,8 @@ const BookTicker: React.FC = () => {
                           </div>
                         );
                       })}
-                      
                     </div>
+
                     <div className={styles.note_seat}>
                       <div className={styles.icon_seat}>
                         <Button className={styles.icon_seat_empty} />
@@ -529,7 +544,19 @@ const BookTicker: React.FC = () => {
     },
     {
       title: "Đặt vé thành công",
-      content: "Last-content",
+      content: (
+        <div className={styles.step_1}>
+          <div className={styles.qrcode}>
+            {/* Các nội dung khác của Bước 4 */}
+            <p className={styles.qrcode_title}>Mã vé </p>
+
+            <QRCode className={styles.qrcode_text} value={qrCodeData} />
+
+            <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
+            <p>Xem Lịch Sử</p>
+          </div>
+        </div>
+      ),
     },
   ];
   const items = steps.map((item) => ({ key: item.title, title: item.title }));

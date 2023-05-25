@@ -29,7 +29,13 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Trang Chủ", "1", <PieChartOutlined />),
+  getItem(
+    "Trang Chủ",
+    "1",
+    <Link href={"/trangchu"}>
+      <PieChartOutlined />
+    </Link>
+  ),
   getItem("User", "sub1", <UserOutlined />, [
     getItem(
       "QL Nhân Viên",
@@ -93,8 +99,14 @@ const items: MenuItem[] = [
       </Link>
     ),
   ]),
+  getItem(
+    "Hóa Đơn Đặt Vé",
+    "10",
+    <Link href={"/listBook"}>
+      <FileOutlined />
+    </Link>
+  ),
 ];
-
 const SiderAdmin: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {

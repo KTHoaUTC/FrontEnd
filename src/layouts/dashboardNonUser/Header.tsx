@@ -42,6 +42,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
+              <Link legacyBehavior href="/auth/search">
+                <a>Tìm Kiếm </a>
+              </Link>
+            </li>
+            <li>
               <Link legacyBehavior href="/cumrap">
                 <a>Hệ Thống Rạp</a>
               </Link>

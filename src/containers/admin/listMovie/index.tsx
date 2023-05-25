@@ -102,17 +102,17 @@ export default function Phim({}: any, props: any) {
   const handleCloseModal = () => {
     setIsModalVisible(false);
   };
-const renderStatus = (status: string | undefined) => {
-  let label = "";
-  if (status === "hot") {
-    label = "Hot";
-  } else if (status === "coming_soon") {
-    label = "Sắp Chiếu";
-  } else if (status === "now_showing") {
-    label = "Đang Chiếu";
-  }
-  return <span>{label}</span>;
-};
+  const renderStatus = (status: string | undefined) => {
+    let label = "";
+    if (status === "hot") {
+      label = "Hot";
+    } else if (status === "coming_soon") {
+      label = "Sắp Chiếu";
+    } else if (status === "now_showing") {
+      label = "Đang Chiếu";
+    }
+    return <span>{label}</span>;
+  };
   const columns: ColumnsType<AdminCore.Movie> = [
     {
       title: "ID",
@@ -212,35 +212,52 @@ const renderStatus = (status: string | undefined) => {
       </Link>
       <Modal
         className={styles.modal}
-        title={selectedMovie?.title ?? "Thông tin chi tiết"}
+        title={
+          <span className={styles.title_movie}>
+            {selectedMovie?.title ?? "Thông tin chi tiết"}
+          </span>
+        }
         visible={isModalVisible}
         onCancel={handleCloseModal}
         footer={null}
+        width={800}
       >
-        <p> Nội Dung: {selectedMovie?.description}</p>
+        <p>
+          Nội Dung: <span>{selectedMovie?.description} </span>
+        </p>
         <p>
           Ngày Khởi Chiếu:{" "}
-          {selectedMovie
-            ? moment(selectedMovie.day_start).format("DD/MM/YYYY")
-            : ""}
+          <span>
+            {selectedMovie
+              ? moment(selectedMovie.day_start).format("DD/MM/YYYY")
+              : ""}
+          </span>
         </p>
         <p>
-          Trạng Thái: {selectedMovie ? renderStatus(selectedMovie.status) : ""}
+          Trạng Thái:{" "}
+          <span>{selectedMovie ? renderStatus(selectedMovie.status) : ""}</span>
         </p>
 
-        <p>Đạo Diễn: {selectedMovie?.release_date}</p>
-        <p>Quốc Gia: {selectedMovie?.countries}</p>
         <p>
-          Thể Loại:{" "}
-          {selectedMovie
-            ? genreList.find((genre) => genre.id === selectedMovie.genres_id)
-                ?.name
-            : ""}
+          Đạo Diễn: <span> {selectedMovie?.release_date}</span>
         </p>
-        <p>Thời Lượng: {selectedMovie?.run_time} phút</p>
-        <p>Diễn Viên: {selectedMovie?.director}</p>
-
-        {/* Hiển thị nội dung modal */}
+        <p>
+          Quốc Gia: <span> {selectedMovie?.countries}</span>
+        </p>
+        <p>
+          Thể Loại: <span>
+            {selectedMovie
+              ? genreList.find((genre) => genre.id === selectedMovie.genres_id)
+                  ?.name
+              : ""}
+          </span>
+        </p>
+        <p>
+          Thời Lượng: <span>{selectedMovie?.run_time} phút </span>
+        </p>
+        <p>
+          Diễn Viên: <span> {selectedMovie?.director}</span>{" "}
+        </p>
       </Modal>
       <Table
         bordered

@@ -25,10 +25,17 @@ const editMovie = (updateData: any) => {
     updateData
   );
 };
+const searchAll = async (keyTitle: any) => {
+  const response = await axios.get(
+    `http://localhost:8888/gateway/api/v1/searcher?key=${keyTitle}`
+  );
+  return response.data;
+};
 const Movie = {
   getAll,
   createMovie,
   deleteMoive,
   editMovie,
+  searchAll,
 };
 export default Movie;

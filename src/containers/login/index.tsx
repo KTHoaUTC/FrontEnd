@@ -44,7 +44,7 @@ const AuthLogin = () => {
           response.userData.RoleId == "Nhân Viên"
         ) {
           localStorage.setItem("token", JSON.stringify(token));
-          router.push("/admin");
+          router.push("/trangchu");
           setEmailContextAdmin(email);
 
           notification.success({ message: "Đăng nhập thành công" });

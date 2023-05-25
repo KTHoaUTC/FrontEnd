@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getAllBookings = async (inputId: any) => {
   const response = await axios.get(
-    `http://localhost:8888/gateway/api/v1/get-all-booking?id=${inputId}`
+    `http://localhost:8888/gateway/api/v1/get-all-bookings?id=${inputId}`
   );
   return response.data;
 };

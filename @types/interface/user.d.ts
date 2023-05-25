@@ -111,6 +111,11 @@ declare global {
       map?: any;
       key?: string;
       updatedAt?: Date;
+      time?: string;
+      date?: string;
+      theater?: string;
+      gia_ve?: number;
+      phongchieu_id?: number;
       //   time?: string;
       //   date?: string;
       //   theater?: string;
