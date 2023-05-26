@@ -196,6 +196,10 @@
             margin: 2rem 0rem;
             text-align: center;
             align-items: center;
+
+            .img {
+                border-radius: 15px;
+            }
         }
 
         .step_content {
@@ -357,9 +361,12 @@
     width: 3rem;
 }
 
-.booked-seat {
-    background-color: red;
+.seat_button_sold {
+    background-color: red !important;
+    height: 3rem;
+    width: 3rem;
 }
+
 
 .note_seat {
     margin-top: 2rem;

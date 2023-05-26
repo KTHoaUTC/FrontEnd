@@ -10,15 +10,20 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { email, setEmail } = useContext(UserContext);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    
-    if (token && email) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [email]);
+ useEffect(() => {
+   const token = localStorage.getItem("token");
+
+   if (token && email) {
+     setIsLoggedIn(true);
+     // Lấy email từ context khi đã đăng nhập thành công
+     const { email } = useContext(UserContext);
+     setEmail(email);
+   } else {
+     setIsLoggedIn(false);
+     setEmail(""); // Đặt lại giá trị email khi không đăng nhập
+   }
+ }, [email]);
+
 
   console.log("emailheader", email);
 

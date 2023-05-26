@@ -49,7 +49,7 @@ const AddNhanVien: React.FC = () => {
       ...newData,
     });
     setCurrent(1);
-    console.log("dddd", account);
+    // console.log("dddd", account);
   };
   const handleCreateStep2 = async (newData: AdminCore.User) => {
     setAccount({
@@ -73,7 +73,7 @@ const AddNhanVien: React.FC = () => {
         });
         router.push("/listNhanVien");
       }
-      console.log("data", result.data);
+      // console.log("data", result.data);
     }
   };
 

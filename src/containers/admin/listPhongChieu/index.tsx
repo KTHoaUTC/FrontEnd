@@ -49,7 +49,7 @@ export default function PhongChieu({}: any, props: any) {
       try {
         const response = await Theater.getAll("ALL");
         setTheaterList(response.theaters);
-        console.log("dsdsdata", theaterList);
+        // console.log("dsdsdata", theaterList);
       } catch (e) {}
     })();
   }, []);

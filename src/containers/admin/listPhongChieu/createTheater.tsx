@@ -24,7 +24,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
       try {
         const response = await Theater.getAll("ALL");
         setTheaterList(response.theaters);
-        console.log("dsdsdata", theaterList);
+        // console.log("dsdsdata", theaterList);
       } catch (e) {}
     })();
   }, []);
@@ -138,7 +138,7 @@ const ModalAddRoom = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleCreate = async (newData: AdminCore.Rap) => {
     const result = await Room.creatRoom(newData);
     setListRooms([...listRooms, newData]);
-    console.log("testData", newData);
+    // console.log("testData", newData);
     onSuccess();
     setVisible(false);
   };

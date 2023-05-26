@@ -49,7 +49,7 @@ export default function ShowTime({}: any, props: any) {
           })
         )
       );
-      console.log(listTheaters);
+      // console.log(listTheaters);
     } catch (e) {
     } finally {
       setIsLoading(false);
@@ -74,7 +74,7 @@ export default function ShowTime({}: any, props: any) {
       try {
         const response = await Theater.getAll("ALL");
         setTheaterList(response.theaters);
-        console.log("dsdsdata", theaterList);
+        // console.log("dsdsdata", theaterList);
       } catch (e) {}
     })();
   }, []);

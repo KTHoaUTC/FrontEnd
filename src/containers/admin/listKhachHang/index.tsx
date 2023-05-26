@@ -41,7 +41,7 @@ export default function KhachHang({}: any, props: any) {
             })
           )
         );
-        console.log('testlsit',listUsers)
+        // console.log('testlsit',listUsers)
       } catch (e) {
       } finally {
         setIsLoading(false);

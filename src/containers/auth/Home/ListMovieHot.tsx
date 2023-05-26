@@ -77,7 +77,7 @@ const ListMovieHot: React.FC = () => {
           onChange: (page) => {
             console.log(page);
           },
-          pageSize: 6,
+          pageSize: 3,
         }}
         dataSource={filteredMovies}
         renderItem={(item: any) => (

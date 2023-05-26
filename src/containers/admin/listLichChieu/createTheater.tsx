@@ -248,7 +248,7 @@ const ModalAddShowTime = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleCreate = async (newData: AdminCore.Rap) => {
     const result = await ShowTimeApi.creatShowTime(newData);
     setListRooms([...listRooms, newData]);
-    console.log("testData", newData);
+    // console.log("testData", newData);
     onSuccess();
     setVisible(false);
   };

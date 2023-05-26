@@ -1,7 +1,7 @@
-import UserContext from "@/contexts/context";
+import UserContext, { UserProvider } from "@/contexts/context";
 import HomeFooter from "@/layouts/dashboardNonUser/Footer";
 import Header from "@/layouts/dashboardNonUser/Header";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 
 type LayoutProps = {
   children: ReactNode;
@@ -9,6 +9,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const [email, setEmail] = useState("");
+  const { setUser: setUserContext } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -18,13 +19,19 @@ const Layout = ({ children }: LayoutProps) => {
   }, [email]);
   console.log("emaillayout", email);
   return (
-    <UserContext.Provider value={{ email, setEmail }}>
+    <UserProvider
+      value={{
+        email,
+        setEmail,
+        setUser: setUserContext,
+      }}
+    >
       <div>
         <Header></Header>
         <main>{children}</main>
         <HomeFooter></HomeFooter>
       </div>
-    </UserContext.Provider>
+    </UserProvider>
   );
 };
 

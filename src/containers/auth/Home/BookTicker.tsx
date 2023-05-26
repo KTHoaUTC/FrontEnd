@@ -95,7 +95,7 @@ const BookTicker: React.FC = () => {
     (async () => {
       try {
         const response = await Seat.getAllSeat("ALL");
-        setSeatList(response.seat);
+        setSeatList(response.seats);
       } catch (e) {}
     })();
   }, []);
@@ -144,6 +144,7 @@ const BookTicker: React.FC = () => {
     phongchieu_id?: number;
     theater_id?: string | any;
     movie_id?: string | any;
+    id?:number;
   }>({
     time: "",
     date: "",
@@ -235,7 +236,6 @@ const BookTicker: React.FC = () => {
 
     console.log("step2", selectedShowtime);
   };
-  const [selectedButton, setSelectedButton] = useState<string>("");
 
   const steps = [
     {
@@ -248,7 +248,12 @@ const BookTicker: React.FC = () => {
 
           <Row className={styles.step_}>
             <Col className={styles.step_img} span={10} offset={2}>
-              <Image width={450} height={500} src={detail?.poster_url} />
+              <Image
+                className={styles.img}
+                width={450}
+                height={650}
+                src={detail?.poster_url}
+              />
             </Col>
             <Col className={styles.step_content} span={11} offset={2}>
               {detail && (
@@ -333,6 +338,7 @@ const BookTicker: React.FC = () => {
                                                     date: formattedDate,
                                                     theater: theater.name,
                                                     theater_id: theater.id,
+                                                    id: showtime.id,
                                                   })
                                                 }
                                               >
@@ -352,7 +358,6 @@ const BookTicker: React.FC = () => {
                                     color: "red",
                                   }}
                                 >
-                                  {" "}
                                   Không có suất chiếu nào
                                 </p>
                               )}
@@ -399,21 +404,38 @@ const BookTicker: React.FC = () => {
                       <img style={{ width: "100%" }} src="/gggg.jpg"></img>
                     </p>
                     <h2>Phòng: {tenPhongChieu}</h2>
-
                     <div className={styles.list_seat}>
                       {Array.from({ length: sum_seat }, (_, index) => {
                         const seatNumber = index + 1;
+                        const seat = seatList.find(
+                          (seat) => seat.row === seatNumber
+                        );
+                        const showtime = seat
+                          ? showtimeList.find(
+                              (showtime) => showtime.id === seat.showtime_id
+                            )
+                          : null;
+                        console.log("shhowwtesc", showtime);
                         const isSelected = selectedSeats.includes(seatNumber);
                         const seatClass = isSelected
                           ? styles.seat_button_selected
                           : styles.seat_button;
 
+                        const isSold =
+                          seat &&
+                          typeof seat.status === "number" &&
+                          seat.status === 1 &&
+                          seat.showtime_id === selectedShowtime.id;
+                        const seatStatusClass = isSold
+                          ? styles.seat_button_sold
+                          : "";
+                        const isDisabled = isSold ? true : false;
                         return (
-                          <div className={styles.button_}>
+                          <div className={styles.button_} key={seatNumber}>
                             <Button
-                              key={seatNumber}
-                              className={seatClass}
+                              className={`${seatClass} ${seatStatusClass}`}
                               onClick={() => handleSeatSelection(seatNumber)}
+                              disabled={isDisabled}
                             >
                               {seatNumber}
                             </Button>
@@ -421,7 +443,6 @@ const BookTicker: React.FC = () => {
                         );
                       })}
                     </div>
-
                     <div className={styles.note_seat}>
                       <div className={styles.icon_seat}>
                         <Button className={styles.icon_seat_empty} />
@@ -441,7 +462,7 @@ const BookTicker: React.FC = () => {
                 <Col span={8}>
                   <div className={styles.col_list}>
                     <p className={`${styles.ticket_price} ${styles.blink}`}>
-                      Giá vé: {selectedShowtime.gia_ve} VND
+                      Giá vé: {selectedShowtime?.gia_ve} VND
                     </p>
                     <h2>Danh sách ghế đã chọn:</h2>
 

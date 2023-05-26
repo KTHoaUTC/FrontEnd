@@ -63,10 +63,10 @@ declare global {
     export interface Seat {
       seat_number: any;
       name?: string;
-      phongchieu_id?: any | number;
+      showtime_id?: any | number;
       seat_type_id?: any | number;
       row?: number;
-      status: ?boolean;
+      status?: boolean;
       id?: number;
       map?: any;
       key?: string;

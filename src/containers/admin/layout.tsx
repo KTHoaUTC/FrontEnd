@@ -24,7 +24,7 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
   }, [email]);
 
 
-  console.log("adminlayout", email);
+  // console.log("adminlayout", email);
   return (
     <AdminContext.Provider value={{ email, setEmail }}>
       <div>

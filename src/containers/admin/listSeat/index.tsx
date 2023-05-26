@@ -8,6 +8,7 @@ import TypeSeat from "./typeSeat";
 import Seat from "@/apis/seat";
 import Room from "@/apis/room";
 import { DeleteOutlined } from "@ant-design/icons";
+import ShowTimeApi from "@/apis/showtime";
 
 export default function ListSeat({}: any, props: any) {
   const [listSeats, setListSeats] = useState<AdminCore.Seat[] | any>([]);
@@ -23,7 +24,7 @@ export default function ListSeat({}: any, props: any) {
       const seats =
         response.seats?.map((seat: any) => ({
           seat_type_id: seat.seat_type_id,
-          phongchieu_id: seat.phongchieu_id,
+          showtime_id: seat.showtime_id,
           row: seat.row,
           key: seat.id,
           id: seat.id,
@@ -44,10 +45,22 @@ export default function ListSeat({}: any, props: any) {
       try {
         const result = await Room.getAllRooms("ALL");
         setRoomList(result.phongchieus);
-        // console.log("dsdsdfata", roomList);
+        // console.log("dsdsdfgggata", roomList);
       } catch (e) {}
     })();
   }, []);
+
+  const [showTimeList, setShowTimeList] = useState<AdminCore.ShowTime[]>([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await ShowTimeApi.getAllShowTimes("ALL");
+        setShowTimeList(result.showtimes);
+      } catch (e) {}
+    })();
+  }, []);
+
+  // console.log("dsdsdfata", showTimeList);
 
   const handleDelete = async (id: number) => {
     await Seat.deleteSeat(id);
@@ -62,19 +75,9 @@ export default function ListSeat({}: any, props: any) {
       align: "center",
     },
     {
-      title: "Phòng Chiếu",
-      dataIndex: "phongchieu_id",
-      key: "phongchieu_id",
-      align: "center",
-      render: (theaterId) => {
-        const theater = roomList.find((theater) => theater.id === theaterId);
-        return theater ? theater.name : null;
-      },
-    },
-    {
-      title: "Loại Ghế",
-      dataIndex: "seat_type_id",
-      key: "seat_type_id",
+      title: "Lịch chiếu",
+      dataIndex: "showtime_id",
+      key: "showtime_id",
       align: "center",
     },
     {

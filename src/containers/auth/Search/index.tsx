@@ -78,7 +78,7 @@ const ListMovieStop: React.FC = () => {
         <Search
           size="large"
           className={styles.search}
-          placeholder="Nhập tên bộ phim"
+          placeholder="Nhập tên bộ phim, diễn viên"
           allowClear
           onSearch={handleSearch}
           onChange={(e) => setSearchTerm(e.target.value)}
