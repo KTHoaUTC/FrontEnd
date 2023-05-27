@@ -34,7 +34,7 @@ declare global {
       trailer_url?: string;
       release_date?: string;
       status?: string;
-      director?:string;
+      director?: string;
       day_start?: Date;
       run_time?: number | any;
       id?: number;
@@ -63,10 +63,10 @@ declare global {
     export interface Seat {
       seat_number: any;
       name?: string;
-      showtime_id?: any | number |undefined;
+      showtime_id?: any | number | undefined;
       seat_type_id?: any | number;
       row?: number;
-      status?: boolean |any;
+      status?: boolean | any;
       id?: number;
       map?: any;
       key?: string;
@@ -116,6 +116,7 @@ declare global {
       theater?: string;
       gia_ve?: number;
       phongchieu_id?: number;
+      QRCode?: any;
       //   time?: string;
       //   date?: string;
       //   theater?: string;

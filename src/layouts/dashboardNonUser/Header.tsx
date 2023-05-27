@@ -9,6 +9,8 @@ const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { email, setEmail } = useContext(UserContext);
+  console.log('email', email);
+  
 
  useEffect(() => {
    const token = localStorage.getItem("token");
@@ -16,7 +18,7 @@ const Header = () => {
    if (token && email) {
      setIsLoggedIn(true);
      // Lấy email từ context khi đã đăng nhập thành công
-     const { email } = useContext(UserContext);
+    //  const { email } = useContext(UserContext);
      setEmail(email);
    } else {
      setIsLoggedIn(false);

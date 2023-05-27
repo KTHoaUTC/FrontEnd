@@ -1,13 +1,14 @@
 import AuthApi from "@/apis/login";
 import { Button, Checkbox, Col, Form, Input, Row, notification } from "antd";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie, setCookies } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
 import { EditOutlined } from "@ant-design/icons";
 import UserContext from "@/contexts/context";
 import AdminContext from "@/contexts/authContex";
+// import { setCookie, getCookie } from "cookies-next";
 
 const AuthLogin = () => {
   const router = useRouter();
@@ -15,12 +16,18 @@ const AuthLogin = () => {
   const [email, setEmail] = useState("");
   const [pass_word, setPassword] = useState("");
   const { setEmail: setEmailContext } = useContext(UserContext);
-  const { setEmail: setEmailContextAdmin } = useContext(AdminContext);
-
+  // const { setEmail: setEmailContextAdmin } = useContext(AdminContext);
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
   const handleSubmit = async () => {
     try {
       const response = await AuthApi.signIn({ input: { email, pass_word } });
       const token = response.token;
+      console.log("hahaha", token);
 
       if (response.errCode === 3) {
         setErrorMessage("Sai mật khẩu. Vui lòng nhập lại!");
@@ -37,23 +44,24 @@ const AuthLogin = () => {
       localStorage.setItem("token", token);
 
       setCookie("token", token, { path: "/login" });
-      console.log("token", token);
+      // console.log("token", token);
       if (response.errCode === 0) {
         if (
           response.userData.RoleId == "admin" ||
           response.userData.RoleId == "Nhân Viên"
         ) {
-          localStorage.setItem("token", JSON.stringify(token));
+          setCookies("token", JSON.stringify(token));
           router.push("/trangchu");
-          setEmailContextAdmin(email);
+          setEmailContext(email);
 
           notification.success({ message: "Đăng nhập thành công" });
         } else {
-          localStorage.setItem("token", JSON.stringify(token));
+          setCookies("token", JSON.stringify(token));
           router.push("/auth");
           setEmailContext(email);
           notification.success({ message: "Đăng nhập thành công" });
         }
+        localStorage.setItem("email", email);
       }
     } catch (error) {
       console.error(error);

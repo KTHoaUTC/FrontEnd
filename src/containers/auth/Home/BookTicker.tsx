@@ -177,25 +177,6 @@ const BookTicker: React.FC = () => {
     }
     setCurrent(1);
   };
-
-  // const handleSeatSelection = (seatNumber: number) => {
-  //   if (selectedSeats.includes(seatNumber)) {
-  //     setSelectedSeats((prevSeats) =>
-  //       prevSeats.filter((seat) => seat !== seatNumber)
-  //     );
-  //     setTotalPrice((prevPrice) => {
-  //       const updatedPrice = selectedShowtime?.gia_ve ?? 0;
-  //       return prevPrice - updatedPrice;
-  //     });
-  //   } else {
-  //     setSelectedSeats((prevSeats) => [...prevSeats, seatNumber]);
-  //     setTotalPrice((prevPrice) => {
-  //       const updatedPrice = selectedShowtime?.gia_ve ?? 0;
-  //       return prevPrice + updatedPrice;
-  //     });
-  //   }
-  // };
-  const [seatId, setSeatId] = useState("");
   const handleSeatSelection = (seatNumber: number) => {
     if (selectedSeats.includes(seatNumber)) {
       setSelectedSeats((prevSeats) =>
@@ -215,7 +196,7 @@ const BookTicker: React.FC = () => {
       const newSeatData = {
         showtime_id: selectedShowtime?.id,
         row: seatNumber,
-        seat_number: seatNumber, // Add the seat_number property
+        seat_number: seatNumber,
         status: 1,
       };
 
@@ -247,37 +228,14 @@ const BookTicker: React.FC = () => {
   const sum_seat = selectedRoom ? selectedRoom.sum_seat : "";
 
   const seatString = selectedSeats.join(", ");
-  // const editSeat = (seatId: string, newStatus: any) => {
-  //   const updateData = {
-  //     id: seatId,
-  //     status: newStatus,
-  //   };
 
-  //   return axios.put(
-  //     "http://localhost:8888/gateway/api/v1/edit-seat",
-  //     updateData
-  //   );
-  // };
   const hanledBookStep2 = async (newData: AdminCore.Booking) => {
     setSelectedShowtime((prevShowtime) => ({
       ...prevShowtime,
       total_price: total_price,
       selectedSeats: selectedSeats,
     }));
-
-    // Cập nhật trạng thái của từng ghế thành 1
-
-    // const updateSeats = selectedSeats.map((seatId) =>
-    //   editSeat(seatId.toString(), 1)
-    // );
-    // Promise.all(updateSeats)
-    //   .then((responses) => {
-    //     console.log("Seat status updated successfully:", responses);
-    //     setCurrent(2); // Proceed with the next steps
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error updating seat status:", error);
-    //   });
+    setCurrent(2);
   };
 
   const hanledBookStep3 = async (newData: AdminCore.Booking) => {
@@ -286,6 +244,7 @@ const BookTicker: React.FC = () => {
       total_price: total_price,
       selectedSeats: selectedSeats,
       phongchieu_id: selectedRoom?.id,
+      email: email,
     }));
     try {
       const result = await Booking.creatBooking(selectedShowtime);
@@ -301,8 +260,10 @@ const BookTicker: React.FC = () => {
       room: tenPhongChieu,
       seats: seatString,
       totalPrice: total_price,
+      email: email,
     });
     setQRCodeData(qrCodeData);
+    console.log("step2", selectedShowtime);
 
     console.log("step2", selectedShowtime);
   };
@@ -480,12 +441,6 @@ const BookTicker: React.FC = () => {
                         const seat = seatList.find(
                           (seat) => seat.row === seatNumber
                         );
-                        const showtime = seat
-                          ? showtimeList.find(
-                              (showtime) => showtime.id === seat.showtime_id
-                            )
-                          : null;
-                        // console.log("shhowwtesc", showtime);
                         const isSelected = selectedSeats.includes(seatNumber);
                         const seatClass = isSelected
                           ? styles.seat_button_selected
@@ -644,7 +599,9 @@ const BookTicker: React.FC = () => {
             <QRCode className={styles.qrcode_text} value={qrCodeData} />
 
             <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
-            <p>Xem Lịch Sử</p>
+            <p>
+              <a href="#">Xem Lịch Sử</a>
+            </p>
           </div>
         </div>
       ),
