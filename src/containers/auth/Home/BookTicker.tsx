@@ -23,6 +23,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Booking from "@/apis/booking";
 import QRCode from "qrcode.react";
+import axios from "axios";
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
@@ -144,12 +145,14 @@ const BookTicker: React.FC = () => {
     phongchieu_id?: number;
     theater_id?: string | any;
     movie_id?: string | any;
-    id?:number;
+    id?: number;
+    seat_type_id?: number;
   }>({
     time: "",
     date: "",
     theater: "",
     gia_ve: 0,
+    seat_type_id: 1,
   });
 
   const hanledBookStep1 = async (newData: AdminCore.Booking) => {
@@ -175,6 +178,24 @@ const BookTicker: React.FC = () => {
     setCurrent(1);
   };
 
+  // const handleSeatSelection = (seatNumber: number) => {
+  //   if (selectedSeats.includes(seatNumber)) {
+  //     setSelectedSeats((prevSeats) =>
+  //       prevSeats.filter((seat) => seat !== seatNumber)
+  //     );
+  //     setTotalPrice((prevPrice) => {
+  //       const updatedPrice = selectedShowtime?.gia_ve ?? 0;
+  //       return prevPrice - updatedPrice;
+  //     });
+  //   } else {
+  //     setSelectedSeats((prevSeats) => [...prevSeats, seatNumber]);
+  //     setTotalPrice((prevPrice) => {
+  //       const updatedPrice = selectedShowtime?.gia_ve ?? 0;
+  //       return prevPrice + updatedPrice;
+  //     });
+  //   }
+  // };
+  const [seatId, setSeatId] = useState("");
   const handleSeatSelection = (seatNumber: number) => {
     if (selectedSeats.includes(seatNumber)) {
       setSelectedSeats((prevSeats) =>
@@ -190,7 +211,33 @@ const BookTicker: React.FC = () => {
         const updatedPrice = selectedShowtime?.gia_ve ?? 0;
         return prevPrice + updatedPrice;
       });
+
+      const newSeatData = {
+        showtime_id: selectedShowtime?.id,
+        row: seatNumber,
+        seat_number: seatNumber, // Add the seat_number property
+        status: 1,
+      };
+
+      creatSeat(newSeatData)
+        .then((response) => {
+          console.log("Seat added successfully:", response.data.seat);
+          // // const seatId = response.data.seat;
+          // setSeatId(seatId);
+          // console.log('idSeat', seatId)
+        })
+        .catch((error) => {
+          console.error("Error adding seat:", error);
+        });
+      // console.log("seatrrr", newSeatData);
     }
+  };
+
+  const creatSeat = (newData: AdminCore.Seat) => {
+    return axios.post(
+      "http://localhost:8888/gateway/api/v1/create-seat",
+      newData
+    );
   };
 
   const selectedRoom = roomList.find(
@@ -200,14 +247,37 @@ const BookTicker: React.FC = () => {
   const sum_seat = selectedRoom ? selectedRoom.sum_seat : "";
 
   const seatString = selectedSeats.join(", ");
+  // const editSeat = (seatId: string, newStatus: any) => {
+  //   const updateData = {
+  //     id: seatId,
+  //     status: newStatus,
+  //   };
 
+  //   return axios.put(
+  //     "http://localhost:8888/gateway/api/v1/edit-seat",
+  //     updateData
+  //   );
+  // };
   const hanledBookStep2 = async (newData: AdminCore.Booking) => {
     setSelectedShowtime((prevShowtime) => ({
       ...prevShowtime,
       total_price: total_price,
       selectedSeats: selectedSeats,
     }));
-    setCurrent(2);
+
+    // Cập nhật trạng thái của từng ghế thành 1
+
+    // const updateSeats = selectedSeats.map((seatId) =>
+    //   editSeat(seatId.toString(), 1)
+    // );
+    // Promise.all(updateSeats)
+    //   .then((responses) => {
+    //     console.log("Seat status updated successfully:", responses);
+    //     setCurrent(2); // Proceed with the next steps
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error updating seat status:", error);
+    //   });
   };
 
   const hanledBookStep3 = async (newData: AdminCore.Booking) => {
@@ -415,7 +485,7 @@ const BookTicker: React.FC = () => {
                               (showtime) => showtime.id === seat.showtime_id
                             )
                           : null;
-                        console.log("shhowwtesc", showtime);
+                        // console.log("shhowwtesc", showtime);
                         const isSelected = selectedSeats.includes(seatNumber);
                         const seatClass = isSelected
                           ? styles.seat_button_selected

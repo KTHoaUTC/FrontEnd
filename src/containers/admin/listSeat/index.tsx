@@ -98,7 +98,7 @@ export default function ListSeat({}: any, props: any) {
           </Tag>
         ) : (
           <Tag style={{ padding: "0 1rem" }} color="#2db7f5">
-            Chưa bán
+            Đang chọn
           </Tag>
         );
       },
@@ -138,7 +138,7 @@ export default function ListSeat({}: any, props: any) {
   return (
     <>
       <h1 className={styles.title}> Danh Sách Ghế</h1>
-      <TypeSeat></TypeSeat>
+      {/* <TypeSeat></TypeSeat> */}
 
       <Table
         bordered

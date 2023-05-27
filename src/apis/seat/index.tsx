@@ -14,7 +14,7 @@ const getAllSeat = async (seatId: any) => {
   return response.data;
 };
 
-const creatGenre = (newData: AdminCore.Seat) => {
+const creatSeat = (newData: AdminCore.Seat) => {
   return axios.post(
     "http://localhost:8888/gateway/api/v1/create-genre",
     newData
@@ -27,17 +27,22 @@ const deleteSeat = (genreId: any) => {
     },
   });
 };
-const editGenre = (updateData: any) => {
+const editSeat = (seatId: string, newStatus: number) => {
+  const updateData = {
+    id: seatId,
+    status: newStatus,
+  };
+
   return axios.put(
-    "http://localhost:8888/gateway/api/v1/edit-genre",
+    "http://localhost:8888/gateway/api/v1/edit-seat",
     updateData
   );
 };
 const Seat = {
   getAllTypeseat,
   getAllSeat,
-  creatGenre,
+  creatSeat,
   deleteSeat,
-  editGenre,
+  editSeat,
 };
 export default Seat;
