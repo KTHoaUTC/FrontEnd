@@ -8,20 +8,25 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
+  // const [id, setId] = useState<string | null>(null);
   const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
+
   const { setUser: setUserContext } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token && email) {
-      setEmail(email);
+    if (token && id) {
+      setId(id);
     }
-  }, [email]);
-  console.log("emaillayout", email);
+  }, [id]);
   return (
     <UserProvider
       value={{
+        id,
         email,
+        setId,
+
         setEmail,
         setUser: setUserContext,
       }}

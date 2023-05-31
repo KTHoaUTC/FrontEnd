@@ -1,34 +1,52 @@
-import AuthContext from "@/contexts/authContex";
 import { Button, Col, Input, Row } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import UserContext from "@/contexts/context";
+import User from "@/apis/auth";
 
 const { Search } = Input;
 const onSearch = (value: string) => console.log(value);
 const HeaderLoginAuth = () => {
   const router = useRouter();
-  // const email = router.query.email;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { email, setEmail } = useContext(UserContext);
-  // console.log("email", email);
+  const { id, setId } = useContext(UserContext);
+  const [detail, setListUsers] = useState<AdminCore.User[] | any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  console.log("]id", id);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && email) {
+    (async () => {
+      try {
+        const response = await User.getAll(id);
+        setListUsers(response.users);
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
+  console.log("detail", detail);
+
+  useEffect(() => {
+    const isLoggedInStorage = localStorage.getItem("isLoggedIn");
+    const storedId = localStorage.getItem("id");
+    if (isLoggedInStorage === "true" && storedId) {
       setIsLoggedIn(true);
+      if (!id) {
+        setId(storedId);
+      }
     } else {
       setIsLoggedIn(false);
+      setId("");
     }
-    console.log("token", token);
-  }, [email]);
-  console.log("emailadmin", email);
+  }, [id, setId]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setEmail(""); // Reset the email value in the context
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("id");
+    setId("");
 
     router.push("/login");
   };
@@ -51,7 +69,10 @@ const HeaderLoginAuth = () => {
           {isLoggedIn ? (
             <Row className={styles.row}>
               <Col span={17}>
-                <p style={{ fontSize: "1.2rem" }}>Xin Chào {email}</p>
+                <p style={{ fontSize: "1.2rem" }}>
+                  {" "}
+                  Xin Chào {detail?.last_name} {detail?.first_name}
+                </p>
               </Col>
               <Col span={7}>
                 <Link href={"/login"}>
@@ -66,9 +87,7 @@ const HeaderLoginAuth = () => {
             </Row>
           ) : (
             <Row className={styles.row}>
-              <Col span={17}>
-                {/* <p style={{ fontSize: "1.2rem" }}>Bạn cần đăng nhập</p> */}
-              </Col>
+              <Col span={17}></Col>
               <Col span={7}>
                 <Link href={"/login"}>
                   <Button className={styles.btn_login_auth}>Đăng Nhập</Button>

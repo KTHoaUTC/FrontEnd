@@ -1,13 +1,12 @@
 import AuthApi from "@/apis/login";
+import UserContext from "@/contexts/context";
+import { EditOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Col, Form, Input, Row, notification } from "antd";
-import { getCookie, setCookie, setCookies } from "cookies-next";
+import { setCookie, setCookies } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import { EditOutlined } from "@ant-design/icons";
-import UserContext from "@/contexts/context";
-import AdminContext from "@/contexts/authContex";
 // import { setCookie, getCookie } from "cookies-next";
 
 const AuthLogin = () => {
@@ -16,7 +15,8 @@ const AuthLogin = () => {
   const [email, setEmail] = useState("");
   const [pass_word, setPassword] = useState("");
   const { setEmail: setEmailContext } = useContext(UserContext);
-  // const { setEmail: setEmailContextAdmin } = useContext(AdminContext);
+  const { setId: setIdContext } = useContext(UserContext);
+
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     if (storedEmail) {
@@ -44,7 +44,6 @@ const AuthLogin = () => {
       localStorage.setItem("token", token);
 
       setCookie("token", token, { path: "/login" });
-      // console.log("token", token);
       if (response.errCode === 0) {
         if (
           response.userData.RoleId == "admin" ||
@@ -52,13 +51,24 @@ const AuthLogin = () => {
         ) {
           setCookies("token", JSON.stringify(token));
           router.push("/trangchu");
-          setEmailContext(email);
+          setEmailContext(response.userData.id);
+          console.log("idlogin", response.userData.id);
+          // setEmailContext(response.userData.email);
+          localStorage.setItem("id", response.userData.id); // Save the id to localStorage
+          setIdContext(response.userData.id);
+
+          localStorage.setItem("isLoggedIn", "true");
 
           notification.success({ message: "Đăng nhập thành công" });
         } else {
           setCookies("token", JSON.stringify(token));
           router.push("/auth");
-          setEmailContext(email);
+          // console.log("idlogin", response.userData.id);
+          // setEmailContext(response.userData.id);
+          localStorage.setItem("id", response.userData.id); // Save the id to localStorage
+          setIdContext(response.userData.id);
+          localStorage.setItem("isLoggedIn", "true");
+
           notification.success({ message: "Đăng nhập thành công" });
         }
         localStorage.setItem("email", email);

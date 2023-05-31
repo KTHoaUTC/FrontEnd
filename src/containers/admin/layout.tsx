@@ -1,7 +1,7 @@
-import AdminContext from "@/contexts/authContex";
+import UserContext, { UserProvider } from "@/contexts/context";
 import HeaderLoginAuth from "@/layouts/dashboard/header";
 import { Layout, theme } from "antd";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import SiderAdmin from "./sider";
 type LayoutProps = {
   children: ReactNode;
@@ -15,6 +15,9 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
   } = theme.useToken();
 
   const [email, setEmail] = useState("");
+    const [id, setId] = useState("");
+
+  const { setUser: setUserContext } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -23,10 +26,17 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
     }
   }, [email]);
 
-
-  // console.log("adminlayout", email);
   return (
-    <AdminContext.Provider value={{ email, setEmail }}>
+    <UserProvider
+      value={{
+        id,
+        email,
+        setId,
+
+        setEmail,
+        setUser: setUserContext,
+      }}
+    >
       <div>
         <Layout style={{ minHeight: "100vh" }}>
           <SiderAdmin></SiderAdmin>
@@ -55,7 +65,7 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
           </Layout>
         </Layout>
       </div>
-    </AdminContext.Provider>
+    </UserProvider>
   );
 };
 

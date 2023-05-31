@@ -25,10 +25,7 @@ export default function MyApp({
       <Head>
         <title>BHH Cinemas Movie</title>
       </Head>
-      {/* <SessionProvider session={session}> */}
       <Component {...pageProps} />
-      {/* </SessionProvider> */}
     </>
-    // <Component {...pageProps} />
   );
 }

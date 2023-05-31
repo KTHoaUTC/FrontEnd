@@ -20,10 +20,10 @@ const creatSeat = (newData: AdminCore.Seat) => {
     newData
   );
 };
-const deleteSeat = (genreId: any) => {
+const deleteSeat = (seatId: any) => {
   return axios.delete("http://localhost:8888/gateway/api/v1/delete-seat", {
     data: {
-      id: genreId,
+      id: seatId,
     },
   });
 };

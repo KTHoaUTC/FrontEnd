@@ -75,7 +75,7 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
               <p className={styles.movie_title}>
                 Thể loại: <span>{getGenreName(detail.genres_id)}</span>
               </p>
-              
+
               <p className={styles.movie_title}>
                 Thời lượng: <span> {detail.run_time} phút </span>
               </p>
@@ -98,6 +98,9 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
           </Row>
           <Row>
             <p className={styles.content}>{detail.description}</p>
+          </Row>
+          <Row>
+            <p className={styles.content1}>Xem Thêm</p>
           </Row>
         </div>
       </Modal>

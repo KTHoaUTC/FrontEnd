@@ -4,37 +4,51 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import UserContext from "@/contexts/context";
+import User from "@/apis/auth";
 
 const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { email, setEmail } = useContext(UserContext);
-  console.log('email', email);
-  
+  const { id, setId } = useContext(UserContext);
+ 
 
- useEffect(() => {
-   const token = localStorage.getItem("token");
+  useEffect(() => {
+    const isLoggedInStorage = localStorage.getItem("isLoggedIn");
+    const storedId = localStorage.getItem("id");
+    if (isLoggedInStorage === "true" && storedId) {
+      setIsLoggedIn(true);
+      if (!id) {
+        setId(storedId);
+      }
+    } else {
+      setIsLoggedIn(false);
+      setId("");
+    }
+  }, [id, setId]);
+ const [detail, setListUsers] = useState<AdminCore.User[] | any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  console.log("]id", id);
 
-   if (token && email) {
-     setIsLoggedIn(true);
-     // Lấy email từ context khi đã đăng nhập thành công
-    //  const { email } = useContext(UserContext);
-     setEmail(email);
-   } else {
-     setIsLoggedIn(false);
-     setEmail(""); // Đặt lại giá trị email khi không đăng nhập
-   }
- }, [email]);
-
-
-  console.log("emailheader", email);
-
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await User.getAllAuth(id);
+        setListUsers(response.users);
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
+  console.log("detail", detail);
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setEmail("");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("id");
+    setId("");
 
     router.push("/login");
   };
+
   return (
     <>
       <Row className={styles.row_header}>
@@ -60,7 +74,7 @@ const Header = () => {
             </li>
             {isLoggedIn && (
               <li>
-                <Link legacyBehavior href="/lich-su">
+                <Link legacyBehavior href="/lichsu">
                   <a>Lịch sử</a>
                 </Link>
               </li>
@@ -85,7 +99,7 @@ const Header = () => {
                       fontSize: "1.2rem",
                     }}
                   >
-                    Xin Chào {email}
+                    Xin Chào {detail?.last_name} {detail?.first_name}
                   </p>
                 </Col>
                 <Col span={9}>

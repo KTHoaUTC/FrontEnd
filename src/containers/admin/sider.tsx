@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { useRouter } from "next/router";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -123,7 +123,7 @@ const SiderAdmin: React.FC = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      <Link legacyBehavior href={"/admin/infor"}>
+      <Link legacyBehavior href={"/trangchu/infor"}>
         <div
           style={{
             height: 22,

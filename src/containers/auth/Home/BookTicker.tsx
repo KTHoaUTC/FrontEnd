@@ -177,6 +177,37 @@ const BookTicker: React.FC = () => {
     }
     setCurrent(1);
   };
+  const [selectedSeatIds, setSelectedSeatIds] = useState<string[]>([]);
+  const [lastCreatedSeatId, setLastCreatedSeatId] = useState<string | null>(
+    null
+  );
+  const [deletionCountdown, setDeletionCountdown] = useState(60); // Giá trị ban đầu là 60 giây
+  useEffect(() => {
+    let timer: any = null;
+
+    if (deletionCountdown > 0) {
+      timer = setTimeout(() => {
+        setDeletionCountdown((prevCountdown) => prevCountdown - 1);
+      }, 3000); // Mỗi 1 giây (1000 milliseconds) giảm giá trị biến đếm ngược đi 1 đơn vị
+    }
+
+    return () => clearTimeout(timer);
+  }, [deletionCountdown]);
+  const scheduleSeatDeletion = (seatId: string) => {
+    setTimeout(() => {
+      deleteSeat(seatId)
+        .then(() => {
+          console.log("Deleted seat:", seatId);
+          setSelectedSeatIds((prevIds) =>
+            prevIds.filter((id) => id !== seatId)
+          );
+        })
+        .catch((error) => {
+          console.error("Error deleting seat:", error);
+        });
+    }, 3 * 60 * 1000); // 10 minutes in milliseconds
+  };
+
   const handleSeatSelection = (seatNumber: number) => {
     if (selectedSeats.includes(seatNumber)) {
       setSelectedSeats((prevSeats) =>
@@ -186,6 +217,19 @@ const BookTicker: React.FC = () => {
         const updatedPrice = selectedShowtime?.gia_ve ?? 0;
         return prevPrice - updatedPrice;
       });
+      if (lastCreatedSeatId !== null) {
+        deleteSeat(lastCreatedSeatId)
+          .then(() => {
+            setSelectedSeatIds((prevIds) =>
+              prevIds.filter((id) => id !== lastCreatedSeatId)
+            );
+            console.log("Deleted seat:", lastCreatedSeatId);
+            setLastCreatedSeatId(null);
+          })
+          .catch((error) => {
+            console.error("Error deleting seat:", error);
+          });
+      }
     } else {
       setSelectedSeats((prevSeats) => [...prevSeats, seatNumber]);
       setTotalPrice((prevPrice) => {
@@ -197,27 +241,43 @@ const BookTicker: React.FC = () => {
         showtime_id: selectedShowtime?.id,
         row: seatNumber,
         seat_number: seatNumber,
-        status: 1,
+        status: 0,
       };
-
       creatSeat(newSeatData)
         .then((response) => {
-          console.log("Seat added successfully:", response.data.seat);
-          // // const seatId = response.data.seat;
-          // setSeatId(seatId);
-          // console.log('idSeat', seatId)
+          const result = response.data.seat;
+          setSelectedSeatIds((prevIds) => [...prevIds, result]);
+          setLastCreatedSeatId(result);
+
+          console.log("idseat", result);
+          scheduleSeatDeletion(result);
         })
-        .catch((error) => {
-          console.error("Error adding seat:", error);
-        });
-      // console.log("seatrrr", newSeatData);
+        .catch((error) => {});
     }
   };
-
+  const deleteSeat = (seatId: any) => {
+    return axios.delete("http://localhost:8888/gateway/api/v1/delete-seat", {
+      data: {
+        id: seatId,
+      },
+    });
+  };
   const creatSeat = (newData: AdminCore.Seat) => {
     return axios.post(
       "http://localhost:8888/gateway/api/v1/create-seat",
       newData
+    );
+  };
+
+  const editSeat = (seatId: string, newStatus: number) => {
+    const updateData = {
+      id: seatId,
+      status: newStatus,
+    };
+
+    return axios.put(
+      "http://localhost:8888/gateway/api/v1/edit-seat",
+      updateData
     );
   };
 
@@ -264,6 +324,16 @@ const BookTicker: React.FC = () => {
     });
     setQRCodeData(qrCodeData);
     console.log("step2", selectedShowtime);
+    const editSeatPromises = selectedSeatIds.map((seatId) =>
+      editSeat(seatId, 1)
+    );
+
+    try {
+      await Promise.all(editSeatPromises);
+      console.log("Seats updated successfully");
+    } catch (error) {
+      console.error("Error updating seats:", error);
+    }
 
     console.log("step2", selectedShowtime);
   };
@@ -434,6 +504,8 @@ const BookTicker: React.FC = () => {
                     <p className={`${styles.img} ${styles.blink}`}>
                       <img style={{ width: "100%" }} src="/gggg.jpg"></img>
                     </p>
+                    {/* <div>Time remaining: {deletionCountdown} seconds</div> */}
+
                     <h2>Phòng: {tenPhongChieu}</h2>
                     <div className={styles.list_seat}>
                       {Array.from({ length: sum_seat }, (_, index) => {
