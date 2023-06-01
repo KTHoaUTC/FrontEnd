@@ -1,24 +1,24 @@
 import User from "@/apis/auth";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import Booking from "@/apis/booking";
+import Movie from "@/apis/movie";
+import Theater from "@/apis/rap";
+import { Skeleton, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import Link from "next/link";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import Booking from "@/apis/booking";
-import Theater from "@/apis/rap";
 
 export default function ListBooking({}: any, props: any) {
-  const [listUsers, setListUsers] = useState<AdminCore.User[] | any>([]);
+  const [listBooking, setBooking] = useState<AdminCore.Booking[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         const response = await Booking.getAllBookings("ALL");
-        setListUsers(
+        setBooking(
           response.bookings?.map(
-            (account: {
+            (booking: {
               movie_id?: any | number;
               theater_id?: any | number;
               show_time_id?: any | number;
@@ -37,18 +37,22 @@ export default function ListBooking({}: any, props: any) {
               theater?: string;
               gia_ve?: number;
               phongchieu_id?: number;
+              createdAt?: Date;
             }) => ({
-              key: account.id,
-              id: account.id,
-              total_price: account.total_price,
-              booking_status: account.booking_status,
-              theater: account.theater,
-              theater_id: account.theater_id,
-              phongchieu_id: account.phongchieu_id,
+              key: booking.id,
+              id: booking.id,
+              user_id: booking.user_id,
+              movie_id: booking.movie_id,
+              total_price: booking.total_price,
+              booking_status: booking.booking_status,
+              theater: booking.theater,
+              theater_id: booking.theater_id,
+              phongchieu_id: booking.phongchieu_id,
+              createdAt:booking.createdAt,
             })
           )
         );
-        // console.log("testlsit", listUsers);
+        console.log("testlsit", listUsers);
       } catch (e) {
       } finally {
         setIsLoading(false);
@@ -71,6 +75,38 @@ export default function ListBooking({}: any, props: any) {
     }
   };
 
+
+  const [listUsers, setListUser] = useState<AdminCore.User[] | any>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await User.getAllAuth("ALL");
+        setListUser(response.users);
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
+    const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
+
+    useEffect(() => {
+      (async () => {
+        try {
+          const response = await Movie.getAll("ALL");
+          setListMovies(response.movies);
+        } catch (e) {
+        } finally {
+          setIsLoading(false);
+        }
+      })();
+    }, []);
+
+
+  const formattedDate = (date: Date) => {
+    return moment(date).format("DD/MM/YYYY");
+  };
   const columns: ColumnsType<AdminCore.Booking> = [
     {
       title: "ID",
@@ -80,9 +116,23 @@ export default function ListBooking({}: any, props: any) {
     },
     {
       title: "Email",
-      dataIndex: "Email",
-      key: "Email",
+      dataIndex: "user_id",
+      key: "user_id",
       align: "center",
+      render: (usersId) => {
+        const emailUser = listUsers.find((user: any) => user.id === usersId);
+        return emailUser ? emailUser.email : null;
+      },
+    },
+    {
+      title: "Phim",
+      dataIndex: "movie_id",
+      key: "movie_id",
+      align: "center",
+      render: (moviesId) => {
+        const nameMovie = listMovies.find((user: any) => user.id === moviesId);
+        return nameMovie ? nameMovie.title : null;
+      },
     },
     {
       title: "Rạp",
@@ -90,7 +140,7 @@ export default function ListBooking({}: any, props: any) {
       key: "theater_id",
       render: (theaterId) => {
         const theater = listTheaters.find(
-          (theater:any) => theater.id === theaterId
+          (theater: any) => theater.id === theaterId
         );
         return theater ? theater.name : null;
       },
@@ -100,6 +150,14 @@ export default function ListBooking({}: any, props: any) {
       title: "Tổng Tiền",
       dataIndex: "total_price",
       key: "total_price",
+      align: "center",
+    },
+    {
+      title: "Ngày lập hóa đơn",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      align: "center",
+      render: (date: Date) => formattedDate(date),
     },
   ];
   if (isLoading) {
@@ -113,7 +171,7 @@ export default function ListBooking({}: any, props: any) {
         bordered
         className={styles.table_list}
         columns={columns}
-        dataSource={listUsers}
+        dataSource={listBooking}
       />
     </>
   );

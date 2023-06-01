@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^5.0.1",
     "@types/leaflet": "^1.9.3",
     "@types/node": "20.1.4",
@@ -42,6 +43,7 @@
     "video-react": "^0.16.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
     "@types/video-react": "^0.15.1"
   }
 }

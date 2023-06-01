@@ -5,6 +5,8 @@ import Seat from "@/apis/seat";
 import ShowTimeApi from "@/apis/showtime";
 import UserContext from "@/contexts/context";
 import { LeftOutlined } from "@ant-design/icons";
+import Link from "next/link";
+
 import {
   Button,
   Col,
@@ -17,13 +19,13 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Booking from "@/apis/booking";
 import QRCode from "qrcode.react";
 import axios from "axios";
+import User from "@/apis/auth";
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
@@ -33,19 +35,35 @@ const BookTicker: React.FC = () => {
   const [qrCodeData, setQRCodeData] = useState("");
 
   const router = useRouter();
-  const { email, setEmail } = useContext(UserContext);
-  console.log("bookemail", email);
-  const id = router.query.id as string;
+  const { id, setId } = useContext(UserContext);
+
+  const [detailUser, setListUsers] = useState<AdminCore.User[] | any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  // console.log("iduser", id);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await User.getAllAuth(id);
+        setListUsers(response.users);
+      } catch (e) {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
+  // console.log("detail", detailUser);
+
+  const idMovie = router.query.id as string;
   const [accountId, setAccountId] = useState<string>("");
   const [detail, setDetail] = useState<AdminCore.Movie>();
 
   useEffect(() => {
     if (router.query) {
-      setAccountId(id);
+      setAccountId(idMovie);
     }
-  }, [router, id]);
+  }, [router, idMovie]);
 
-  const [isLoading, setIsLoading] = useState(true);
   //movie detail
 
   //lich chieu
@@ -58,7 +76,7 @@ const BookTicker: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
-  console.log("showtime", showtimeList);
+  // console.log("showtime", showtimeList);
   //
 
   //rap chieu
@@ -88,7 +106,7 @@ const BookTicker: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
-  console.log("room", roomList);
+  // console.log("room", roomList);
 
   //ghe
   const [seatList, setSeatList] = useState<AdminCore.Seat[]>([]);
@@ -100,7 +118,7 @@ const BookTicker: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
-  console.log("seat", seatList);
+  // console.log("seat", seatList);
 
   useEffect(() => {
     (async () => {
@@ -143,6 +161,7 @@ const BookTicker: React.FC = () => {
     theater?: string;
     gia_ve?: number;
     phongchieu_id?: number;
+    user_id?: string | any;
     theater_id?: string | any;
     movie_id?: string | any;
     id?: number;
@@ -178,35 +197,35 @@ const BookTicker: React.FC = () => {
     setCurrent(1);
   };
   const [selectedSeatIds, setSelectedSeatIds] = useState<string[]>([]);
-  const [lastCreatedSeatId, setLastCreatedSeatId] = useState<string | null>(
-    null
-  );
-  const [deletionCountdown, setDeletionCountdown] = useState(60); // Giá trị ban đầu là 60 giây
-  useEffect(() => {
-    let timer: any = null;
+  // const [lastCreatedSeatId, setLastCreatedSeatId] = useState<string | null>(
+  //   null
+  // );
+  // const [deletionCountdown, setDeletionCountdown] = useState(60); // Giá trị ban đầu là 60 giây
+  // useEffect(() => {
+  //   let timer: any = null;
 
-    if (deletionCountdown > 0) {
-      timer = setTimeout(() => {
-        setDeletionCountdown((prevCountdown) => prevCountdown - 1);
-      }, 3000); // Mỗi 1 giây (1000 milliseconds) giảm giá trị biến đếm ngược đi 1 đơn vị
-    }
+  //   if (deletionCountdown > 0) {
+  //     timer = setTimeout(() => {
+  //       setDeletionCountdown((prevCountdown) => prevCountdown - 1);
+  //     }, 3000); // Mỗi 1 giây (1000 milliseconds) giảm giá trị biến đếm ngược đi 1 đơn vị
+  //   }
 
-    return () => clearTimeout(timer);
-  }, [deletionCountdown]);
-  const scheduleSeatDeletion = (seatId: string) => {
-    setTimeout(() => {
-      deleteSeat(seatId)
-        .then(() => {
-          console.log("Deleted seat:", seatId);
-          setSelectedSeatIds((prevIds) =>
-            prevIds.filter((id) => id !== seatId)
-          );
-        })
-        .catch((error) => {
-          console.error("Error deleting seat:", error);
-        });
-    }, 3 * 60 * 1000); // 10 minutes in milliseconds
-  };
+  //   return () => clearTimeout(timer);
+  // }, [deletionCountdown]);
+  // const scheduleSeatDeletion = (seatId: string) => {
+  //   setTimeout(() => {
+  //     deleteSeat(seatId)
+  //       .then(() => {
+  //         console.log("Deleted seat:", seatId);
+  //         setSelectedSeatIds((prevIds) =>
+  //           prevIds.filter((id) => id !== seatId)
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error deleting seat:", error);
+  //       });
+  //   }, 3 * 60 * 1000); // 10 minutes in milliseconds
+  // };
 
   const handleSeatSelection = (seatNumber: number) => {
     if (selectedSeats.includes(seatNumber)) {
@@ -217,19 +236,19 @@ const BookTicker: React.FC = () => {
         const updatedPrice = selectedShowtime?.gia_ve ?? 0;
         return prevPrice - updatedPrice;
       });
-      if (lastCreatedSeatId !== null) {
-        deleteSeat(lastCreatedSeatId)
-          .then(() => {
-            setSelectedSeatIds((prevIds) =>
-              prevIds.filter((id) => id !== lastCreatedSeatId)
-            );
-            console.log("Deleted seat:", lastCreatedSeatId);
-            setLastCreatedSeatId(null);
-          })
-          .catch((error) => {
-            console.error("Error deleting seat:", error);
-          });
-      }
+      // if (lastCreatedSeatId !== null) {
+      //   deleteSeat(lastCreatedSeatId)
+      //     .then(() => {
+      //       setSelectedSeatIds((prevIds) =>
+      //         prevIds.filter((id) => id !== lastCreatedSeatId)
+      //       );
+      //       console.log("Deleted seat:", lastCreatedSeatId);
+      //       setLastCreatedSeatId(null);
+      //     })
+      //     .catch((error) => {
+      //       console.error("Error deleting seat:", error);
+      //     });
+      // }
     } else {
       setSelectedSeats((prevSeats) => [...prevSeats, seatNumber]);
       setTotalPrice((prevPrice) => {
@@ -247,10 +266,10 @@ const BookTicker: React.FC = () => {
         .then((response) => {
           const result = response.data.seat;
           setSelectedSeatIds((prevIds) => [...prevIds, result]);
-          setLastCreatedSeatId(result);
+          // setLastCreatedSeatId(result);
 
           console.log("idseat", result);
-          scheduleSeatDeletion(result);
+          // scheduleSeatDeletion(result);
         })
         .catch((error) => {});
     }
@@ -294,6 +313,10 @@ const BookTicker: React.FC = () => {
       ...prevShowtime,
       total_price: total_price,
       selectedSeats: selectedSeats,
+      user_id: detailUser?.id,
+      movie_id: detail?.id,
+      date: selectedShowtime.date,
+      time: selectedShowtime.time,
     }));
     setCurrent(2);
   };
@@ -304,14 +327,21 @@ const BookTicker: React.FC = () => {
       total_price: total_price,
       selectedSeats: selectedSeats,
       phongchieu_id: selectedRoom?.id,
-      email: email,
+      user_id: detailUser?.id,
+      movie_id: detail?.id,
+       date: selectedShowtime.date,
+      time: selectedShowtime.time,
+
     }));
+
     try {
       const result = await Booking.creatBooking(selectedShowtime);
-      setCurrent(3);
+      // console.log("idtestttt", detailUser.id);
+      setCurrent(3);    
     } catch (error) {
       console.error("Error booking:", error);
     }
+
     const qrCodeData = JSON.stringify({
       title: detail?.title,
       theater: selectedShowtime.theater,
@@ -320,7 +350,7 @@ const BookTicker: React.FC = () => {
       room: tenPhongChieu,
       seats: seatString,
       totalPrice: total_price,
-      email: email,
+      user_id: detailUser?.id,
     });
     setQRCodeData(qrCodeData);
     console.log("step2", selectedShowtime);
@@ -633,8 +663,8 @@ const BookTicker: React.FC = () => {
             <Col span={12}>
               <div className={styles.title}> Thông Tin Cá Nhân</div>
               <div>
-                <p> Email {email}</p>
-                <p>Phone: 339242 </p>
+                <p> Email: {detailUser?.email}</p>
+                <p>Phone: {detailUser?.phone_number} </p>
               </div>
             </Col>
           </Row>
@@ -671,9 +701,9 @@ const BookTicker: React.FC = () => {
             <QRCode className={styles.qrcode_text} value={qrCodeData} />
 
             <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
-            <p>
-              <a href="#">Xem Lịch Sử</a>
-            </p>
+            <Link href={"/lichsu"}>
+              <p className={styles.history}> Xem Lịch Sử</p>
+            </Link>
           </div>
         </div>
       ),

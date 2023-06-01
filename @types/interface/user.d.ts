@@ -117,6 +117,7 @@ declare global {
       gia_ve?: number;
       phongchieu_id?: number;
       QRCode?: any;
+      createdAt?:Date;
       //   time?: string;
       //   date?: string;
       //   theater?: string;

@@ -1,79 +1,99 @@
-import { Avatar, Collapse, List, Space } from "antd";
-import React, { useState } from "react";
+import Booking from "@/apis/booking";
+import UserContext from "@/contexts/context";
+import { Avatar, List } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
-const { Panel } = Collapse;
+import Movie from "@/apis/movie";
+import Theater from "@/apis/rap";
+
 const HistoryMovie: React.FC = () => {
+  const [listBooking, setBooking] = useState<AdminCore.Booking[] | any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { id } = useContext(UserContext);
 
-
-  const data = Array.from({ length: 23 }).map((_, i) => ({
-    href: "https://ant.design",
-    title: `ant design part ${i}`,
-    avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-  }));
-
-  const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
-  
+  useEffect(() => {
+    (async () => {
+      try {
+        const bookings = await Booking.getUserBookings(id);
+        setBooking(bookings);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
+  const [movieList, setMovieList] = useState<AdminCore.Movie[]>([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await Movie.getAll("ALL");
+        setMovieList(response.movies);
+        console.log("movieList", movieList);
+      } catch (e) {}
+    })();
+  }, []);
+    const [theaterList, setTheaterList] = useState<AdminCore.Room[]>([]);
+    useEffect(() => {
+      (async () => {
+        try {
+          const response = await Theater.getAll("ALL");
+          setTheaterList(response.theaters);
+          console.log("movieList", movieList);
+        } catch (e) {}
+      })();
+    }, []);
+  const getMovieName = (movieId: number) => {
+    const movie = movieList.find((movie) => movie.id === movieId);
+    return movie ? movie.title : "";
+  };
+    const getMovieImage = (movieId: number) => {
+      const movie = movieList.find((movie) => movie.id === movieId);
+      return movie ? movie.image_url : "";
+    };
+  const getTheaterName = (theaterId: number) => {
+    const theater = theaterList.find((theater) => theater.id === theaterId);
+    return theater ? theater.name : "";
+  };
   return (
     <>
       <h1 className={styles.title}>Lịch Sử Đặt Vé</h1>
-      <List
-      className={styles.list_history}
-        itemLayout="vertical"
-        size="large"
-        pagination={{
-          onChange: (page) => {
-            console.log(page);
-          },
-          pageSize: 3,
-        }}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item
-            key={item.title}
-            actions={[
-              <IconText
-                icon={StarOutlined}
-                text="156"
-                key="list-vertical-star-o"
-              />,
-              <IconText
-                icon={LikeOutlined}
-                text="156"
-                key="list-vertical-like-o"
-              />,
-              <IconText
-                icon={MessageOutlined}
-                text="2"
-                key="list-vertical-message"
-              />,
-            ]}
-            extra={
-              <img
-                width={272}
-                alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <List
+          className={styles.list}
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            onChange: (page) => {
+              console.log(page);
+            },
+            pageSize: 3,
+          }}
+          dataSource={listBooking}
+          renderItem={(booking: AdminCore.Booking) => (
+            <List.Item
+              className={styles.list_item}
+              key={booking.id}
+              extra={
+                <img
+                  width={272}
+                  alt="logo"
+                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                />
+              }
+            >
+              <List.Item.Meta
+                avatar={<Avatar src={getMovieImage(booking.movie_id)} />}
+                title={<a href="#">{getMovieName(booking.movie_id)}</a>}
+                description={<p>Rạp: {getTheaterName(booking.theater_id)}</p>}
               />
-            }
-          >
-            <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
-              description={item.description}
-            />
-            {item.content}
-          </List.Item>
-        )}
-      />
+              <p>Tổng Tiền: {booking.total_price} VND</p>
+            </List.Item>
+          )}
+        />
+      )}
     </>
   );
 };

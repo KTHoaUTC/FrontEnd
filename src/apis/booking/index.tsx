@@ -7,32 +7,36 @@ const getAllBookings = async (inputId: any) => {
   return response.data;
 };
 
+const getUserBookings = async (inputId: any) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8888/gateway/api/v1/bookings/${inputId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch user bookings");
+  }
+};
+
 const creatBooking = (newData: AdminCore.Booking) => {
   return axios.post(
     "http://localhost:8888/gateway/api/v1/booking",
     newData
   );
 };
-// const deleteRoom = (genreId: any) => {
-//   return axios.delete(
-//     "http://localhost:8888/gateway/api/v1/delete-phongchieu",
-//     {
-//       data: {
-//         id: genreId,
-//       },
-//     }
-//   );
-// };
-// const editRoom = (updateData: any) => {
-//   return axios.put(
-//     "http://localhost:8888/gateway/api/v1/edit-phongchieu",
-//     updateData
-//   );
-// };
+
+const editBooking = (updateData: any) => {
+  return axios.put(
+    "http://localhost:8888/gateway/api/v1/edit-booking",
+    updateData
+  );
+};
 const Booking = {
   getAllBookings,
   creatBooking,
-  // deleteRoom,
+  editBooking,
+  getUserBookings,
   // editRoom,
 };
 export default Booking;

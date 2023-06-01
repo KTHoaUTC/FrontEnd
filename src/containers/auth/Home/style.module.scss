@@ -557,3 +557,11 @@
     // margin-bottom: 3rem;
 
 }
+
+.history {
+    text-transform: uppercase;
+
+    &:hover {
+        color: rgb(202, 72, 72);
+    }
+}

@@ -14,7 +14,7 @@ const HeaderLoginAuth = () => {
   const { id, setId } = useContext(UserContext);
   const [detail, setListUsers] = useState<AdminCore.User[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log("]id", id);
+  console.log("iduser", id);
 
   useEffect(() => {
     (async () => {
@@ -27,7 +27,7 @@ const HeaderLoginAuth = () => {
       }
     })();
   }, [id]);
-  console.log("detail", detail);
+  // console.log("detail", detail);
 
   useEffect(() => {
     const isLoggedInStorage = localStorage.getItem("isLoggedIn");

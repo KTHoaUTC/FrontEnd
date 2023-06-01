@@ -27,7 +27,7 @@ const Header = () => {
   }, [id, setId]);
  const [detail, setListUsers] = useState<AdminCore.User[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log("]id", id);
+  console.log("iduser", id);
 
   useEffect(() => {
     (async () => {
