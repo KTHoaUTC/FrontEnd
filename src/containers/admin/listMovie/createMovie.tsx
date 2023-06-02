@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Col,
-  Collapse,
   DatePicker,
   DatePickerProps,
   Form,
@@ -18,7 +17,7 @@ import {
   Row,
   Select,
   Steps,
-  Typography,
+  Typography
 } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
@@ -460,11 +459,10 @@ const CreateMovie: React.FC = () => {
             <Form.Item
               label="Ảnh"
               name="image_url"
-              //   rules={[{ required: true, message: "Không để trống ô này" }]}
             >
               <Input
                 type="file"
-                onChange={(files) => handleSelectedFile(files.target.files)} // onChange={(e) => {
+                onChange={(files) => handleSelectedFile(files.target.files)} 
               />
               <Card className={styles.card}>
                 <Row className={styles.row}>

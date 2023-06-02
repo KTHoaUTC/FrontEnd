@@ -3,6 +3,7 @@ import HeaderLoginAuth from "@/layouts/dashboard/header";
 import { Layout, theme } from "antd";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import SiderAdmin from "./sider";
+import ProFileAdmin from "./info";
 type LayoutProps = {
   children: ReactNode;
 };
@@ -15,7 +16,7 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
   } = theme.useToken();
 
   const [email, setEmail] = useState("");
-    const [id, setId] = useState("");
+  const [id, setId] = useState("");
 
   const { setUser: setUserContext } = useContext(UserContext);
 
@@ -27,45 +28,48 @@ const LayoutAdmin = ({ children }: LayoutProps) => {
   }, [email]);
 
   return (
-    <UserProvider
-      value={{
-        id,
-        email,
-        setId,
+    <>
+      <UserProvider
+        value={{
+          id,
+          email,
+          setId,
 
-        setEmail,
-        setUser: setUserContext,
-      }}
-    >
-      <div>
-        <Layout style={{ minHeight: "100vh" }}>
-          <SiderAdmin></SiderAdmin>
-          <Layout className="site-layout">
-            <HeaderLoginAuth></HeaderLoginAuth>
-            <Content style={{ margin: "0 0px", background: "white" }}>
-              <div
+          setEmail,
+          setUser: setUserContext,
+        }}
+      >
+        <div>
+          <Layout style={{ minHeight: "100vh" }}>
+            {/* <ProFileAdmin></ProFileAdmin> */}
+            <SiderAdmin></SiderAdmin>
+            <Layout className="site-layout">
+              <HeaderLoginAuth></HeaderLoginAuth>
+              <Content style={{ margin: "0 0px", background: "white" }}>
+                <div
+                  style={{
+                    padding: 24,
+                    minHeight: 360,
+                    background: colorBgContainer,
+                  }}
+                >
+                  {children}
+                </div>
+              </Content>
+              <Footer
                 style={{
-                  padding: 24,
-                  minHeight: 360,
-                  background: colorBgContainer,
+                  textAlign: "center",
+                  background: "white",
+                  fontSize: "1.5rem",
                 }}
               >
-                {children}
-              </div>
-            </Content>
-            <Footer
-              style={{
-                textAlign: "center",
-                background: "white",
-                fontSize: "1.5rem",
-              }}
-            >
-              Khuất Thị Hoa 191240436 CNTT6K60
-            </Footer>
+                Khuất Thị Hoa 191240436 CNTT6K60
+              </Footer>
+            </Layout>
           </Layout>
-        </Layout>
-      </div>
-    </UserProvider>
+        </div>
+      </UserProvider>
+    </>
   );
 };
 

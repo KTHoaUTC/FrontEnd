@@ -3,8 +3,11 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Button,
+  Col,
+  Input,
   Modal,
   Popconfirm,
+  Row,
   Skeleton,
   Space,
   Table,
@@ -16,6 +19,7 @@ import styles from "./style.module.scss";
 import Movie from "@/apis/movie";
 import Genre from "@/apis/genre";
 import moment from "moment";
+const { Search } = Input;
 
 export default function Phim({}: any, props: any) {
   const [listUsers, setListUsers] = useState<AdminCore.Movie[] | any>([]);
@@ -204,7 +208,20 @@ export default function Phim({}: any, props: any) {
   }
   return (
     <>
-      <h1 className={styles.title}> Danh Sách Phim</h1>
+      <Row>
+        <Col className={styles.col_left} span={7}>
+          <Search
+            size="large"
+            placeholder="Nhập tìm kiếm"
+            // onSearch={onSearch}
+            enterButton
+          />
+        </Col>
+        <Col offset={3}>
+          <h1 className={styles.title}> Danh Sách Phim</h1>
+        </Col>
+      </Row>
+
       <Link href={"/listPhim/create"}>
         <Button className={styles.btn_add} type="primary">
           + Thêm Phim
@@ -245,7 +262,8 @@ export default function Phim({}: any, props: any) {
           Quốc Gia: <span> {selectedMovie?.countries}</span>
         </p>
         <p>
-          Thể Loại: <span>
+          Thể Loại:{" "}
+          <span>
             {selectedMovie
               ? genreList.find((genre) => genre.id === selectedMovie.genres_id)
                   ?.name

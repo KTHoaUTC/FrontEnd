@@ -18,15 +18,41 @@
 
 .btn_login_auth {
     height: 2.5rem;
-    border: 1px solid rgb(216, 108, 108);
+    // border: 1px solid rgb(216, 108, 108);
     margin-right: 3rem;
     padding: 0 2rem;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     float: right;
 
 }
-.row{
+
+.row {
     text-align: center;
     align-items: center;
 
+}
+
+.title_drop {
+    font-size: 1.3rem;
+    // margin-bottom: 3rem;
+}
+
+.dropdown_header {
+
+    // background-color: red;
+    // margin-top: 3rem;
+    ul:nth-child(1) {
+        // background-color: aqua;
+        margin-top: 2rem;
+    }
+
+    .space {
+
+        // background-color: red;
+        // margin-top: 3rem;
+        ul:nth-child(2) {
+            background-color: rgb(45, 116, 116);
+            margin-top: 2rem;
+        }
+    }
 }

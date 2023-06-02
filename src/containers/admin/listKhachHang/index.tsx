@@ -1,10 +1,21 @@
 import User from "@/apis/auth";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Input,
+  Popconfirm,
+  Row,
+  Skeleton,
+  Space,
+  Table,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
+const { Search } = Input;
 
 export default function KhachHang({}: any, props: any) {
   const [listUsers, setListUsers] = useState<AdminCore.User[] | any>([]);
@@ -26,7 +37,6 @@ export default function KhachHang({}: any, props: any) {
               address: string;
               phone_number: string;
               RoleId: string;
-              avatar: Blob;
             }) => ({
               key: account.id,
               id: account.id,
@@ -37,30 +47,15 @@ export default function KhachHang({}: any, props: any) {
               address: account.address,
               phone_number: account.phone_number,
               RoleId: account.RoleId,
-              avatar: account.avatar,
             })
           )
         );
-        // console.log('testlsit',listUsers)
       } catch (e) {
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
-  // const [imageUrl, setImageUrl] = useState("");
-
-  // const handleDelete = async (id: number) => {
-  //   await User.deleteUser(id);
-  //   setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
-  // };
-  // const filteredUsers = listUsers.reduce((result: any[], users: any) => {
-  //   if (users.RoleId === "") {
-  //     result.push(users);
-  //   }
-  //   return result;
-  // }, []);
-  // console.log("ffsfadf", filteredUsers);
 
   const columns: ColumnsType<AdminCore.User> = [
     {
@@ -107,46 +102,26 @@ export default function KhachHang({}: any, props: any) {
       title: "Ảnh",
       dataIndex: "avatar",
       key: "avatar",
-      // render: renderImage,
     },
-   
-    // {
-    //   title: "Thao Tác",
-    //   key: "",
-    //   align: "center",
-
-    //   render: (_, record: any) => (
-    //     <Space size="middle">
-    //       <a>
-    //         <Link href={`/listNhanVien/${record.id}`}>
-    //           <Button style={{ float: "right", margin: "0px" }} type="primary">
-    //             <EditOutlined />
-    //           </Button>
-    //         </Link>
-    //       </a>
-    //       <Popconfirm
-    //         title="Bạn chắc chắn muốn xóa?"
-    //         onConfirm={() => handleDelete(record.id)}
-    //       >
-    //         <Button style={{ float: "right", margin: "0px" }} type="primary">
-    //           <DeleteOutlined />
-    //         </Button>
-    //       </Popconfirm>
-    //     </Space>
-    //   ),
-    // },
   ];
   if (isLoading) {
     return <Skeleton active> </Skeleton>;
   }
   return (
     <>
-      <h1 className={styles.title}> Danh Sách Khách Hàng</h1>
-      {/* <Link href={"/listNhanVien/create"}>
-        <Button className={styles.btn_add} type="primary">
-          + Thêm Nhân Viên
-        </Button>
-      </Link> */}
+      <Row>
+        <Col className={styles.col_left} span={7}>
+          <Search
+            size="large"
+            placeholder="Nhập tìm kiếm"
+            // onSearch={onSearch}
+            enterButton
+          />
+        </Col>
+        <Col offset={3}>
+          <h1 className={styles.title}> Danh Sách Khách Hàng</h1>
+        </Col>
+      </Row>
 
       <Table
         bordered

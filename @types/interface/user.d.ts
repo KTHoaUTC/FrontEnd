@@ -10,7 +10,7 @@ declare global {
       phone_number?: number;
       RoleId?: string;
       rePassword?: string;
-      image?: string | any;
+      image?: string;
       columns?: any;
       id?: number;
       map?: any;

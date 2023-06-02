@@ -1,10 +1,11 @@
 import User from "@/apis/auth";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Popconfirm, Skeleton, Space, Table } from "antd";
+import { Avatar, Button, Col, Input, Popconfirm, Row, Skeleton, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
+const { Search } = Input;
 
 export default function NhanVien({}: any, props: any) {
   const [listUsers, setListUsers] = useState<AdminCore.User[] | any>([]);
@@ -47,20 +48,7 @@ export default function NhanVien({}: any, props: any) {
       }
     })();
   }, []);
-  const [imageUrl, setImageUrl] = useState("");
 
-  const renderImage = (text: any, record: any) => {
-    const file = new File([record.image], "filename.jpg", {
-      type: "image/jpeg",
-    });
-    const imageUrl = URL.createObjectURL(file);
-    return <Avatar src={imageUrl} />;
-  };
-  useEffect(() => {
-    return () => {
-      URL.revokeObjectURL(imageUrl);
-    };
-  }, [imageUrl]);
   const handleDelete = async (id: number) => {
     await User.deleteUser(id);
     setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
@@ -151,7 +139,19 @@ export default function NhanVien({}: any, props: any) {
   }
   return (
     <>
-      <h1 className={styles.title}> Danh Sách Nhân Viên</h1>
+      <Row>
+        <Col className={styles.col_left} span={7}>
+          <Search
+            size="large"
+            placeholder="Nhập tìm kiếm"
+            // onSearch={onSearch}
+            enterButton
+          />
+        </Col>
+        <Col offset={3}>
+          <h1 className={styles.title}> Danh Sách Nhân Viên</h1>
+        </Col>
+      </Row>
       <Link href={"/listNhanVien/create"}>
         <Button className={styles.btn_add} type="primary">
           + Thêm Nhân Viên

@@ -123,7 +123,7 @@ const SiderAdmin: React.FC = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      <Link legacyBehavior href={"/trangchu/infor"}>
+      {/* <Link legacyBehavior href={"/trangchu/infor"}>
         <div
           style={{
             height: 22,
@@ -133,7 +133,7 @@ const SiderAdmin: React.FC = () => {
         >
           <Button>Thông tin </Button>
         </div>
-      </Link>
+      </Link> */}
 
       <Menu
         theme="light"

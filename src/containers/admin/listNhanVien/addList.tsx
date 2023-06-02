@@ -2,25 +2,29 @@ import User from "@/apis/auth";
 import { EditOutlined, LeftOutlined } from "@ant-design/icons";
 import {
   Button,
+  Card,
+  Col,
   Collapse,
   Form,
   Input,
-  notification,
+  List,
+  Progress,
+  Row,
   Select,
   Steps,
-  Typography
+  Typography,
+  message,
+  notification,
+  Image,
 } from "antd";
-import ImgCrop from "antd-img-crop";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import Upload from "antd/es/upload/Upload";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 import Link from "next/link";
 import router from "next/router";
 import React, { useState } from "react";
 import styles from "./style.module.scss";
-
-const { Panel } = Collapse;
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../../../firebase";
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 type SizeType = Parameters<typeof Form>[0]["size"];
@@ -28,6 +32,55 @@ type SizeType = Parameters<typeof Form>[0]["size"];
 const AddNhanVien: React.FC = () => {
   const [current, setCurrent] = useState(0);
   const [email, setEmail] = useState<string>();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUpLoading] = useState(false);
+  const [dowloadURL, setDowloadURL] = useState("");
+  const [progressUpload, setProgressUpLoad] = useState(0);
+
+  const handleSelectedFile = (files: any) => {
+    if (files && files[0].size < 1000000) {
+      setImageFile(files[0]);
+      console.log("rrr", files[0]);
+    } else {
+      message.error(" file faill");
+    }
+  };
+  const handleUploadFile = () => {
+    if (imageFile) {
+      const name = imageFile.name;
+
+      const storageRef = ref(storage, `images/${name}`);
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgressUpLoad(progress);
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          message.error(error.message);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setDowloadURL(url);
+          });
+        }
+      );
+    } else {
+      message.error("notFOubd");
+    }
+  };
+
   const prev = () => {
     setCurrent(current - 1);
   };
@@ -39,17 +92,14 @@ const AddNhanVien: React.FC = () => {
     setComponentSize(size);
   };
 
-
   const [account, setAccount] = useState<AdminCore.User>();
   const [createUser, setCreateUser] = useState<AdminCore.User[]>([]);
 
   const handleCreateStep1 = async (newData: AdminCore.User) => {
-    // setAccount(newData);
     setAccount({
       ...newData,
     });
     setCurrent(1);
-    // console.log("dddd", account);
   };
   const handleCreateStep2 = async (newData: AdminCore.User) => {
     setAccount({
@@ -59,12 +109,14 @@ const AddNhanVien: React.FC = () => {
     });
     setCurrent(2);
   };
+
   const handleCreateStep3 = async (newData: AdminCore.User) => {
-    if (account) {
-        const updatedAccount = {
-          ...account,
-          RoleId: newData.RoleId,
-        };
+    if (account && imageFile) {
+      const updatedAccount = {
+        ...account,
+        RoleId: newData.RoleId,
+        image: `${dowloadURL}`,
+      };
       const result = await User.creatUser(updatedAccount);
       setCreateUser([...createUser, newData]);
       if (result.data.errCode === 0) {
@@ -209,7 +261,6 @@ const AddNhanVien: React.FC = () => {
               validateFirst
             >
               <Input
-                // onBlur={handlePhoneBlur}
                 type="text"
                 onKeyPress={(event) => {
                   const keyCode = event.which || event.keyCode;
@@ -217,24 +268,11 @@ const AddNhanVien: React.FC = () => {
                     event.preventDefault();
                   }
                 }}
-                // onChange={(e) => setPhone(e.target.value as unknown as number)}
                 placeholder="Nhập số điện thoại"
                 suffix={<EditOutlined />}
               />
             </Form.Item>
-            {/* <Form.Item name="image" label="Ảnh">
-              <ImgCrop rotationSlider>
-                <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  listType="picture-card"
-                  //  fileList={fileList}
-                  onChange={onChange}
-                  onPreview={onPreview}
-                >
-                  {fileList.length < 5 && "+ Upload"}
-                </Upload>
-              </ImgCrop>
-            </Form.Item> */}
+
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
                 className={styles.btn_next}
@@ -340,9 +378,9 @@ const AddNhanVien: React.FC = () => {
           </Typography.Title>
 
           <Form
-            onFinish={(values) =>
-              handleCreateStep3({ ...values, RoleId: values.RoleId })
-            }
+            // onFinish={(values) =>
+            //   handleCreateStep3({ ...values, RoleId: values.RoleId })
+            // }
             className={styles.form}
             size="large"
             labelCol={{ span: 5 }}
@@ -365,6 +403,47 @@ const AddNhanVien: React.FC = () => {
                 ]}
               />
             </Form.Item>
+
+            <Form.Item label="Ảnh" name="image">
+              <Input
+                type="file"
+                onChange={(files) => handleSelectedFile(files.target.files)}
+              />
+              <Card className={styles.card}>
+                <Row className={styles.row}>
+                  <Col className={styles.col_right} span={12}>
+                    {imageFile && (
+                      <>
+                        <List.Item>
+                          <List.Item.Meta
+                            title={imageFile.name}
+                            description={`Size: ${imageFile.size}`}
+                          ></List.Item.Meta>
+                        </List.Item>
+                        <Button
+                          loading={isUploading}
+                          onClick={handleUploadFile}
+                          type="primary"
+                          htmlType="submit"
+                        >
+                          Upload
+                        </Button>
+                        <Progress percent={progressUpload}> </Progress>
+                      </>
+                    )}
+                  </Col>
+                  <Col span={12}>
+                    {dowloadURL && (
+                      <>
+                        <Image src={dowloadURL} alt={dowloadURL} />
+                        {/* <p> {dowloadURL}</p> */}
+                      </>
+                    )}
+                  </Col>
+                </Row>
+              </Card>
+            </Form.Item>
+
             <Form.Item
               className={styles.form_item_submit}
               wrapperCol={{ span: 24 }}
@@ -378,7 +457,11 @@ const AddNhanVien: React.FC = () => {
                   Quay lại
                 </Button>
               )}
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={handleCreateStep3}
+              >
                 Thêm Tài Khoản
               </Button>
             </Form.Item>
