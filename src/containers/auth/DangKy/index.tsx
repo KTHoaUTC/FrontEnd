@@ -120,9 +120,8 @@ const AddNhanVien: React.FC = () => {
             onValuesChange={onFormLayoutChange}
           >
             <Form.Item
-              name="email"
               label="Email"
-              required
+              name="email"
               rules={[
                 {
                   required: true,
@@ -130,13 +129,29 @@ const AddNhanVien: React.FC = () => {
                     <p className={styles.vadidate}>Không để trống ô này</p>
                   ),
                 },
+                {
+                  pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+
+                  message: (
+                    <p className={styles.vadidate}>Nhập không đúng định dạng</p>
+                  ),
+                },
+                {
+                  pattern: /^.{1,30}$/,
+                  message: (
+                    <p className={styles.vadidate}>
+                      Email nhập tối đa 30 kí tự
+                    </p>
+                  ),
+                },
               ]}
+              validateFirst
             >
               <Input
-                suffix={<EditOutlined />}
+                // onBlur={handleEmailBlur}
                 onChange={(e) => setEmail(e.target.value as string)}
-                placeholder="Nhập email"
-                type="email"
+                placeholder="Nhập địa chỉ email"
+                suffix={<EditOutlined />}
               />
             </Form.Item>
             <Form.Item
@@ -207,7 +222,7 @@ const AddNhanVien: React.FC = () => {
                 ]}
               />
             </Form.Item>
-          
+
             <Form.Item
               label="Số điện thoại"
               name="phone_number"
@@ -247,6 +262,8 @@ const AddNhanVien: React.FC = () => {
                 suffix={<EditOutlined />}
               />
             </Form.Item>
+
+            
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
                 className={styles.btn_next}

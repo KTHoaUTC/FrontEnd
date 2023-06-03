@@ -1,17 +1,16 @@
-import "../../styles/globals.scss";
+import ChangePassword from "@/containers/admin/changePassword";
+import LayoutAdmin from "@/containers/admin/layout";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
-import Layout from "@/containers/auth/layout";
-import HomeAuth from "@/containers/auth";
 const Page: NextPageWithLayout = () => {
   return (
     <>
-      <HomeAuth />
+      <ChangePassword />
     </>
   );
 };
 
 Page.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return <LayoutAdmin>{page}</LayoutAdmin>;
 };
 export default Page;

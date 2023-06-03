@@ -27,7 +27,7 @@ const HeaderLoginAuth = () => {
   console.log("iduser", id);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
-  const handleVisibleChange = (visible:any) => {
+  const handleVisibleChange = (visible: any) => {
     setDropdownVisible(visible);
   };
   useEffect(() => {
@@ -76,16 +76,13 @@ const HeaderLoginAuth = () => {
     },
     {
       key: "2",
+
       label: (
-        <a
-          className={styles.title_drop}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          Đổi mật khẩu
-        </a>
+        <Link legacyBehavior href={"/changePassword"}>
+          <p className={styles.title_drop}> Đổi mật khẩu </p>
+        </Link>
       ),
+
       icon: <ToolOutlined />,
     },
   ];
@@ -93,8 +90,7 @@ const HeaderLoginAuth = () => {
   return (
     <>
       <Row className={styles.row_header}>
-        <Col className={styles.col_left} offset={1} span={7}>
-        </Col>
+        <Col className={styles.col_left} offset={1} span={7}></Col>
         <Col className={styles.col_center} span={6}>
           <img src="/LogoMovie1.png"></img>
         </Col>
@@ -115,7 +111,7 @@ const HeaderLoginAuth = () => {
                       <Image
                         style={{ borderRadius: "25px" }}
                         width={50}
-                        src={detail.image}
+                        src={detail?.image}
                       />
 
                       <p style={{ fontSize: "1.2rem" }}>

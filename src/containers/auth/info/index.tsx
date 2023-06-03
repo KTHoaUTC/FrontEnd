@@ -1,5 +1,3 @@
-import React, { useContext, useEffect, useState } from "react";
-import styles from "./style.module.scss";
 import User from "@/apis/auth";
 import UserContext from "@/contexts/context";
 import {
@@ -13,18 +11,18 @@ import {
   Progress,
   Row,
   Select,
-  Upload,
   message,
-  notification,
+  notification
 } from "antd";
-import router from "next/router";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import router from "next/router";
+import React, { useContext, useEffect, useState } from "react";
 import { storage } from "../../../../firebase";
+import styles from "./style.module.scss";
 import { EditOutlined } from "@ant-design/icons";
 
-const ProFileAdmin: React.FC = () => {
+const ProFileAuth: React.FC = () => {
   const [form] = Form.useForm();
-
   const { id, setId } = useContext(UserContext);
   const [detail, setDetailUsers] = useState<AdminCore.User[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,7 +89,7 @@ const ProFileAdmin: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const result = await User.getAll(id);
+        const result = await User.getAllAuth(id);
         setDetailUsers(result.users);
         setCurrentImage(result?.users!.image); // Set the current image URL
         form.setFieldValue("id", result?.users!.id);
@@ -123,11 +121,11 @@ const ProFileAdmin: React.FC = () => {
       notification.success({
         message: "Cập nhật thông tin thành công",
       });
-      router.push("/trangchu");
+      router.push("/auth");
     }
   };
 
-  console.log("userId", detail);
+  console.log("userId", id);
 
   return (
     <>
@@ -146,9 +144,6 @@ const ProFileAdmin: React.FC = () => {
             >
               <Form.Item name="email" label="Email">
                 <Input disabled placeholder="Nhập email" type="email" />
-              </Form.Item>
-              <Form.Item name="RoleId" label="Phân Quyền: ">
-                <Input disabled />
               </Form.Item>
               <Form.Item
                 name="last_name"
@@ -267,7 +262,7 @@ const ProFileAdmin: React.FC = () => {
         </Col>
         <Col span={12} style={{ textAlign: "center" }}>
           <Image
-            width={400}
+            width={300}
             src={imageFile ? URL.createObjectURL(imageFile) : currentImage} // Use currentImage if no new image is selected
           />
           <Form.Item
@@ -290,7 +285,6 @@ const ProFileAdmin: React.FC = () => {
                         <List.Item.Meta />
                       </List.Item>
                       <Button
-                        style={{ width: "50%", backgroundColor: "red" }}
                         type="primary"
                         onClick={handleUploadFile}
                         disabled={progressUpload > 0}
@@ -310,4 +304,4 @@ const ProFileAdmin: React.FC = () => {
   );
 };
 
-export default ProFileAdmin;
+export default ProFileAuth;

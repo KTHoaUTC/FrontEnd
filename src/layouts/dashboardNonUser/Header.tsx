@@ -1,16 +1,17 @@
-import { Button, Col, Row } from "antd";
+import { Button, Col, Dropdown, Row, Space, Image, MenuProps } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import UserContext from "@/contexts/context";
 import User from "@/apis/auth";
+import { DownOutlined, SmileOutlined, ToolOutlined } from "@ant-design/icons";
 
 const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { id, setId } = useContext(UserContext);
- 
+   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
     const isLoggedInStorage = localStorage.getItem("isLoggedIn");
@@ -48,6 +49,29 @@ const Header = () => {
 
     router.push("/login");
   };
+
+    const items: MenuProps["items"] = [
+      {
+        key: "1",
+        label: (
+          <Link legacyBehavior href={"/auth/info"}>
+            <p className={styles.title_drop}>Thông tin </p>
+          </Link>
+        ),
+        icon: <SmileOutlined />,
+      },
+      {
+        key: "2",
+
+        label: (
+          <Link legacyBehavior href={"/changePassword"}>
+            <p className={styles.title_drop}> Đổi mật khẩu </p>
+          </Link>
+        ),
+
+        icon: <ToolOutlined />,
+      },
+    ];
 
   return (
     <>
@@ -94,13 +118,29 @@ const Header = () => {
                   }}
                   span={15}
                 >
-                  <p
-                    style={{
-                      fontSize: "1.2rem",
-                    }}
+                  <Dropdown
+                    className={styles.dropdown_header}
+                    menu={{ items }}
+                    trigger={["click"]}
+                    overlayStyle={{
+                      marginTop: dropdownVisible ? "10px" : "0px",
+                    }} 
                   >
-                    Xin Chào {detail?.last_name} {detail?.first_name}
-                  </p>
+                    <a onClick={(e) => e.preventDefault()}>
+                      <Space className={styles.space}>
+                        <Image
+                          style={{ borderRadius: "25px" }}
+                          width={50}
+                          src={detail?.image}
+                        />
+
+                        <p style={{ fontSize: "1.2rem" }}>
+                          Xin Chào {detail?.last_name} {detail?.first_name}
+                        </p>
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
                 </Col>
                 <Col span={9}>
                   <Link legacyBehavior href="/login">

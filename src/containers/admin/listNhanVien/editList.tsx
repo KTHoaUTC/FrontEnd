@@ -1,3 +1,5 @@
+import User from "@/apis/auth";
+import { LeftOutlined } from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -9,28 +11,18 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
-import React, { useEffect, useState } from "react";
-import User from "@/apis/auth";
-import { LeftOutlined } from "@ant-design/icons";
-import ImgCrop from "antd-img-crop";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import Upload from "antd/es/upload/Upload";
 import Link from "next/link";
 import router from "next/router";
+import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-
-const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
 type SizeType = Parameters<typeof Form>[0]["size"];
 
 const EditNhanVien: React.FC = () => {
-  const [current, setCurrent] = useState(0);
 
   const [email, setEmail] = useState<string>();
-  const [identity_id, setIdentity_id] = useState<string>();
-  const [unit, setUnit] = useState<string>();
-  const [name, setName] = useState<string>();
+
 
   const [componentSize, setComponentSize] = useState<SizeType | "default">(
     "default"
@@ -41,7 +33,6 @@ const EditNhanVien: React.FC = () => {
   };
 
 
-  const [account, setAccount] = useState<AdminCore.User>();
 
   const id = router.query.id as string;
   const [accountId, setAccountId] = useState<string>("");
@@ -60,7 +51,6 @@ const EditNhanVien: React.FC = () => {
       if (id) {
         const result = await User.getAll(id);
         setDetail(result.users);
-        // console.log("ddd", result.users);
         form.setFieldValue("id", result?.users!.id);
         form.setFieldValue("email", result?.users!.email);
         form.setFieldValue("last_name", result?.users!.last_name);
@@ -78,8 +68,7 @@ const EditNhanVien: React.FC = () => {
     const updatedAccount = { id, ...updateData };
     const response = await User.editUser(updatedAccount);
     setUpdateAccount(response.data);
-    // console.log("fff", response.data.errCode);
-    // // console.log("update", updateAccount);
+  
 
     if (response.data.errCode == 0) {
       notification.success({
@@ -216,19 +205,7 @@ const EditNhanVien: React.FC = () => {
             >
               <Input placeholder="Nhập số diện thoại" />
             </Form.Item>
-            {/* <Form.Item name="image" label="Ảnh">
-              <ImgCrop rotationSlider>
-                <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  listType="picture-card"
-                  fileList={fileList}
-                  onChange={onChange}
-                  onPreview={onPreview}
-                >
-                  {fileList.length < 5 && "+ Upload"}
-                </Upload>
-              </ImgCrop>
-            </Form.Item> */}
+          
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
                 className={styles.btn_next}
@@ -243,7 +220,7 @@ const EditNhanVien: React.FC = () => {
         )}
       </div>
 
-      <br></br>
+      {/* <br></br>
       <br></br>
       <div className={styles.step_1}>
         <Typography.Title className={styles.form_title} level={2}>
@@ -313,7 +290,7 @@ const EditNhanVien: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+      </div> */}
     </>
   );
 };

@@ -37,6 +37,7 @@ export default function KhachHang({}: any, props: any) {
               address: string;
               phone_number: string;
               RoleId: string;
+              image:string;
             }) => ({
               key: account.id,
               id: account.id,
@@ -47,6 +48,7 @@ export default function KhachHang({}: any, props: any) {
               address: account.address,
               phone_number: account.phone_number,
               RoleId: account.RoleId,
+              image:account.image
             })
           )
         );
@@ -100,8 +102,11 @@ export default function KhachHang({}: any, props: any) {
     },
     {
       title: "Ảnh",
-      dataIndex: "avatar",
-      key: "avatar",
+      dataIndex: "image",
+      key: "image",
+      render: (text) => (
+        <img src={text} alt="Image" style={{ width: "100px" }} />
+      ),
     },
   ];
   if (isLoading) {

@@ -33,24 +33,24 @@ const HistoryMovie: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
-    const [theaterList, setTheaterList] = useState<AdminCore.Room[]>([]);
-    useEffect(() => {
-      (async () => {
-        try {
-          const response = await Theater.getAll("ALL");
-          setTheaterList(response.theaters);
-          console.log("movieList", movieList);
-        } catch (e) {}
-      })();
-    }, []);
+  const [theaterList, setTheaterList] = useState<AdminCore.Room[]>([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await Theater.getAll("ALL");
+        setTheaterList(response.theaters);
+        console.log("movieList", movieList);
+      } catch (e) {}
+    })();
+  }, []);
   const getMovieName = (movieId: number) => {
     const movie = movieList.find((movie) => movie.id === movieId);
     return movie ? movie.title : "";
   };
-    const getMovieImage = (movieId: number) => {
-      const movie = movieList.find((movie) => movie.id === movieId);
-      return movie ? movie.image_url : "";
-    };
+  const getMovieImage = (movieId: number) => {
+    const movie = movieList.find((movie) => movie.id === movieId);
+    return movie ? movie.image_url : "";
+  };
   const getTheaterName = (theaterId: number) => {
     const theater = theaterList.find((theater) => theater.id === theaterId);
     return theater ? theater.name : "";
@@ -60,6 +60,8 @@ const HistoryMovie: React.FC = () => {
       <h1 className={styles.title}>Lịch Sử Đặt Vé</h1>
       {isLoading ? (
         <p>Loading...</p>
+      ) : listBooking.length === 0 ? ( // Kiểm tra danh sách có dữ liệu hay không
+        <p className={styles.mess} >Bạn chưa có lịch sử đặt vé nào.</p> // Hiển thị thông báo khi danh sách rỗng
       ) : (
         <List
           className={styles.list}

@@ -1,12 +1,12 @@
-import "../../styles/globals.scss";
-import type { ReactElement } from "react";
-import type { NextPageWithLayout } from "../_app";
 import Layout from "@/containers/auth/layout";
-import HomeAuth from "@/containers/auth";
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "../../_app";
+import ProFileAuth from "@/containers/auth/info";
+// import "../../styles/globals.scss";
 const Page: NextPageWithLayout = () => {
   return (
     <>
-      <HomeAuth />
+      <ProFileAuth />
     </>
   );
 };

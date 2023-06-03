@@ -82,7 +82,7 @@ export default function NhanVien({}: any, props: any) {
       title: "Giới Tính",
       dataIndex: "gender",
       key: "gender",
-      render: (value) => (value ? "Nữ" : "Nam"),
+      render: (value) => (value ? "Nam" : "Nữ"),
     },
     {
       title: "Số Điện Thoại",

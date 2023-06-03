@@ -25,6 +25,12 @@ const editMovie = (updateData: any) => {
     updateData
   );
 };
+const editMovieImgae = (updateImage: any) => {
+  return axios.put(
+    "http://localhost:8888/gateway/api/v1/edit-image",
+    updateImage
+  );
+};
 const searchAll = async (keyTitle: any) => {
   const response = await axios.get(
     `http://localhost:8888/gateway/api/v1/searcher?key=${keyTitle}`
@@ -37,5 +43,6 @@ const Movie = {
   deleteMoive,
   editMovie,
   searchAll,
+  editMovieImgae,
 };
 export default Movie;

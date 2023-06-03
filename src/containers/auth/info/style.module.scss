@@ -1,0 +1,67 @@
+.doanhthu1 {
+    text-align: center;
+    border: 2px solid rgb(204, 119, 119);
+    border-radius: 5px;
+    height: 10rem;
+    align-items: center;
+
+    .title {
+        color: rgb(216, 78, 36);
+        margin-top: 1.7rem;
+        font-weight: 500;
+        font-size: 2.5rem;
+    }
+
+}
+
+.doanhthu {
+    text-align: center;
+    border: 2px solid rgb(204, 119, 119);
+    border-radius: 5px;
+    height: 20rem;
+    align-items: center;
+
+    .title {
+        margin-top: 5rem;
+        font-weight: 500;
+        font-size: 2.5rem;
+    }
+
+}
+
+.row_chart {
+    text-align: center;
+
+    .col_chart {
+        align-items: center;
+        align-content: center;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+}
+
+.title_table {
+    font-size: 1rem;
+    font-style: italic;
+    color: rgb(221, 62, 62);
+    margin-bottom: 3rem;
+
+}
+
+.btn_next {
+    text-align: center;
+    align-items: center;
+    margin: 2rem auto;
+    display: flex;
+
+    padding: 0 4rem !important;
+    background-color: rgb(196, 63, 63);
+}
+.title_info{
+    margin-top: 7rem;
+    font-size: 2.5rem;
+    color: rgb(196, 63, 63);
+    // margin: 2rem;
+    text-align: center;
+}
