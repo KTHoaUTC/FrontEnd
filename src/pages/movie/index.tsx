@@ -1,16 +1,11 @@
-import BookTicker from "@/containers/auth/Home/BookTicker";
-// import "../../styles/globals.scss";
-
-// export default function Home() {
-//   return <BookTicker />;
-// }
+import MovieDetail from "@/containers/auth/Movie";
 import Layout from "@/containers/auth/layout";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
 const Page: NextPageWithLayout = () => {
   return (
     <>
-      <BookTicker />
+      <MovieDetail />
     </>
   );
 };

@@ -1,12 +1,11 @@
+import ListComment from "@/containers/admin/comment";
 import LayoutAdmin from "@/containers/admin/layout";
-import Phim from "@/containers/admin/listMovie";
 import type { ReactElement } from "react";
 import type { NextPageWithLayout } from "../_app";
-import Rap from "@/containers/admin/listRap";
 const Page: NextPageWithLayout = () => {
   return (
     <>
-      <Rap/>
+      <ListComment />
     </>
   );
 };

@@ -106,6 +106,13 @@ const items: MenuItem[] = [
       <FileOutlined />
     </Link>
   ),
+  getItem(
+    "Bình Luận",
+    "11",
+    <Link href={"/listComment"}>
+      <FileOutlined />
+    </Link>
+  ),
 ];
 const SiderAdmin: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);

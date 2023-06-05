@@ -1,0 +1,159 @@
+.title_dang_ky {
+    text-align: center;
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 40%;
+    margin-bottom: 5rem !important;
+    margin: 0 auto;
+}
+
+.step_1 {
+    position: relative;
+    border: 1px solid rgba(88, 108, 187, 0.12);
+    border-radius: 8px;
+    margin: 3rem auto;
+    max-width: 100%;
+    width: 60%;
+    align-items: center;
+
+    .form_title {
+        padding-inline: 1rem;
+        position: absolute;
+        top: -1.4rem;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .form {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        margin: 3rem auto 2rem;
+    }
+}
+
+.title {
+    margin-top: 2rem;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.btn_add {
+    margin-left: 2rem;
+}
+
+.link {
+    p {
+        font-size: 1.3rem;
+        margin-top: 7rem;
+        margin-left: 4rem;
+    }
+
+}
+
+.vadidate {
+    float: left;
+}
+
+.movie_detail {
+    margin-top: 7rem;
+
+    .movie_title_name {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        align-items: center;
+        color: rgb(206, 51, 51);
+
+    }
+
+    .movie_title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+
+        span {
+            font-size: 1.3rem;
+            color: rgb(50, 119, 223);
+        }
+    }
+
+    .btn {
+        text-align: center;
+        align-items: center;
+
+        .book_ticket {
+            margin-left: 1rem;
+            background-color: rgb(185, 65, 65);
+            text-align: right;
+            justify-items: right;
+            padding: 0rem 2rem;
+            height: 3rem;
+            color: rgb(204, 218, 230);
+            font-size: 1.4rem;
+            border: none;
+
+            &:hover {
+                background-color: rgb(99, 75, 204);
+            }
+        }
+    }
+
+    .content {
+        margin-bottom: 1rem;
+        text-align: center;
+        align-items: center;
+        font-size: 1.2rem;
+        width: 60%;
+        margin: 1rem auto;
+    }
+}
+
+.comment_movie {
+    border: 1px solid black;
+    width: 80%;
+    margin: 2rem auto;
+    border-radius: 10px;
+
+    .movie_title_name {
+        align-items: center;
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 2rem;
+        font-weight: 600;
+
+        margin-bottom: 1rem;
+
+    }
+
+    .row_cmt {
+        display: flex;
+        margin: 2rem auto;
+        //  background-color: red;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        // margin-bottom: 2rem;
+        .btn_add{
+            background-color: rgb(199, 64, 64);
+        }
+
+    }
+
+    .comment_content {
+        align-content: center;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        align-items: center;
+
+    }
+
+}

@@ -117,12 +117,19 @@ declare global {
       gia_ve?: number;
       phongchieu_id?: number;
       QRCode?: any;
-      createdAt?:Date;
-      //   time?: string;
-      //   date?: string;
-      //   theater?: string;
-      //   gia_ve?: number;
-      //   phongchieu_id?: number;
+      createdAt?: Date;
+    }
+    export interface Comment {
+      last_name?: any;
+      user_id?: any | string;
+      movie_id?: any | string;
+      comment_text?: string;
+      id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+      createdAt?: Date;
+      commentText?: string | any;
     }
   }
 }

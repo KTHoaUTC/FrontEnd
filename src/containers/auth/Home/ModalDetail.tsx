@@ -100,7 +100,10 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
             <p className={styles.content}>{detail.description}</p>
           </Row>
           <Row>
-            <p className={styles.content1}>Xem Thêm</p>
+            <Link legacyBehavior href={`/movie?id=${detail.id}`}>
+              <p className={styles.content1} >Xem Thêm</p>
+            </Link>
+            {/* <p className={styles.content1}>Xem Thêm</p> */}
           </Row>
         </div>
       </Modal>
