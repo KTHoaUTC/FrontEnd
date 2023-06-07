@@ -5,7 +5,7 @@ import React from "react";
 const Theater: React.FC = () => {
   return (
     <>
-      <p>cụm rạp </p>
+      {/* <p>cụm rạp </p> */}
     </>
   );
 };

@@ -3,7 +3,7 @@ import Comment from "@/apis/comment";
 import Genre from "@/apis/genre";
 import Movie from "@/apis/movie";
 import UserContext from "@/contexts/context";
-import { Avatar, Button, Col, Image, Input, List, Row, Skeleton } from "antd";
+import { Avatar, Button, Col, Input, List, Row, Skeleton } from "antd";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,25 +12,6 @@ import { Player } from "video-react";
 import "video-react/dist/video-react.css";
 import styles from "./style.module.scss";
 
-interface DataType {
-  gender?: string;
-  name: {
-    title?: string;
-    first?: string;
-    last?: string;
-  };
-  email?: string;
-  picture: {
-    large?: string;
-    medium?: string;
-    thumbnail?: string;
-  };
-  nat?: string;
-  loading: boolean;
-}
-
-const count = 3;
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
 const MovieDetail: React.FC = () => {
   const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
   const router = useRouter();
@@ -49,8 +30,27 @@ const MovieDetail: React.FC = () => {
     (async () => {
       try {
         const response = await Movie.getAll(idMovie);
-        setDetailMovie(response?.movies);
+        setDetailMovie(response?.movies || null);
       } catch (e) {
+      } finally {
+      }
+    })();
+  }, [idMovie]);
+
+  const [listComment, setCommentList] = useState<AdminCore.Comment[] | any>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const comments = await Comment.getCommentIdMovie(idMovie);
+        const sortedComments = comments.sort((a: any, b: any) => {
+          const dateA = new Date(a.createdAt || "");
+          const dateB = new Date(b.createdAt || "");
+          return +dateB - +dateA;
+        });
+        setCommentList(sortedComments);
+      } catch (e) {
+        console.error(e);
       } finally {
       }
     })();
@@ -71,76 +71,6 @@ const MovieDetail: React.FC = () => {
     const genre = genreList.find((genre) => genre.id === genreId);
     return genre ? genre.name : "";
   };
-
-  const [initLoading, setInitLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DataType[]>([]);
-  const [list, setList] = useState<DataType[]>([]);
-
-  useEffect(() => {
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        setInitLoading(false);
-        setData(res.results);
-        setList(res.results);
-      });
-  }, []);
-
-  const onLoadMore = () => {
-    setLoading(true);
-    setList(
-      data.concat(
-        [...new Array(count)].map(() => ({
-          loading: true,
-          name: {},
-          picture: {},
-        }))
-      )
-    );
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        const newData = data.concat(res.results);
-        setData(newData);
-        setList(newData);
-        setLoading(false);
-        window.dispatchEvent(new Event("resize"));
-      });
-  };
-
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: 12,
-          marginBottom: 20,
-          height: 32,
-          lineHeight: "32px",
-        }}
-      >
-        <Button onClick={onLoadMore}>loading more</Button>
-      </div>
-    ) : null;
-  const [listComment, setCommentList] = useState<AdminCore.Comment[] | any>([]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const comments = await Comment.getCommentIdMovie(idMovie);
-        const sortedComments = comments.sort((a: any, b: any) => {
-          const dateA = new Date(a.createdAt || "");
-          const dateB = new Date(b.createdAt || "");
-          return +dateB - +dateA;
-        });
-        setCommentList(sortedComments);
-      } catch (e) {
-        console.error(e);
-      } finally {
-      }
-    })();
-  }, [idMovie]);
 
   const [listUsers, setListUser] = useState<AdminCore.User[] | any>([]);
 
@@ -172,7 +102,6 @@ const MovieDetail: React.FC = () => {
   console.log("idusermovie", id);
   console.log("user", idMovie);
 
-  //add comment
   const [commentText, setCommentText] = useState("");
   const [addComment, setAddComment] = useState<AdminCore.Comment[] | any>([]);
 
@@ -185,17 +114,18 @@ const MovieDetail: React.FC = () => {
     const result = await Comment.creatComment(newComment);
     const updatedCommentList = [newComment, ...listComment];
     setCommentList(updatedCommentList);
-    setAddComment(updatedCommentList);
+    // setAddComment(updatedCommentList);
     setCommentText("");
   };
 
-  const getUserEmail = (genreId: number) => {
-    const name = listUsers.find((name: any) => name.id === genreId);
-    return name ? name.last_name + " " + name.first_name : "";
+  const getUserEmail = (userId: number) => {
+    const user = listUsers.find((user: any) => user.id === userId);
+    return user ? user.last_name + " " + user.first_name : "";
   };
-  const getUserImage = (genreId: number) => {
-    const image = listUsers.find((image: any) => image.id === genreId);
-    return image ? image.image : "";
+
+  const getUserImage = (userId: number) => {
+    const user = listUsers.find((user: any) => user.id === userId);
+    return user ? user.image : "";
   };
   console.log("commentId", listComment);
   return (
@@ -211,9 +141,11 @@ const MovieDetail: React.FC = () => {
           </Row>
           <Row>
             <Col offset={2} span="10">
-              <Player>
-                <source src={detailMovie.trailer_url} />
-              </Player>
+              {detailMovie.trailer_url && (
+                <Player>
+                  <source src={detailMovie.trailer_url} />
+                </Player>
+              )}
             </Col>
             <Col className={styles.col_content} span="10" offset={2}>
               <p className={styles.movie_title}>
@@ -247,7 +179,12 @@ const MovieDetail: React.FC = () => {
           </Row>
           <Row>
             <Col span={24}>
-              <p style={{marginTop:'3rem'}} className={styles.movie_title_name}> Tóm Tắt</p>
+              <p
+                style={{ marginTop: "3rem" }}
+                className={styles.movie_title_name}
+              >
+                Tóm Tắt
+              </p>
               <p className={styles.content}>{detailMovie.description}</p>
             </Col>
           </Row>
@@ -290,30 +227,57 @@ const MovieDetail: React.FC = () => {
             </Col>
           </Row>
         )}
-
-        <Row className={styles.comment_content}>
-          <Col span={20}>
-            <List
-              className="demo-loadmore-list"
-              loading={initLoading}
-              itemLayout="horizontal"
-              loadMore={loadMore}
-              dataSource={[...addComment, ...listComment]}
-              renderItem={(item: any) => (
-                <List.Item>
-                  <Skeleton avatar title={false} loading={item.loading} active>
-                    <List.Item.Meta
-                      avatar={<Avatar src={getUserImage(item.user_id)} />}
-                      title={getUserEmail(item.user_id)}
-                      description={moment(item.createdAt).format("DD/MM/YYYY")}
-                    />
-                    <div>{item.comment_text}</div>
-                  </Skeleton>
-                </List.Item>
-              )}
-            />
-          </Col>
-        </Row>
+        {listComment.length > 0 ? (
+          <>
+            <Row className={styles.comment_content}>
+              <Col span={20}>
+                <List
+                  className={styles.list_comment}
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    onChange: (page) => {
+                      console.log(page);
+                    },
+                    pageSize: 6,
+                  }}
+                  dataSource={[...addComment, ...listComment]}
+                  renderItem={(item: any) => (
+                    <List.Item>
+                      <Skeleton
+                        avatar
+                        title={false}
+                        loading={item.loading}
+                        active
+                      >
+                        <List.Item.Meta
+                          avatar={<Avatar src={getUserImage(item.user_id)} />}
+                          title={getUserEmail(item.user_id)}
+                          description={moment(item.createdAt).format(
+                            "DD/MM/YYYY"
+                          )}
+                        />
+                        <div>{item.comment_text}</div>
+                      </Skeleton>
+                    </List.Item>
+                  )}
+                />
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <>
+            <p
+              style={{
+                textAlign: "center",
+                marginBottom: "2rem",
+                fontSize: "1.3rem",
+              }}
+            >
+              Chưa có bình luận nào
+            </p>
+          </>
+        )}
       </div>
     </>
   );

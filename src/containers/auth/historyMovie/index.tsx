@@ -1,10 +1,13 @@
 import Booking from "@/apis/booking";
 import UserContext from "@/contexts/context";
-import { Avatar, List } from "antd";
+import { Avatar, List, QRCode } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import Movie from "@/apis/movie";
 import Theater from "@/apis/rap";
+import Ticket from "@/apis/ticket";
+import moment from "moment";
+import { sortBy } from "lodash";
 
 const HistoryMovie: React.FC = () => {
   const [listBooking, setBooking] = useState<AdminCore.Booking[] | any>([]);
@@ -43,6 +46,17 @@ const HistoryMovie: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
+  const [ticketList, setTicketList] = useState<AdminCore.Ticket[]>([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await Ticket.getAllTickets("ALL");
+        setTicketList(response.tickets);
+      } catch (e) {}
+    })();
+  }, []);
+  console.log("ticketList", ticketList);
+
   const getMovieName = (movieId: number) => {
     const movie = movieList.find((movie) => movie.id === movieId);
     return movie ? movie.title : "";
@@ -55,13 +69,19 @@ const HistoryMovie: React.FC = () => {
     const theater = theaterList.find((theater) => theater.id === theaterId);
     return theater ? theater.name : "";
   };
+  const getTicketsByBookingId = (bookingId: any) => {
+    return ticketList.filter((ticket) => ticket.booking_id === bookingId);
+  };
+  const sortedBookings = listBooking.sort((a: any, b: any) =>
+    moment(b.createdAt).diff(moment(a.createdAt))
+  );
   return (
     <>
       <h1 className={styles.title}>Lịch Sử Đặt Vé</h1>
       {isLoading ? (
         <p>Loading...</p>
-      ) : listBooking.length === 0 ? ( // Kiểm tra danh sách có dữ liệu hay không
-        <p className={styles.mess} >Bạn chưa có lịch sử đặt vé nào.</p> // Hiển thị thông báo khi danh sách rỗng
+      ) : listBooking.length === 0 ? (
+        <p className={styles.mess}>Bạn chưa có lịch sử đặt vé nào.</p>
       ) : (
         <List
           className={styles.list}
@@ -73,17 +93,24 @@ const HistoryMovie: React.FC = () => {
             },
             pageSize: 3,
           }}
-          dataSource={listBooking}
+          dataSource={sortedBookings}
           renderItem={(booking: AdminCore.Booking) => (
             <List.Item
               className={styles.list_item}
               key={booking.id}
               extra={
-                <img
-                  width={272}
-                  alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                />
+                <div>
+                  {getTicketsByBookingId(booking.id).map((ticket) => (
+                    <div key={ticket.id}>
+                      <div>
+                        <QRCode
+                          className={styles.list_qrCode}
+                          value={ticket.qrCode}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               }
             >
               <List.Item.Meta
@@ -92,6 +119,9 @@ const HistoryMovie: React.FC = () => {
                 description={<p>Rạp: {getTheaterName(booking.theater_id)}</p>}
               />
               <p>Tổng Tiền: {booking.total_price} VND</p>
+              <p>
+                Ngày đặt vé: {moment(booking.createdAt).format("DD/MM/YYYY")}{" "}
+              </p>
             </List.Item>
           )}
         />

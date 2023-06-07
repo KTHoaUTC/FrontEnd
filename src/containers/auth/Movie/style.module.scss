@@ -136,12 +136,10 @@
     .row_cmt {
         display: flex;
         margin: 2rem auto;
-        //  background-color: red;
         text-align: center;
         align-items: center;
         justify-content: center;
-        // margin-bottom: 2rem;
-        .btn_add{
+        .btn_add {
             background-color: rgb(199, 64, 64);
         }
 
@@ -154,6 +152,9 @@
         margin: 0 auto;
         align-items: center;
 
+        .list_comment {
+            margin-bottom: 2rem;
+        }
     }
 
 }

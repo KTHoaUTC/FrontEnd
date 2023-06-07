@@ -131,6 +131,15 @@ declare global {
       createdAt?: Date;
       commentText?: string | any;
     }
+    export interface Ticket {
+      booking_id?: any;
+      qrCode?: any | string;
+      id?: number;
+      map?: any;
+      key?: string;
+      updatedAt?: Date;
+      createdAt?: Date;
+    }
   }
 }
 

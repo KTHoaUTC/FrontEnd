@@ -26,6 +26,7 @@ import Booking from "@/apis/booking";
 import QRCode from "qrcode.react";
 import axios from "axios";
 import User from "@/apis/auth";
+import Ticket from "@/apis/ticket";
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
@@ -76,7 +77,6 @@ const BookTicker: React.FC = () => {
       } catch (e) {}
     })();
   }, []);
-  // console.log("showtime", showtimeList);
   //
 
   //rap chieu
@@ -321,6 +321,8 @@ const BookTicker: React.FC = () => {
     setCurrent(2);
   };
 
+  const [bookingId, setBookingId] = useState("");
+
   const hanledBookStep3 = async (newData: AdminCore.Booking) => {
     setSelectedShowtime((prevShowtime) => ({
       ...prevShowtime,
@@ -329,19 +331,9 @@ const BookTicker: React.FC = () => {
       phongchieu_id: selectedRoom?.id,
       user_id: detailUser?.id,
       movie_id: detail?.id,
-       date: selectedShowtime.date,
+      date: selectedShowtime.date,
       time: selectedShowtime.time,
-
     }));
-
-    try {
-      const result = await Booking.creatBooking(selectedShowtime);
-      // console.log("idtestttt", detailUser.id);
-      setCurrent(3);    
-    } catch (error) {
-      console.error("Error booking:", error);
-    }
-
     const qrCodeData = JSON.stringify({
       title: detail?.title,
       theater: selectedShowtime.theater,
@@ -353,6 +345,24 @@ const BookTicker: React.FC = () => {
       user_id: detailUser?.id,
     });
     setQRCodeData(qrCodeData);
+
+    try {
+      const result = await Booking.creatBooking(selectedShowtime);
+      const createdBookingId = result.data.bookings.id;
+      setBookingId(createdBookingId);
+      console.log("idbookig", result.data.bookings.id);
+
+      const ticketData = {
+        booking_id: createdBookingId,
+        qrCode: qrCodeData,
+      };
+
+      const ticketResult = await Ticket.createTicket(ticketData);
+      console.log("ticket", ticketResult);
+      setCurrent(3);
+    } catch (error) {
+      console.error("Error booking:", error);
+    }
     console.log("step2", selectedShowtime);
     const editSeatPromises = selectedSeatIds.map((seatId) =>
       editSeat(seatId, 1)
@@ -367,6 +377,9 @@ const BookTicker: React.FC = () => {
 
     console.log("step2", selectedShowtime);
   };
+
+  //step 4
+  // const [showQRCode, setShowQRCode] = useState(false);
 
   const steps = [
     {
@@ -694,17 +707,27 @@ const BookTicker: React.FC = () => {
       title: "Đặt vé thành công",
       content: (
         <div className={styles.step_1}>
-          <div className={styles.qrcode}>
-            {/* Các nội dung khác của Bước 4 */}
-            <p className={styles.qrcode_title}>Mã vé </p>
+          <Row>
+            {/* <Col span={9}>
+              <p> Chọn Phương Thức Thanh Toán </p>
+              <Button onClick={() => setShowQRCode(true)}>Xác nhận</Button>
+            </Col> */}
+            <Col span={15}>
+              {/* {showQRCode && ( */}
+                <div className={styles.qrcode}>
+                  {/* Các nội dung khác của Bước 4 */}
+                  <p className={styles.qrcode_title}>Mã vé </p>
 
-            <QRCode className={styles.qrcode_text} value={qrCodeData} />
+                  <QRCode className={styles.qrcode_text} value={qrCodeData} />
 
-            <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
-            <Link href={"/lichsu"}>
-              <p className={styles.history}> Xem Lịch Sử</p>
-            </Link>
-          </div>
+                  <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
+                  <Link href={"/lichsu"}>
+                    <p className={styles.history}>Xem Lịch Sử</p>
+                  </Link>
+                </div>
+              {/* )} */}
+            </Col>
+          </Row>
         </div>
       ),
     },
