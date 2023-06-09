@@ -712,7 +712,7 @@ const BookTicker: React.FC = () => {
               <p> Chọn Phương Thức Thanh Toán </p>
               <Button onClick={() => setShowQRCode(true)}>Xác nhận</Button>
             </Col> */}
-            <Col span={15}>
+            <Col span={24}>
               {/* {showQRCode && ( */}
                 <div className={styles.qrcode}>
                   {/* Các nội dung khác của Bước 4 */}

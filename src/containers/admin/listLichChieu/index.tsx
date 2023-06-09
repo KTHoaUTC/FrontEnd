@@ -1,24 +1,44 @@
 // import ShowTime from "@/apis/showtime";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Popconfirm, Skeleton, Space, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import { useEffect, useState } from "react";
-
-import styles from "./style.module.scss";
+import Movie from "@/apis/movie";
+import Theater from "@/apis/rap";
 import Room from "@/apis/room";
 import ShowTimeApi from "@/apis/showtime";
-import Theater from "@/apis/rap";
-import ModalAddShowTime from "./createTheater";
-import Movie from "@/apis/movie";
+import { DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Input,
+  Popconfirm,
+  Row,
+  Skeleton,
+  Space,
+  Table,
+} from "antd";
+import type { ColumnsType } from "antd/es/table";
+import type { Dayjs } from "dayjs";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import ModalAddShowTime from "./createTheater";
+import styles from "./style.module.scss";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 // import ModalAddRoom from "./createTheater";
 
-export default function ShowTime({}: any, props: any) {
-  const [listTheaters, setListTheaters] = useState<AdminCore.ShowTime[] | any>(
-    []
-  );
-  const [isLoading, setIsLoading] = useState(true);
+const { RangePicker } = DatePicker;
 
+type RangeValue = [Dayjs | null, Dayjs | null] | null;
+
+export default function ShowTime({}: any, props: any) {
+  const [listShowTimes, setListShowTimes] = useState<
+    AdminCore.ShowTime[] | any
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [dates, setDates] = useState<RangeValue>(null);
+  const [showAll, setShowAll] = useState(false);
+  const [filteredShowTimes, setFilteredShowTimes] = useState<
+    AdminCore.ShowTime[] | any
+  >([]);
   useEffect(() => {
     fetchTheaters();
   }, []);
@@ -26,7 +46,7 @@ export default function ShowTime({}: any, props: any) {
   const fetchTheaters = async () => {
     try {
       const response = await ShowTimeApi.getAllShowTimes("ALL");
-      setListTheaters(
+      setListShowTimes(
         response.showtimes?.map(
           (theater: {
             key: string;
@@ -49,7 +69,6 @@ export default function ShowTime({}: any, props: any) {
           })
         )
       );
-      // console.log(listTheaters);
     } catch (e) {
     } finally {
       setIsLoading(false);
@@ -74,7 +93,6 @@ export default function ShowTime({}: any, props: any) {
       try {
         const response = await Theater.getAll("ALL");
         setTheaterList(response.theaters);
-        // console.log("dsdsdata", theaterList);
       } catch (e) {}
     })();
   }, []);
@@ -89,11 +107,18 @@ export default function ShowTime({}: any, props: any) {
       } catch (e) {}
     })();
   }, []);
-
+ 
+  useEffect(() => {
+    if (showAll) {
+      setFilteredShowTimes(listShowTimes);
+    } else {
+      setFilteredShowTimes(listShowTimes.slice(0, 10));
+    }
+  }, [showAll, listShowTimes]);
   const handleDelete = async (id: number) => {
     await Room.deleteRoom(id);
-    setListTheaters(
-      listTheaters.filter((item: { id: number }) => item.id !== id)
+    setListShowTimes(
+      listShowTimes.filter((item: { id: number }) => item.id !== id)
     );
   };
   const formattedDate = (date: Date) => {
@@ -131,7 +156,6 @@ export default function ShowTime({}: any, props: any) {
       title: "Phòng Chiếu",
       dataIndex: "phongchieu_id",
       key: "phongchieu_id",
-      // width: "40%",
       render: (roomId) => {
         const room = roomList.find((room) => room.id === roomId);
         return room ? room.name : null;
@@ -142,7 +166,6 @@ export default function ShowTime({}: any, props: any) {
       title: "Ngày Chiếu",
       dataIndex: "ngay_chieu",
       key: "ngay_chieu",
-      // width: "25%",
       align: "center",
       render: (date: Date) => formattedDate(date),
     },
@@ -157,7 +180,6 @@ export default function ShowTime({}: any, props: any) {
       title: "Giá Vé",
       dataIndex: "money",
       key: "money",
-      // width: "25%",
     },
 
     {
@@ -167,12 +189,6 @@ export default function ShowTime({}: any, props: any) {
       width: "10%",
       render: (_, record: any) => (
         <Space size="middle">
-          <a>
-            {/* <ModalEditTheater
-              onSuccess={fetchTheaters}
-              currentTheater={null}
-            ></ModalEditTheater> */}
-          </a>
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={() => handleDelete(record.id)}
@@ -192,17 +208,95 @@ export default function ShowTime({}: any, props: any) {
   if (isLoading) {
     return <Skeleton active> </Skeleton>;
   }
+
+  const disabledDate = (current: Dayjs) => {
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], "days") >= 30;
+    const tooEarly = dates[1] && dates[1].diff(current, "days") >= 30;
+    return !!tooEarly || !!tooLate;
+  };
+
+  const onSearch = async () => {
+    if (dates) {
+      const startDate = dates[0]?.format("YYYY-MM-DD") || "";
+      const endDate = dates[1]?.format("YYYY-MM-DD") || "";
+      try {
+        if (showAll) {
+          const showtimes = await ShowTimeApi.getAllShowTimes("ALL");
+          setFilteredShowTimes(showtimes);
+        } else {
+          const showtimes = await ShowTimeApi.searchAll(startDate, endDate);
+          setFilteredShowTimes(showtimes);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+
+  const handleCheckboxChange = (e: CheckboxChangeEvent) => {
+    setShowAll(e.target.checked);
+  };
+
   return (
     <>
-      <h1 className={styles.title}>Danh Sách Lịch Chiếu Phim</h1>
+      <Row>
+        <Col className={styles.col_left} span={7}>
+          <p>Tìm kiếm theo ngày khởi chiếu: </p>
+          <div className={styles.search_date}>
+            <RangePicker
+              size="large"
+              value={dates}
+              disabledDate={disabledDate}
+              onChange={setDates}
+              onCalendarChange={setDates}
+              onOpenChange={(open) => {
+                if (!open) {
+                  onSearch();
+                }
+              }}
+              placeholder={["Từ Ngày", "Đến Ngày"]} // Set the placeholder values
+              changeOnBlur
+            />
+            {/* <Button size="large" onClick={onSearch}>
+              <SearchOutlined />
+            </Button> */}
+          </div>
+        </Col>
+
+        <Col offset={3}>
+          <h1 className={styles.title}>Danh Sách Lịch Chiếu Phim</h1>
+        </Col>
+      </Row>
 
       <ModalAddShowTime onSuccess={fetchTheaters}></ModalAddShowTime>
-      <Table
-        bordered
-        className={styles.table_list}
-        columns={columns}
-        dataSource={listTheaters}
-      />
+      <div className={styles.checkbox}>
+        <div>
+          <Checkbox checked={showAll} onChange={handleCheckboxChange}>
+            Hiển thị toàn bộ danh sách
+          </Checkbox>
+        </div>
+      </div>
+      {isLoading ? (
+        <Skeleton active />
+      ) : (
+        <Table
+          bordered
+          className={styles.table_list}
+          columns={columns}
+          dataSource={filteredShowTimes}
+          rowKey="id"
+          pagination={{
+            pageSize: 10,
+          }}
+          scroll={{
+            x: 1000,
+          }}
+        />
+      )}
     </>
   );
 }

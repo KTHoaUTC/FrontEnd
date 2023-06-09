@@ -9,6 +9,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { useRouter } from "next/router";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const { Sider } = Layout;
 
@@ -33,15 +36,15 @@ const items: MenuItem[] = [
     "Trang Chủ",
     "1",
     <Link href={"/trangchu"}>
-      <PieChartOutlined />
+      <i className="fas fa-home"></i>
     </Link>
   ),
-  getItem("User", "sub1", <UserOutlined />, [
+  getItem("QL Tài Khoản", "sub1", <UserOutlined />, [
     getItem(
       "QL Nhân Viên",
       "2",
       <Link href={"/listNhanVien"}>
-        <UserOutlined />
+        <i className="fas fa-person"></i>
       </Link>
     ),
     getItem(
@@ -52,14 +55,15 @@ const items: MenuItem[] = [
       </Link>
     ),
   ]),
-  getItem("QL Phim", "sub2", <DesktopOutlined />, [
+  getItem("QL Phim", "sub2", <i className="fas fa-film"></i>, [
     getItem(
       "QL Phim",
       "4",
       <Link href={"/listPhim"}>
-        <DesktopOutlined />
+        <i className="fas fa-video"></i>
       </Link>
     ),
+
     getItem(
       "QL Thể Loại",
       "5",
@@ -74,28 +78,28 @@ const items: MenuItem[] = [
       "QL Lịch Chiếu Phim",
       "6",
       <Link href={"/listShowTime"}>
-        <FileOutlined />
+        <i className="fas fa-calendar"></i>
       </Link>
     ),
     getItem(
       "QL Phòng Chiếu",
       "7",
       <Link href={"/listRoom"}>
-        <FileOutlined />
+        <i className="fas fa-trailer"></i>
       </Link>
     ),
     getItem(
       "QL Rạp",
       "8",
       <Link href={"/listRap"}>
-        <FileOutlined />
+        <i className="fas fa-shop"></i>
       </Link>
     ),
     getItem(
       "QL Ghế",
       "9",
       <Link href={"/listSeat"}>
-        <FileOutlined />
+        <i className="fas fa-chair"></i>
       </Link>
     ),
   ]),
@@ -103,14 +107,14 @@ const items: MenuItem[] = [
     "Hóa Đơn Đặt Vé",
     "10",
     <Link href={"/listBook"}>
-      <FileOutlined />
+      <i className="fas fa-wallet"></i>
     </Link>
   ),
   getItem(
     "Bình Luận",
     "11",
     <Link href={"/listComment"}>
-      <FileOutlined />
+      <i className="fas fa-regular fa-comment"></i>
     </Link>
   ),
 ];

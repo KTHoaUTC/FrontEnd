@@ -1,9 +1,15 @@
+@import '../../styles/mixin';
+
 .contanier {
     height: 100vh;
     background-image: url(../../../public/Sneaker_20Store.jpg);
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @include screen_sm {
+        background-image: none;
+    }
 
     .login {
         margin: auto;
@@ -18,7 +24,19 @@
         text-align: center;
         padding-top: 2rem;
 
+        @include screen_sm {
+            width: 100%;
+            height: 65%;
+            border: none;
+            display: flex;
+        }
+
         .imgLogin {
+            @include screen_sm {
+                background-color: #d1b0b0;
+                order: 1;
+            }
+
             margin-left: 1rem;
             object-fit: cover;
 
@@ -28,7 +46,14 @@
             }
         }
 
+
+
         .context {
+            @include screen_sm {
+                background-color: #d1b0b0;
+                order: 2;
+            }
+
             .title {
                 text-align: center;
                 font-style: normal;
@@ -120,11 +145,13 @@
         color: red;
     }
 }
-.vadidate{
+
+.vadidate {
     float: left;
 }
-.text_error{
+
+.text_error {
     color: rgb(202, 55, 55);
-    
+
     margin-top: 1rem;
 }

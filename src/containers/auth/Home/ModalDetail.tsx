@@ -14,7 +14,6 @@ interface ModalDetailProps {
 const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
   const [open, setOpen] = useState(false);
   const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
-
   const [detail, setDetail] = useState<AdminCore.Movie[] | any>([]);
 
   useEffect(() => {
@@ -103,7 +102,6 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
             <Link legacyBehavior href={`/movie?id=${detail.id}`}>
               <p className={styles.content1} >Xem Thêm</p>
             </Link>
-            {/* <p className={styles.content1}>Xem Thêm</p> */}
           </Row>
         </div>
       </Modal>

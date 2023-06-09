@@ -26,10 +26,17 @@ const editShowTime = (updateData: any) => {
     updateData
   );
 };
+const searchAll = async (keyStart: any, keyEnd: any) => {
+  const response = await axios.get(
+    `http://localhost:8888/gateway/api/v1/searcherDate?startDate=${keyStart}&endDate=${keyEnd}`
+  );
+  return response.data;
+};
 const ShowTimeApi = {
   getAllShowTimes,
   creatShowTime,
   deleteShowTime,
   editShowTime,
+  searchAll,
 };
 export default ShowTimeApi;

@@ -1,14 +1,16 @@
-import { Button, Card, Divider, List } from "antd";
-import React, { useEffect, useState } from "react";
-import styles from "./style.module.scss";
-import ModalDetail from "./ModalDetail";
-import Link from "next/link";
 import Movie from "@/apis/movie";
+import { Button, Card, List } from "antd";
+import Link from "next/link";
+import React, { useContext, useEffect, useState } from "react";
+import ModalDetail from "./ModalDetail";
+import styles from "./style.module.scss";
+import UserContext from "@/contexts/context";
 const { Meta } = Card;
 
 const ListMovieStop: React.FC = () => {
   const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { id, setId } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {

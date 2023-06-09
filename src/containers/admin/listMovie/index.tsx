@@ -1,9 +1,10 @@
-import User from "@/apis/auth";
+import Genre from "@/apis/genre";
+import Movie from "@/apis/movie";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import {
-  Avatar,
   Button,
   Col,
+  Image,
   Input,
   Modal,
   Popconfirm,
@@ -13,23 +14,23 @@ import {
   Table,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import moment from "moment";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
-import Movie from "@/apis/movie";
-import Genre from "@/apis/genre";
-import moment from "moment";
 const { Search } = Input;
 
 export default function Phim({}: any, props: any) {
-  const [listUsers, setListUsers] = useState<AdminCore.Movie[] | any>([]);
+  const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResultCount, setSearchResultCount] = useState(0);
 
   useEffect(() => {
     (async () => {
       try {
         const response = await Movie.getAll("ALL");
-        setListUsers(
+        setListMovies(
           response.movies?.map(
             (account: {
               key: string;
@@ -88,7 +89,7 @@ export default function Phim({}: any, props: any) {
   };
   const handleDelete = async (id: number) => {
     await Movie.deleteMoive(id);
-    setListUsers(listUsers.filter((item: { id: number }) => item.id !== id));
+    setListMovies(listMovies.filter((item: { id: number }) => item.id !== id));
   };
   const formattedDate = (date: Date) => {
     return moment(date).format("DD/MM/YYYY");
@@ -206,19 +207,37 @@ export default function Phim({}: any, props: any) {
   if (isLoading) {
     return <Skeleton active> </Skeleton>;
   }
+
+  const handleSearch = async () => {
+    try {
+      const movies = await Movie.searchAll(searchTerm);
+      setListMovies(movies);
+      setSearchResultCount(movies.length);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // const resultCount = listMovies.length;
   return (
     <>
       <Row>
         <Col className={styles.col_left} span={7}>
           <Search
             size="large"
-            placeholder="Nhập tìm kiếm"
-            // onSearch={onSearch}
-            enterButton
+            className={styles.search}
+            placeholder="Nhập tên bộ phim, diễn viên"
+            allowClear
+            onSearch={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
           />
+          {searchResultCount > 0 && (
+            <p>Số kết quả tìm kiếm: {searchResultCount}</p>
+          )}
         </Col>
+
         <Col offset={3}>
-          <h1 className={styles.title}> Danh Sách Phim</h1>
+          <h1 className={styles.title}>Danh Sách Phim</h1>
         </Col>
       </Row>
 
@@ -242,46 +261,58 @@ export default function Phim({}: any, props: any) {
         <p>
           Nội Dung: <span>{selectedMovie?.description} </span>
         </p>
-        <p>
-          Ngày Khởi Chiếu:{" "}
-          <span>
-            {selectedMovie
-              ? moment(selectedMovie.day_start).format("DD/MM/YYYY")
-              : ""}
-          </span>
-        </p>
-        <p>
-          Trạng Thái:{" "}
-          <span>{selectedMovie ? renderStatus(selectedMovie.status) : ""}</span>
-        </p>
-
-        <p>
-          Đạo Diễn: <span> {selectedMovie?.release_date}</span>
-        </p>
-        <p>
-          Quốc Gia: <span> {selectedMovie?.countries}</span>
-        </p>
-        <p>
-          Thể Loại:{" "}
-          <span>
-            {selectedMovie
-              ? genreList.find((genre) => genre.id === selectedMovie.genres_id)
-                  ?.name
-              : ""}
-          </span>
-        </p>
-        <p>
-          Thời Lượng: <span>{selectedMovie?.run_time} phút </span>
-        </p>
-        <p>
-          Diễn Viên: <span> {selectedMovie?.director}</span>{" "}
-        </p>
+        <Row>
+          <Col span={12}>
+            {" "}
+            <p>
+              Ngày Khởi Chiếu:{" "}
+              <span>
+                {selectedMovie
+                  ? moment(selectedMovie.day_start).format("DD/MM/YYYY")
+                  : ""}
+              </span>
+            </p>
+            <p>
+              Trạng Thái:{" "}
+              <span>
+                {selectedMovie ? renderStatus(selectedMovie.status) : ""}
+              </span>
+            </p>
+            <p>
+              Đạo Diễn: <span> {selectedMovie?.release_date}</span>
+            </p>
+            <p>
+              Quốc Gia: <span> {selectedMovie?.countries}</span>
+            </p>
+            <p>
+              Thể Loại:{" "}
+              <span>
+                {selectedMovie
+                  ? genreList.find(
+                      (genre) => genre.id === selectedMovie.genres_id
+                    )?.name
+                  : ""}
+              </span>
+            </p>
+            <p>
+              Thời Lượng: <span>{selectedMovie?.run_time} phút </span>
+            </p>
+            <p>
+              Diễn Viên: <span> {selectedMovie?.director}</span>{" "}
+            </p>
+          </Col>
+          <Col offset={2} span={10}>
+            <div>
+              <Image height={350} src={selectedMovie?.poster_url}></Image>
+            </div>
+          </Col>
+        </Row>
       </Modal>
       <Table
         bordered
         className={styles.table_list}
         columns={columns}
-        dataSource={listUsers}
+        dataSource={listMovies}
       />
     </>
   );
