@@ -1,5 +1,9 @@
+@import '../../styles/mixin';
+
 .img_header {
     margin-left: 10rem;
+
+
 }
 
 .row_header {
@@ -15,12 +19,24 @@
         justify-content: center;
         display: flex;
         align-items: center;
+
+        @include screen_md {
+            width: 50% !important;
+        }
+
+        .img {
+            @include screen_md {
+                width: 40% !important;
+                margin-left: -3rem;
+            }
+        }
     }
 
     .center {
         justify-content: center;
         display: flex;
         align-items: center;
+
 
         ul {
             display: flex;
@@ -29,9 +45,16 @@
             li {
                 font-size: 1.4rem;
                 padding-right: 2rem;
-                a{
+
+                @include screen_md {
+                    font-size: 1rem;
+                    padding-right: 1rem;
+                }
+
+                a {
                     color: rgb(214, 22, 22);
-                    &:hover{
+
+                    &:hover {
                         color: white;
                     }
                 }
@@ -40,20 +63,75 @@
     }
 
     .right {
+        @include screen_md {
+            margin-left: -1rem;
+        }
+
+        .row_info {
+            .col_info {
+                align-items: center;
+                align-content: center;
+                display: flex;
+
+                .dropdown_header {
+
+                    @include screen_md {}
+
+                    .name {
+                        font-size: 1.2rem;
+
+                        @include screen_md {
+                            margin-left: -3rem;
+                            width: 170%;
+                            font-size: 0.8rem !important;
+                        }
+                    }
+                }
+            }
+
+            .btn_login_auth {
+                @include screen_md {
+                    padding: 0 0.5rem;
+                    margin-left: 0.9rem;
+                    height: 1.8rem;
+                    font-size: 0.9rem !important;
+                }
+            }
+        }
+
+        display: flex;
+
         .btn_login_auth {
             height: 2.5rem;
             border: 1px solid rgb(216, 108, 108);
             margin-right: 3rem;
             padding: 0 2rem;
             font-size: 1.1rem;
+
+            @include screen_md {
+                padding: 0 0.5rem;
+                margin-right: 1rem;
+                font-size: 1rem;
+            }
         }
 
-        .btn_logout_auth {
-            height: 2.5rem;
-            border: 1px solid rgb(216, 108, 108);
-            padding: 0 2rem;
-            font-size: 1.1rem;
+        .btn {
+            .btn_logout_auth {
+                height: 2.5rem;
+                border: 1px solid rgb(216, 108, 108);
+                padding: 0 2rem;
+                font-size: 1.1rem;
+                margin-left: 15rem;
+
+
+                @include screen_md {
+                    padding: 0 1rem;
+                    font-size: 1rem;
+                    margin-left: 5rem;
+                }
+            }
         }
+
     }
 }
 
@@ -62,12 +140,21 @@
     color: rgb(2, 2, 2);
     background-color: rgb(129, 209, 209);
 
+    @include screen_sm {
+        // background-color: red;
+    }
+
     .footer_row {
         margin-bottom: 4rem;
         margin-top: 3rem;
         list-style-type: none;
 
         .left {
+            @include screen_sm {
+                display: none;
+                // background-color: red;
+            }
+
             ul {
 
                 list-style-type: none;
@@ -85,16 +172,27 @@
                     text-transform: capitalize;
                 }
             }
+
         }
 
         .center {
             text-align: center;
             align-items: center;
 
+            @include screen_sm {
+                width: 100% !important;
+            }
+
             p {
+
                 font-size: 1.4rem;
                 padding-bottom: 2rem;
                 text-transform: uppercase;
+
+                @include screen_sm {
+                    width: 350%;
+                    margin-left: -2rem;
+                }
             }
 
             ul {
@@ -104,18 +202,39 @@
                 justify-content: center;
                 list-style-type: none;
 
+                @include screen_sm {
+                    width: 300%;
+
+                }
+
                 li {
                     font-size: 2rem;
                     padding-left: 1rem;
                     text-align: center;
                     align-items: center;
                     display: flex;
+
+                    @include screen_sm {}
+                }
+            }
+
+            .img {
+                @include screen_sm {
+                    text-align: center;
+                    align-items: center;
+                    margin-left: 3.5rem;
+
                 }
             }
 
         }
 
         .right {
+            @include screen_sm {
+                display: none;
+                // background-color: red;
+            }
+
             ul {
                 list-style-type: none;
                 padding-left: 8rem;

@@ -1,3 +1,5 @@
+@import '../../../styles/mixin';
+
 .title {
     text-align: center;
     margin-top: 7rem;
@@ -44,76 +46,73 @@
     margin-right: 5rem;
 }
 
-.tabs {
-    margin-top: 2rem;
 
-    div:nth-child(1) {
-        margin-top: 0 !important;
+
+.list_search {
+    @include screen_sm {
+        width: 100%;
+        margin-left: -4rem;
     }
 
-    p:nth-child(1) {
-        font-size: 1.3rem !important;
+    .list {
+        margin: 2rem 4rem !important;
+        white-space: pre-line;
 
-    }
-}
-
-.carousel_img {
-    margin-top: 4.5rem;
-
-    div:nth-child(1) {
-        text-align: center;
-        align-items: center;
-        display: flex !important;
-        justify-content: center;
-        background-size: cover;
-    }
-
-    .img {
-        background-size: cover;
-        // width: 100%;
-        // height: 100%;
-        object-fit: cover;
-        background-size: cover;
-    }
-}
-
-.list {
-    margin: 2rem 4rem !important;
-    white-space: pre-line;
-
-    .card_item {
-        .meta {
-            margin-bottom: 2rem;
-            font-size: 3rem !important;
-            text-align: center;
+        @include screen_sm {
+            width: 100%;
         }
-    }
 
-
-
-    .btnMovie {
-        text-align: center;
-
-
-        .book_ticket {
-            margin-left: 1rem;
-            background-color: rgb(185, 65, 65);
-            text-align: right;
-            justify-items: right;
-            padding: 0rem 2rem;
-            height: 3rem;
-            color: rgb(204, 218, 230);
-            font-size: 1.4rem;
-            border: none;
-
-            &:hover {
-                background-color: rgb(99, 75, 204);
+        .card_item {
+            .meta {
+                margin-bottom: 2rem;
+                font-size: 3rem !important;
+                text-align: center;
             }
         }
 
-    }
 
+
+        .btnMovie {
+            text-align: center;
+
+            @include screen_sm {
+                width: 150%;
+                margin: 0 auto;
+                text-align: center;
+                align-items: center;
+                margin-left: -3rem;
+            }
+
+            .book_ticket {
+                margin-left: 1rem;
+                background-color: rgb(185, 65, 65);
+                text-align: right;
+                justify-items: right;
+                padding: 0rem 2rem;
+                height: 3rem;
+                color: rgb(204, 218, 230);
+                font-size: 1.4rem;
+                border: none;
+
+                &:hover {
+                    background-color: rgb(99, 75, 204);
+                }
+
+                @include screen_sm {
+
+                    font-size: 1rem;
+                    padding: 0 0.5rem;
+                    margin: 0 auto;
+                    margin-right: 0.5rem;
+                    height: 2rem;
+                }
+            }
+
+        }
+
+    }
 }
+
 
 //modal detail 
 .modal_detail {
@@ -209,66 +208,14 @@
 }
 
 
-
-
-.btn_date {
-    height: 3rem;
-    font-size: 1.2rem;
-    border: 1px solid;
-    color: rgb(211, 39, 39);
-    margin-bottom: 1rem;
-    padding: 0 2rem;
-}
-
-.btn_time {
-    margin-left: 5rem !important;
-    margin-bottom: 1rem;
-    height: 2.5rem;
-    padding: 0 2rem;
-    font-size: 1.2rem;
-    border: 1px solid;
-    color: rgb(202, 118, 39);
-
-    &:hover {
-        background-color: rgb(221, 77, 77);
-        color: white;
-    }
-}
-
-.selected {
-    background-color: rgb(221, 77, 77);
-    color: white;
-}
-
-.qrcode {
-    text-align: center;
-    margin: 2rem auto;
-
-    .qrcode_title {
-        font-size: 3rem;
-        font-weight: 600;
-        color: rgb(235, 23, 23);
-    }
-
-    .qrcode_text {
-        width: 50%;
-        height: 50%;
-        font-size: 5rem;
-    }
-
-    p {
-        margin-top: 2rem;
-        font-size: 1.3rem;
-        margin-bottom: 2rem;
-    }
-
-}
-
 .search {
     align-items: center;
     width: 50%;
-    // height: 5rem;
 
+    @include screen_sm {
+        width: 100%;
+        margin-top: 2rem;
+    }
 
 }
 
@@ -277,12 +224,19 @@
     font-size: 2.3rem;
     font-weight: 600;
 
+    @include screen_sm {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
 }
 
 .none_movie {
-
     color: rgb(201, 74, 74);
     margin-top: 3rem;
     margin-bottom: 3rem;
     font-size: 3rem;
+    @include screen_sm{
+        font-size: 1rem;
+        margin: 1rem 0;
+    }
 }

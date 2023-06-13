@@ -60,8 +60,8 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
         width={1300}
       >
         <div>
-          <Row>
-            <Col span="12">
+          <Row className={styles.row_model}>
+            <Col span="12" className={styles.col_trailer}>
               <Player>
                 <source src={detail.trailer_url} />
               </Player>
@@ -100,7 +100,7 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
           </Row>
           <Row>
             <Link legacyBehavior href={`/movie?id=${detail.id}`}>
-              <p className={styles.content1} >Xem Thêm</p>
+              <p className={styles.content1}>Xem Thêm</p>
             </Link>
           </Row>
         </div>

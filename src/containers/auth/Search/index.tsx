@@ -88,47 +88,50 @@ const ListMovieStop: React.FC = () => {
         {listMovies.length > 0 ? (
           <>
             <p className={styles.list_movie_}>Danh Sách Các Bộ Phim</p>
+            <div className={styles.list_search}>
+              <List
+                className={styles.list}
+                grid={{
+                  gutter: 16,
+                  xs: 1,
+                  sm: 2,
+                  md: 4,
+                  lg: 4,
+                  xl: 6,
+                  xxl: 3,
+                }}
+                pagination={{
+                  onChange: (page) => {
+                    console.log(page);
+                  },
+                  pageSize: 9,
+                }}
+                dataSource={listMovies}
+                renderItem={(item: any) => (
+                  <List.Item key={item.id}>
+                    <Card
+                      className={styles.card_item}
+                      hoverable
+                      cover={<img alt="example" src={item.image_url} />}
+                    >
+                      <Meta
+                        className={styles.meta}
+                        title={
+                          <p style={{ fontSize: "1.3rem" }}>{item.title}</p>
+                        }
+                      />
+                      <div className={styles.btnMovie}>
+                        <ModalDetail movieId={item.id}></ModalDetail>
 
-            <List
-              className={styles.list}
-              grid={{
-                gutter: 16,
-                xs: 1,
-                sm: 2,
-                md: 4,
-                lg: 4,
-                xl: 6,
-                xxl: 3,
-              }}
-              pagination={{
-                onChange: (page) => {
-                  console.log(page);
-                },
-                pageSize: 9,
-              }}
-              dataSource={listMovies}
-              renderItem={(item: any) => (
-                <List.Item key={item.id}>
-                  <Card
-                    className={styles.card_item}
-                    hoverable
-                    cover={<img alt="example" src={item.image_url} />}
-                  >
-                    <Meta
-                      className={styles.meta}
-                      title={<p style={{ fontSize: "1.3rem" }}>{item.title}</p>}
-                    />
-                    <div className={styles.btnMovie}>
-                      <ModalDetail movieId={item.id}></ModalDetail>
-
-                      <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
-                        <Button className={styles.book_ticket}>Đặt Vé</Button>
-                      </Link>
-                    </div>
-                  </Card>
-                </List.Item>
-              )}
-            />
+                        <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
+                          <Button className={styles.book_ticket}>Đặt Vé</Button>
+                        </Link>
+                      </div>
+                    </Card>
+                  </List.Item>
+                )}
+              />
+            </div>
           </>
         ) : (
           <>
@@ -136,46 +139,49 @@ const ListMovieStop: React.FC = () => {
               Từ khóa " {searchTerm}" Không Tồn Tại
             </p>
             <p className={styles.list_movie_}>Danh Sách Các Bộ Phim</p>
-
-            <List
-              className={styles.list}
-              grid={{
-                gutter: 16,
-                xs: 1,
-                sm: 2,
-                md: 4,
-                lg: 4,
-                xl: 6,
-                xxl: 3,
-              }}
-              pagination={{
-                onChange: (page) => {
-                  console.log(page);
-                },
-                pageSize: 6,
-              }}
-              dataSource={originalListMovies}
-              renderItem={(item: any) => (
-                <List.Item key={item.id}>
-                  <Card
-                    className={styles.card_item}
-                    hoverable
-                    cover={<img alt="example" src={item.image_url} />}
-                  >
-                    <Meta
-                      className={styles.meta}
-                      title={<p style={{ fontSize: "2.5rem" }}>{item.title}</p>}
-                    />
-                    <div className={styles.btnMovie}>
-                      <ModalDetail movieId={item.id}></ModalDetail>
-                      <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
-                        <Button className={styles.book_ticket}>Đặt Vé</Button>
-                      </Link>
-                    </div>
-                  </Card>
-                </List.Item>
-              )}
-            />
+            <div className={styles.list_search}>
+              <List
+                className={styles.list}
+                grid={{
+                  gutter: 16,
+                  xs: 1,
+                  sm: 2,
+                  md: 4,
+                  lg: 4,
+                  xl: 6,
+                  xxl: 3,
+                }}
+                pagination={{
+                  onChange: (page) => {
+                    console.log(page);
+                  },
+                  pageSize: 6,
+                }}
+                dataSource={originalListMovies}
+                renderItem={(item: any) => (
+                  <List.Item key={item.id}>
+                    <Card
+                      className={styles.card_item}
+                      hoverable
+                      cover={<img alt="example" src={item.image_url} />}
+                    >
+                      <Meta
+                        className={styles.meta}
+                        title={
+                          <p style={{ fontSize: "1.3rem" }}>{item.title}</p>
+                        }
+                      />
+                      <div className={styles.btnMovie}>
+                        <ModalDetail movieId={item.id}></ModalDetail>
+                        <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
+                          <Button className={styles.book_ticket}>Đặt Vé</Button>
+                        </Link>
+                      </div>
+                    </Card>
+                  </List.Item>
+                )}
+              />
+            </div>
           </>
         )}
       </div>

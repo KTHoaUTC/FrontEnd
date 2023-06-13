@@ -113,6 +113,7 @@ const HistoryMovie: React.FC = () => {
                 </div>
               }
             >
+              
               <List.Item.Meta
                 avatar={<Avatar src={getMovieImage(booking.movie_id)} />}
                 title={<a href="#">{getMovieName(booking.movie_id)}</a>}

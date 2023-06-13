@@ -13,27 +13,16 @@ const contentStyle: React.CSSProperties = {
 const SlideHome: React.FC = () => (
   <Carousel autoplay className={styles.carousel_img}>
     <div className={styles.img}>
-      <img
-        className={styles.img}
-        src="/banner1807.jpg"
-        style={{ width: "1700px", height: "800px" }}
-      ></img>
-    </div>
-
-    <div>
-      <img
-        src="/bannere1.jpg"
-        style={{ width: "1700px", height: "800px" }}
-      ></img>
+      <img className={styles.img} src="/banner1807.jpg"></img>
     </div>
     <div>
-      <img
-        src="/posterphim.jpg"
-        style={{ width: "1700px", height: "800px" }}
-      ></img>
+      <img className={styles.img} src="/bannere1.jpg"></img>
     </div>
     <div>
-      <img src="/Joker.jpg" style={{ width: "1700px", height: "800px" }}></img>
+      <img className={styles.img} src="/posterphim.jpg"></img>
+    </div>
+    <div>
+      <img src="/Joker.jpg" className={styles.img}></img>
     </div>
   </Carousel>
 );

@@ -1,6 +1,12 @@
+@import '../../../styles/mixin';
+
 .title {
     text-align: center;
     margin-top: 7rem;
+
+    @include screen_sm {
+        margin-top: 6rem;
+    }
 }
 
 .list_history {
@@ -22,17 +28,23 @@
     margin: 2rem auto;
     width: 50%;
 
+    @include screen_sm {
+        width: 90%;
+    }
+
     .list_item {
         margin-top: 2rem;
         border: 1px solid rgb(214, 55, 55) !important;
         border-radius: 10px;
+
+        .list_qrCode {
+            width: 100% !important;
+            height: 100% !important;
+        }
     }
 }
 
-.list_qrCode {
-    width: 100% !important;
-    height: 100% !important;
-}
+
 
 .mess {
     text-align: center;

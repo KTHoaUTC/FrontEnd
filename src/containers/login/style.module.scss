@@ -24,6 +24,11 @@
         text-align: center;
         padding-top: 2rem;
 
+        @include screen_md {
+            width: 90%;
+            height: 40%;
+        }
+
         @include screen_sm {
             width: 100%;
             height: 65%;
@@ -33,8 +38,9 @@
 
         .imgLogin {
             @include screen_sm {
-                background-color: #d1b0b0;
-                order: 1;
+                order: 2;
+                margin-top: 1rem;
+                display: none;
             }
 
             margin-left: 1rem;
@@ -43,15 +49,13 @@
             .img {
                 object-fit: cover;
                 width: 95%;
+
             }
         }
 
-
-
         .context {
             @include screen_sm {
-                background-color: #d1b0b0;
-                order: 2;
+                order: 1;
             }
 
             .title {
@@ -61,11 +65,29 @@
                 font-size: 2.5rem;
                 line-height: 2rem;
                 color: #212121;
+
+                @include screen_md {
+
+                    font-size: 2rem;
+                }
+
+                @include screen_sm {
+                    margin-left: -9rem;
+                    margin-top: -2rem;
+                    font-size: 2rem;
+                    width: 250% !important;
+                }
             }
 
             .form {
                 padding: 0 1.5rem;
                 width: 100%;
+
+                @include screen_sm {
+                    margin-top: 2rem;
+                    width: 180%;
+                    margin-left: -5rem;
+                }
 
                 .form1 {
                     margin-top: 0.6rem;

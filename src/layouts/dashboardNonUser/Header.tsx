@@ -11,7 +11,7 @@ const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { id, setId } = useContext(UserContext);
-   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
     const isLoggedInStorage = localStorage.getItem("isLoggedIn");
@@ -26,7 +26,7 @@ const Header = () => {
       setId("");
     }
   }, [id, setId]);
- const [detail, setListUsers] = useState<AdminCore.User[] | any>([]);
+  const [detail, setListUsers] = useState<AdminCore.User[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
   console.log("iduser", id);
 
@@ -50,36 +50,36 @@ const Header = () => {
     router.push("/login");
   };
 
-    const items: MenuProps["items"] = [
-      {
-        key: "1",
-        label: (
-          <Link legacyBehavior href={"/auth/info"}>
-            <p className={styles.title_drop}>Thông tin </p>
-          </Link>
-        ),
-        icon: <SmileOutlined />,
-      },
-      {
-        key: "2",
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <Link legacyBehavior href={"/auth/info"}>
+          <p className={styles.title_drop}>Thông tin </p>
+        </Link>
+      ),
+      icon: <SmileOutlined />,
+    },
+    {
+      key: "2",
 
-        label: (
-          <Link legacyBehavior href={"/changePassword"}>
-            <p className={styles.title_drop}> Đổi mật khẩu </p>
-          </Link>
-        ),
+      label: (
+        <Link legacyBehavior href={"/changePassword"}>
+          <p className={styles.title_drop}> Đổi mật khẩu </p>
+        </Link>
+      ),
 
-        icon: <ToolOutlined />,
-      },
-    ];
+      icon: <ToolOutlined />,
+    },
+  ];
 
   return (
     <>
       <Row className={styles.row_header}>
-        <Col className={styles.left} span={8}>
-          <img src="/LogoMovie1.png"></img>
+        <Col className={styles.left} span={7}>
+          <img className={styles.img} src="/LogoMovie1.png"></img>
         </Col>
-        <Col className={styles.center} span={8}>
+        <Col className={styles.center} span={10}>
           <ul>
             <li>
               <Link legacyBehavior href="/auth">
@@ -105,26 +105,18 @@ const Header = () => {
             )}
           </ul>
         </Col>
-        <Col className={styles.right} span={8}>
+        <Col className={styles.right} span={7}>
           {isLoggedIn ? (
             <>
-              <Row>
-                <Col
-                  style={{
-                    textAlign: "center",
-                    alignItems: "center",
-                    alignContent: "center",
-                    display: "flex",
-                  }}
-                  span={15}
-                >
+              <Row className={styles.row_info}>
+                <Col className={styles.col_info} span={15}>
                   <Dropdown
                     className={styles.dropdown_header}
                     menu={{ items }}
                     trigger={["click"]}
                     overlayStyle={{
                       marginTop: dropdownVisible ? "10px" : "0px",
-                    }} 
+                    }}
                   >
                     <a onClick={(e) => e.preventDefault()}>
                       <Space className={styles.space}>
@@ -134,7 +126,10 @@ const Header = () => {
                           src={detail?.image}
                         />
 
-                        <p style={{ fontSize: "1.2rem" }}>
+                        <p
+                          className={styles.name}
+                          style={{ fontSize: "1.2rem" }}
+                        >
                           Xin Chào {detail?.last_name} {detail?.first_name}
                         </p>
                         <DownOutlined />
@@ -156,17 +151,19 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link legacyBehavior href="/login">
+              {/* <Link legacyBehavior href="/login">
                 <Button
                   className={styles.btn_login_auth}
                   onClick={handleLogout}
                 >
                   Đăng Nhập
                 </Button>
-              </Link>
-              <Link legacyBehavior href="/dangky">
-                <Button className={styles.btn_logout_auth}>Đăng Ký</Button>
-              </Link>
+              </Link> */}
+              <div className={styles.btn}>
+                <Link legacyBehavior href="/dangky">
+                  <Button className={styles.btn_logout_auth}>Đăng Ký</Button>
+                </Link>
+              </div>
             </>
           )}
         </Col>

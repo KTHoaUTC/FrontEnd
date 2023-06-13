@@ -1,12 +1,11 @@
 import Booking from "@/apis/booking";
+import Movie from "@/apis/movie";
+import { Line } from "@ant-design/charts";
 import { Col, Row, Statistic } from "antd";
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import styles from "./style.module.scss";
-import _ from "lodash";
-import Movie from "@/apis/movie";
-import { Bar } from "@ant-design/charts";
-import { Line } from "@ant-design/charts";
 
 const formatter = (value: any | number) => (
   <CountUp end={value} separator="," />
@@ -105,16 +104,7 @@ const AdminIndex: React.FC = () => {
 
   return (
     <>
-      <Row
-        style={{
-          marginTop: "2rem",
-          textAlign: "center",
-          margin: "2rem auto",
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <Row className={styles.chart}>
         <Col className={styles.doanhthu1} span={10}>
           <Statistic
             title={<p className={styles.title}>Tổng Doanh Thu</p>}
@@ -127,16 +117,7 @@ const AdminIndex: React.FC = () => {
         <Col className={styles.col_chart} span={20}>
           {monthlyRevenue.length > 0 && (
             <>
-              <Row
-                style={{
-                  marginTop: "2rem",
-                  textAlign: "center",
-                  margin: "2rem auto",
-                  alignItems: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
+              <Row className={styles.row}>
                 <Col span={24}>
                   <Line
                     data={monthlyRevenue}
@@ -147,7 +128,9 @@ const AdminIndex: React.FC = () => {
                   />
                 </Col>
               </Row>
-              <p className={styles.title_table}>Thống kê doanh thu theo từng tháng </p>
+              <p className={styles.title_table}>
+                Thống kê doanh thu theo từng tháng{" "}
+              </p>
             </>
           )}
         </Col>

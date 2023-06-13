@@ -1,3 +1,5 @@
+@import '../../../styles/mixin';
+
 .img_header {
     margin-left: 10rem;
 }
@@ -27,13 +29,28 @@
     }
 
     p:nth-child(1) {
-        font-size: 1.3rem !important;
+        font-size: 1.7rem !important;
 
+        @include screen_md {
+            font-size: 1rem !important;
+        }
+
+        @include screen_sm {
+            font-size: 1rem !important;
+        }
     }
+
+
 }
 
+
+//slide
 .carousel_img {
     margin-top: 4.5rem;
+
+    @include screen_md {
+        margin-top: 1.5rem;
+    }
 
     div:nth-child(1) {
         text-align: center;
@@ -45,10 +62,26 @@
 
     .img {
         background-size: cover;
-        // width: 100%;
-        // height: 100%;
+        width: 2000px;
+        height: 1000px;
         object-fit: cover;
         background-size: cover;
+
+        @include screen_md {
+            width: 880px;
+            background-size: cover;
+            object-fit: cover;
+            background-size: cover;
+            height: 500px;
+        }
+
+        @include screen_sm {
+            background-size: cover;
+            object-fit: cover;
+            background-size: cover;
+            width: 380px;
+            height: 300px;
+        }
     }
 }
 
@@ -61,14 +94,40 @@
             margin-bottom: 2rem;
             font-size: 3rem !important;
             text-align: center;
+
         }
+
+        .title_meta {
+            @include screen_md {
+                font-size: 0.7rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
     }
-
-
 
     .btnMovie {
         text-align: center;
 
+        @include screen_md {
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            margin-top: -1rem;
+            margin-left: -2rem;
+        }
+
+        @include screen_sm {
+            width: 150%;
+            margin: 0 auto;
+            text-align: center;
+            align-items: center;
+            margin-left: -3rem;
+        }
 
         .book_ticket {
             margin-left: 1rem;
@@ -84,6 +143,23 @@
             &:hover {
                 background-color: rgb(99, 75, 204);
             }
+
+
+            @include screen_md {
+                text-align: center;
+                align-items: center;
+                font-size: 0.7rem;
+                padding: 0 0.5rem;
+                height: 1.5rem;
+            }
+
+            @include screen_sm {
+                font-size: 1rem;
+                padding: 0 0.5rem;
+                margin: 0 auto;
+                margin-right: 0.5rem;
+                height: 2rem;
+            }
         }
 
     }
@@ -92,53 +168,81 @@
 
 //modal detail 
 .modal_detail {
+
+
     .modal_title {
         color: rgb(221, 25, 25);
         text-transform: uppercase;
         text-align: center;
         font-size: 1.9rem;
         padding-bottom: 1rem;
+
+        @include screen_sm {
+            font-size: 1.4rem;
+        }
     }
 
-    .col_content {
-        .movie_title_name {
-            text-transform: uppercase;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.5rem;
-
+    .row_model {
+        @include screen_sm {
+            display: inline-block;
+            background-color: aqua;
         }
 
-        .movie_title {
-            font-weight: 600;
-            padding-top: 1rem;
-            font-size: 1.1rem;
-
-            span {
-                font-weight: 400;
-                padding-left: 1rem;
-                font-size: 1.1rem;
+        .col_trailer {
+            @include screen_sm {
+                order: 1;
+                width: 200%;
+                background-color: tomato;
             }
         }
 
-        .btn {
-            justify-content: center;
-            text-align: center;
-            align-items: center;
+        .col_content {
+            @include screen_sm {
+                order: 2;
+                background-color: tomato;
+                width: 300%;
+            }
 
-            .book_ticket {
-                margin-top: 1rem;
-                background-color: rgb(53, 197, 197);
-                padding: 0 2rem;
-                height: 3rem;
-                font-size: 1.3rem;
-                border-radius: 2rem;
-                border: none;
+            .movie_title_name {
+                text-transform: uppercase;
+                text-align: center;
+                font-weight: 600;
+                font-size: 1.5rem;
 
-                &:hover {
-                    color: white;
+            }
+
+            .movie_title {
+                font-weight: 600;
+                padding-top: 1rem;
+                font-size: 1.1rem;
+
+                span {
+                    font-weight: 400;
+                    padding-left: 1rem;
+                    font-size: 1.1rem;
                 }
             }
+
+            .btn {
+                justify-content: center;
+                text-align: center;
+                align-items: center;
+
+                .book_ticket {
+                    margin-top: 1rem;
+                    background-color: rgb(53, 197, 197);
+                    padding: 0 2rem;
+                    height: 3rem;
+                    font-size: 1.3rem;
+                    border-radius: 2rem;
+                    border: none;
+
+                    &:hover {
+                        color: white;
+                    }
+                }
+            }
+
         }
 
     }

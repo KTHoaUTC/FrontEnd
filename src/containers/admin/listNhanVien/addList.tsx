@@ -114,7 +114,7 @@ const AddNhanVien: React.FC = () => {
     if (account && imageFile) {
       const updatedAccount = {
         ...account,
-        RoleId: newData.RoleId,
+        // RoleId: newData.RoleId,
         image: `${dowloadURL}`,
       };
       const result = await User.creatUser(updatedAccount);
@@ -125,7 +125,6 @@ const AddNhanVien: React.FC = () => {
         });
         router.push("/listNhanVien");
       }
-      // console.log("data", result.data);
     }
   };
 
@@ -272,7 +271,20 @@ const AddNhanVien: React.FC = () => {
                 suffix={<EditOutlined />}
               />
             </Form.Item>
-
+            <Form.Item
+              label="Phân quyền"
+              name="RoleId"
+              rules={[{ required: true, message: "Không để trống ô này" }]}
+            >
+              <Select
+                placeholder="Chọn phân quyền"
+                style={{ width: "100%" }}
+                options={[
+                  { value: "admin", label: "admin" },
+                  { value: "Nhân Viên", label: "Nhân Viên" },
+                ]}
+              />
+            </Form.Item>
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button
                 className={styles.btn_next}
@@ -389,21 +401,6 @@ const AddNhanVien: React.FC = () => {
             initialValues={{ size: componentSize }}
             onValuesChange={onFormLayoutChange}
           >
-            <Form.Item
-              label="Phân quyền"
-              name="RoleId"
-              rules={[{ required: true, message: "Không để trống ô này" }]}
-            >
-              <Select
-                placeholder="Chọn phân quyền"
-                style={{ width: "100%" }}
-                options={[
-                  { value: "admin", label: "admin" },
-                  { value: "Nhân Viên", label: "Nhân Viên" },
-                ]}
-              />
-            </Form.Item>
-
             <Form.Item label="Ảnh" name="image">
               <Input
                 type="file"

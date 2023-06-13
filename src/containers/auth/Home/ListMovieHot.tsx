@@ -89,7 +89,14 @@ const ListMovieHot: React.FC = () => {
             >
               <Meta
                 className={styles.meta}
-                title={<p style={{ fontSize: "2.5rem" }}>{item.title}</p>}
+                title={
+                  <p
+                    className={styles.title_meta}
+                    style={{ fontSize: "2.5rem" }}
+                  >
+                    {item.title}
+                  </p>
+                }
               />
               <div className={styles.btnMovie}>
                 <ModalDetail movieId={item.id}></ModalDetail>

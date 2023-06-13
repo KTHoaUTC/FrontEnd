@@ -164,7 +164,7 @@ const AuthLogin = () => {
               >
                 Đăng nhập
               </Button>
-              <p> — Or Sign In With — </p>
+              {/* <p> — Or Sign In With — </p>
               <div className={styles.login_diffrent}>
                 <Button
                   className={styles.LoginGoogle}
@@ -180,9 +180,9 @@ const AuthLogin = () => {
                 >
                   GitHub
                 </Button>
-              </div>
+              </div> */}
             </Form.Item>
-            <Link href="/auth/UserForgotPass" className={styles.forgotPassword}>
+            {/* <Link href="/auth/UserForgotPass" className={styles.forgotPassword}>
               <p>Quên mật khẩu?</p>
             </Link>
             <p className={styles.title_register}>
@@ -191,7 +191,7 @@ const AuthLogin = () => {
                 {" "}
                 Vui lòng đăng kí tại đây!!
               </span>
-            </p>
+            </p> */}
           </Form>
         </Col>
       </Row>

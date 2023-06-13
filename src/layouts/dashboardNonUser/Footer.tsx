@@ -33,7 +33,7 @@ const HomeFooter = () => {
               <TwitterOutlined />
             </li>
           </ul>
-          <img src="/LogoMovie1.png"></img>
+          <img className={styles.img} src="/LogoMovie1.png"></img>
         </Col>
         <Col className={styles.right} span={8}>
           <ul>
