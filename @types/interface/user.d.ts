@@ -61,7 +61,9 @@ declare global {
       updatedAt?: Date;
     }
     export interface Seat {
-      seat_number: any;
+      seat_orders?: any;
+      seat_count?: any;
+      seat_number?: any;
       name?: string;
       showtime_id?: any | number | undefined;
       seat_type_id?: any | number;

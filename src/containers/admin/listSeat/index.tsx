@@ -9,6 +9,7 @@ import Seat from "@/apis/seat";
 import Room from "@/apis/room";
 import { DeleteOutlined } from "@ant-design/icons";
 import ShowTimeApi from "@/apis/showtime";
+import ListSeatStatus from "./seat";
 
 export default function ListSeat({}: any, props: any) {
   const [listSeats, setListSeats] = useState<AdminCore.Seat[] | any>([]);
@@ -60,7 +61,6 @@ export default function ListSeat({}: any, props: any) {
     })();
   }, []);
 
-  // console.log("dsdsdfata", showTimeList);
 
   const handleDelete = async (id: number) => {
     await Seat.deleteSeat(id);
@@ -110,12 +110,6 @@ export default function ListSeat({}: any, props: any) {
       width: "10%",
       render: (_, record: any) => (
         <Space size="middle">
-          <a>
-            {/* <ModalEditTheater
-              onSuccess={fetchTheaters}
-              currentTheater={null}
-            ></ModalEditTheater> */}
-          </a>
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={() => handleDelete(record.id)}
@@ -139,7 +133,7 @@ export default function ListSeat({}: any, props: any) {
     <>
       <h1 className={styles.title}> Danh Sách Ghế</h1>
       {/* <TypeSeat></TypeSeat> */}
-
+<ListSeatStatus></ListSeatStatus>
       <Table
         bordered
         className={styles.table_list}
@@ -149,3 +143,4 @@ export default function ListSeat({}: any, props: any) {
     </>
   );
 }
+
