@@ -3,29 +3,20 @@ import Movie from "@/apis/movie";
 import { LeftOutlined } from "@ant-design/icons";
 import {
   Button,
-  Card,
-  Col,
   Collapse,
   Form,
   Input,
-  List,
-  message,
   notification,
-  Progress,
-  Row,
   Select,
-  Typography,
+  Typography
 } from "antd";
 import dayjs from "dayjs";
 import "dayjs/locale/vi"; // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { storage } from "../../../../firebase";
-import styles from "./style.module.scss";
-import { Image } from "antd";
 import EditImage from "./editImage";
+import styles from "./style.module.scss";
 
 const { TextArea } = Input;
 

@@ -171,9 +171,21 @@ const MovieDetail: React.FC = () => {
                 </span>
               </p>
               <div className={styles.btn}>
-                <Link legacyBehavior href={`/bookticker?id=${detailMovie.id}`}>
+                {/* <Link legacyBehavior href={`/bookticker?id=${detailMovie.id}`}>
                   <Button className={styles.book_ticket}>Đặt Vé</Button>
-                </Link>
+                </Link> */}
+                {id ? (
+                  <Link
+                    legacyBehavior
+                    href={`/bookticker?id=${detailMovie.id}`}
+                  >
+                    <Button className={styles.book_ticket}>Đặt Vé</Button>
+                  </Link>
+                ) : (
+                  <Button className={styles.book_ticket} disabled>
+                    Đặt Vé
+                  </Button>
+                )}
               </div>
             </Col>
           </Row>
@@ -202,28 +214,42 @@ const MovieDetail: React.FC = () => {
               <Avatar src={detailUser.image}> </Avatar>
             </Col>
             <Col span={15}>
-              <Input
-                size="large"
-                placeholder="Nhập bình luận"
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-              ></Input>
+              {id ? (
+                <Input
+                  size="large"
+                  placeholder="Nhập bình luận"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                ></Input>
+              ) : (
+                <Input
+                  disabled
+                  size="large"
+                  placeholder="Bạn cần đăng nhập để có thể bình luận phim"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                ></Input>
+              )}
             </Col>
             <Col>
-              <Button
-                className={styles.btn_add}
-                type="primary"
-                htmlType="submit"
-                onClick={() =>
-                  handleCreate({
-                    comment_text: commentText,
-                    user_id: id,
-                    movie_id: idMovie,
-                  })
-                }
-              >
-                Gửi
-              </Button>
+              {id ? (
+                <Button
+                  className={styles.btn_add}
+                  type="primary"
+                  htmlType="submit"
+                  onClick={() =>
+                    handleCreate({
+                      comment_text: commentText,
+                      user_id: id,
+                      movie_id: idMovie,
+                    })
+                  }
+                >
+                  Gửi
+                </Button>
+              ) : (
+                <></>
+              )}
             </Col>
           </Row>
         )}

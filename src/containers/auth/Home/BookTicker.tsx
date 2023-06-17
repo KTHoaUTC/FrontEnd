@@ -15,6 +15,7 @@ import {
   Row,
   Steps,
   Typography,
+  message,
   theme,
 } from "antd";
 import dayjs from "dayjs";
@@ -27,6 +28,11 @@ import QRCode from "qrcode.react";
 import axios from "axios";
 import User from "@/apis/auth";
 import Ticket from "@/apis/ticket";
+
+import { CLIENT_ID } from "../../../config/config";
+// import React, { useState, useEffect } from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 const { Panel } = Collapse;
 
 dayjs.locale("vi"); // Nếu muốn hiển thị ngôn ngữ Tiếng Việt
@@ -380,7 +386,60 @@ const BookTicker: React.FC = () => {
 
   //step 4
   // const [showQRCode, setShowQRCode] = useState(false);
+  //payment
 
+  const [show, setShow] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [orderID, setOrderID] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
+  const exchangeRate = 0.000043; // Đây là một giá trị giả định, hãy thay thế bằng tỷ giá hối đoái thực tế của bạn
+
+  const amountUSD = total_price * exchangeRate;
+
+  // creates a paypal order
+  const createOrder = (data: any, actions: any) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            description: detail?.title,
+            amount: {
+              currency_code: "USD",
+              value: amountUSD,
+            },
+          },
+        ],
+      })
+      .then((orderID: any) => {
+        setOrderID(orderID);
+        return orderID;
+      });
+  };
+
+  // check Approval
+  const onApprove = (data: any, actions: any) => {
+    return actions.order.capture().then(function (details: any) {
+      const { payer, id } = details;
+      setPaymentSuccess(true);
+      // setSuccess(true);
+      setOrderID(id);
+    });
+  };
+  //capture likely error
+  const onError = (data: any, actions: any) => {
+    setErrorMessage("An Error occured with your payment ");
+  };
+
+  useEffect(() => {
+    if (paymentSuccess) {
+      message.success("Payment successful!");
+      console.log("Order successful. Your order id is:", orderID);
+    }
+  }, [paymentSuccess, orderID]);
+
+  //
   const steps = [
     {
       title: "Chọn Thông Tin Vé",
@@ -670,7 +729,7 @@ const BookTicker: React.FC = () => {
                 </p>
                 <p>Phòng Chiếu: {tenPhongChieu}</p>
                 <p>Ghế: {seatString}</p>
-                <p>Thanh Toán: {total_price} VND</p>
+                <p> Tổng tiền: {total_price} VND</p>
               </div>
             </Col>
             <Col span={12}>
@@ -679,8 +738,32 @@ const BookTicker: React.FC = () => {
                 <p> Email: {detailUser?.email}</p>
                 <p>Phone: {detailUser?.phone_number} </p>
               </div>
+              <PayPalScriptProvider options={{ clientId: CLIENT_ID }}>
+                <div>
+                  {/* <div className="product-price-btn"> */}
+                  <Button
+                    className={styles.buy_btn}
+                    type="primary"
+                    onClick={() => setShow(true)}
+                  >
+                    Thanh Toán
+                  </Button>
+                  {/* </div> */}
+
+                  <br></br>
+                  {show ? (
+                    <PayPalButtons
+                      className={styles.paypal_btn}
+                      style={{ layout: "vertical" }}
+                      createOrder={createOrder}
+                      onApprove={onApprove}
+                    />
+                  ) : null}
+                </div>
+              </PayPalScriptProvider>
             </Col>
           </Row>
+          <Row className={styles.row_step3}></Row>
           <div className={styles.btn}>
             {current > 0 && (
               <Button
@@ -696,6 +779,7 @@ const BookTicker: React.FC = () => {
               onClick={hanledBookStep3}
               type="primary"
               htmlType="submit"
+              disabled={!paymentSuccess}
             >
               Đặt Vé
             </Button>
@@ -714,17 +798,17 @@ const BookTicker: React.FC = () => {
             </Col> */}
             <Col span={24}>
               {/* {showQRCode && ( */}
-                <div className={styles.qrcode}>
-                  {/* Các nội dung khác của Bước 4 */}
-                  <p className={styles.qrcode_title}>Mã vé </p>
+              <div className={styles.qrcode}>
+                {/* Các nội dung khác của Bước 4 */}
+                <p className={styles.qrcode_title}>Mã vé </p>
 
-                  <QRCode className={styles.qrcode_text} value={qrCodeData} />
+                <QRCode className={styles.qrcode_text} value={qrCodeData} />
 
-                  <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
-                  <Link href={"/lichsu"}>
-                    <p className={styles.history}>Xem Lịch Sử</p>
-                  </Link>
-                </div>
+                <p>Vui lòng đưa mã cho nhân viên để được lấy vé!! </p>
+                <Link href={"/lichsu"}>
+                  <p className={styles.history}>Xem Lịch Sử</p>
+                </Link>
+              </div>
               {/* )} */}
             </Col>
           </Row>

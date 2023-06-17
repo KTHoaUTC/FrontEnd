@@ -81,6 +81,7 @@ const Header = () => {
         </Col>
         <Col className={styles.center} span={10}>
           <ul>
+            /
             <li>
               <Link legacyBehavior href="/auth">
                 <a>Home</a>
@@ -151,15 +152,15 @@ const Header = () => {
             </>
           ) : (
             <>
-              {/* <Link legacyBehavior href="/login">
-                <Button
-                  className={styles.btn_login_auth}
-                  onClick={handleLogout}
-                >
-                  Đăng Nhập
-                </Button>
-              </Link> */}
               <div className={styles.btn}>
+                <Link legacyBehavior href="/login">
+                  <Button
+                    className={styles.btn_login_auth}
+                    onClick={handleLogout}
+                  >
+                    Đăng Nhập
+                  </Button>
+                </Link>
                 <Link legacyBehavior href="/dangky">
                   <Button className={styles.btn_logout_auth}>Đăng Ký</Button>
                 </Link>

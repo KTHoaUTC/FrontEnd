@@ -1,14 +1,16 @@
 import { Button, Card, Divider, List } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import ModalDetail from "./ModalDetail";
 import Link from "next/link";
 import Movie from "@/apis/movie";
+import UserContext from "@/contexts/context";
 const { Meta } = Card;
 
 const ListMovieHot: React.FC = () => {
   const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { id, setId } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -100,9 +102,15 @@ const ListMovieHot: React.FC = () => {
               />
               <div className={styles.btnMovie}>
                 <ModalDetail movieId={item.id}></ModalDetail>
-                <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
-                  <Button className={styles.book_ticket}>Đặt Vé</Button>
-                </Link>
+                {id ? (
+                  <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
+                    <Button className={styles.book_ticket}>Đặt Vé</Button>
+                  </Link>
+                ) : (
+                  <Button className={styles.book_ticket} disabled>
+                    Đặt Vé
+                  </Button>
+                )}
               </div>
             </Card>
           </List.Item>

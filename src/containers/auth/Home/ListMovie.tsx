@@ -92,16 +92,28 @@ const ListMovieStop: React.FC = () => {
               <Meta
                 className={styles.meta}
                 title={
-                  <p className={styles.title_meta} style={{ fontSize: "2.5rem" }}>
+                  <p
+                    className={styles.title_meta}
+                    style={{ fontSize: "2.5rem" }}
+                  >
                     {item.title}
                   </p>
                 }
               />
               <div className={styles.btnMovie}>
                 <ModalDetail movieId={item.id}></ModalDetail>
-                <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
+                {/* <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
                   <Button className={styles.book_ticket}>Đặt Vé</Button>
-                </Link>
+                </Link> */}
+                {id ? (
+                  <Link legacyBehavior href={`/bookticker?id=${item.id}`}>
+                    <Button className={styles.book_ticket}>Đặt Vé</Button>
+                  </Link>
+                ) : (
+                  <Button className={styles.book_ticket} disabled>
+                    Đặt Vé
+                  </Button>
+                )}
               </div>
             </Card>
           </List.Item>

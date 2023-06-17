@@ -116,12 +116,14 @@
         }
 
         .btn {
+            display: flex;
+            margin-left: 7rem;
             .btn_logout_auth {
                 height: 2.5rem;
                 border: 1px solid rgb(216, 108, 108);
                 padding: 0 2rem;
                 font-size: 1.1rem;
-                margin-left: 15rem;
+                margin-right: 10rem;
 
 
                 @include screen_md {

@@ -2,11 +2,12 @@ import Genre from "@/apis/genre";
 import Movie from "@/apis/movie";
 import { Button, Col, Modal, Row } from "antd";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Player } from "video-react";
 import "video-react/dist/video-react.css";
 import styles from "./style.module.scss";
 import moment from "moment";
+import UserContext from "@/contexts/context";
 interface ModalDetailProps {
   movieId?: any;
 }
@@ -15,6 +16,7 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
   const [open, setOpen] = useState(false);
   const [genreList, setGenreList] = useState<AdminCore.Genre[]>([]);
   const [detail, setDetail] = useState<AdminCore.Movie[] | any>([]);
+  const { id, setId } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -89,9 +91,15 @@ const ModalDetail: React.FC<ModalDetailProps> = ({ movieId }) => {
                 <span>{moment(detail.day_start).format("DD/MM/YYYY")}</span>
               </p>
               <div className={styles.btn}>
-                <Link legacyBehavior href={`/bookticker?id=${detail.id}`}>
-                  <Button className={styles.book_ticket}>Đặt Vé</Button>
-                </Link>
+                {id ? (
+                  <Link legacyBehavior href={`/bookticker?id=${detail.id}`}>
+                    <Button className={styles.book_ticket}>Đặt Vé</Button>
+                  </Link>
+                ) : (
+                  <Button className={styles.book_ticket} disabled>
+                    Đặt Vé
+                  </Button>
+                )}
               </div>
             </Col>
           </Row>
