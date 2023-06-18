@@ -2,13 +2,14 @@ import { Tabs } from "antd";
 import React, { useState } from "react";
 import ListMovieHot from "./ListMovieHot";
 import styles from "./style.module.scss";
+import ListDeXuat from "./ListDeXuat";
 
-const ContentHot: React.FC = () => {
+const ContentDeXuat: React.FC = () => {
   const [items, setItems] = useState([
     {
       key: "1",
-      label: <p className={styles.title_menu}> PHIM HOT</p>,
-      children: <ListMovieHot></ListMovieHot>,
+      label: <p className={styles.title_menu}> Top Bộ Phim Bán Chạy </p>,
+      children: <ListDeXuat></ListDeXuat>,
     },
   ]);
   return (
@@ -24,4 +25,4 @@ const ContentHot: React.FC = () => {
   );
 };
 
-export default ContentHot;
+export default ContentDeXuat;

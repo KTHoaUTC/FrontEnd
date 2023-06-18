@@ -47,15 +47,40 @@
                 padding-right: 2rem;
 
                 @include screen_md {
+                    font-size: 1.5rem;
+                    padding-right: 2rem;
+                }
+
+                @include screen_xs {
                     font-size: 1rem;
                     padding-right: 1rem;
                 }
 
                 a {
-                    color: rgb(214, 22, 22);
+                    display: flex;
+                    color: rgb(185, 63, 63);
 
                     &:hover {
                         color: white;
+                    }
+
+                    i {
+                        @include screen_xl {
+                            display: none;
+                        }
+
+                        @include screen_md {
+                            display: flex;
+                        }
+                    }
+
+                    p {
+                        margin-left: 0.5rem;
+
+
+                        @include screen_md {
+                            display: none;
+                        }
                     }
                 }
             }
@@ -74,27 +99,49 @@
                 display: flex;
 
                 .dropdown_header {
+                    @include screen_md {
+                        margin-left: 3rem;
+                        width: 170%;
+                        font-size: 0.8rem !important;
+                    }
 
-                    @include screen_md {}
+                    @include screen_xs {
+                        margin-left: 2rem;
+                        width: 170%;
+                        font-size: 0.8rem !important;
+                    }
 
                     .name {
                         font-size: 1.2rem;
 
-                        @include screen_md {
+
+                        @include screen_xs {
                             margin-left: -3rem;
                             width: 170%;
                             font-size: 0.8rem !important;
                         }
+
+
                     }
                 }
             }
 
-            .btn_login_auth {
+            .btn_logout {
+                height: 2.5rem;
+                border: 1px solid rgb(216, 108, 108);
+                margin-right: 3rem;
+                padding: 0 2rem;
+                font-size: 1.1rem;
+
                 @include screen_md {
                     padding: 0 0.5rem;
                     margin-left: 0.9rem;
                     height: 1.8rem;
                     font-size: 0.9rem !important;
+                }
+
+                @include screen_sm {
+                    display: none;
                 }
             }
         }
@@ -118,6 +165,11 @@
         .btn {
             display: flex;
             margin-left: 7rem;
+
+            @include screen_xs {
+                display: none;
+            }
+
             .btn_logout_auth {
                 height: 2.5rem;
                 border: 1px solid rgb(216, 108, 108);
@@ -125,18 +177,69 @@
                 font-size: 1.1rem;
                 margin-right: 10rem;
 
-
                 @include screen_md {
                     padding: 0 1rem;
                     font-size: 1rem;
-                    margin-left: 5rem;
+                    margin-left: 0rem;
                 }
+
+
+            }
+        }
+
+        .btn_icon {
+            display: none;
+
+            @include screen_xs {
+                display: flex;
+            }
+
+            .btn_login_auth {
+                height: 1.5rem;
+                font-size: 0.6rem;
+                border: none;
+                margin: 0.2rem auto;
+                padding: 0.2rem 0.4rem;
+
+            }
+
+            .btn_logout_auth {
+                margin-left: 2rem !important;
+                height: 1.5rem;
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+                margin: 0.2rem auto;
+
             }
         }
 
     }
 }
 
+.space {
+    .image {
+
+        
+        @include screen_xs {
+            width: 50%;
+            margin-right: -3rem;
+        }
+    }
+
+    p {
+        @include screen_md {
+            display: none;
+        }
+    }
+}
+
+.btn_logout_drop {
+    display: none;
+
+    @include screen_md {
+        display: flex;
+    }
+}
 
 .footer {
     color: rgb(2, 2, 2);

@@ -68,12 +68,12 @@ export default function ListSeat({}: any, props: any) {
   };
 
   const columns: ColumnsType<AdminCore.Seat> = [
-    {
-      title: "Mã Ghế",
-      dataIndex: "id",
-      key: "id",
-      align: "center",
-    },
+    // {
+    //   title: "Mã Ghế",
+    //   dataIndex: "id",
+    //   key: "id",
+    //   align: "center",
+  //  },
     {
       title: "Lịch chiếu",
       dataIndex: "showtime_id",

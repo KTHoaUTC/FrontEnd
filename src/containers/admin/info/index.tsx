@@ -36,7 +36,7 @@ const ProFileAdmin: React.FC = () => {
   const handleSelectedFile = (files: any) => {
     if (files && files[0].size < 1000000) {
       setImageFile(files[0]);
-      console.log("rrr", files[0]);
+      // console.log("rrr", files[0]);
     } else {
       message.error(" file faill");
       setCurrentImage(detail.image); // Set the current image URL
@@ -127,7 +127,7 @@ const ProFileAdmin: React.FC = () => {
     }
   };
 
-  console.log("userId", detail);
+  // console.log("userId", detail);
 
   return (
     <>

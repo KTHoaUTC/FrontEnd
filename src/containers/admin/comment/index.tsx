@@ -40,7 +40,7 @@ export default function ListComment({}: any, props: any) {
       setIsLoading(false);
     }
   };
-  console.log("listComment", listComments);
+  // console.log("listComment", listComments);
 
   const [userList, setUserList] = useState<AdminCore.User[]>([]);
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function ListComment({}: any, props: any) {
       } catch (e) {}
     })();
   }, []);
-  console.log("userList", userList);
+  // console.log("userList", userList);
 
 
   const [listMovies, setListMovies] = useState<AdminCore.Movie[] | any>([]);

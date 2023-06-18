@@ -58,10 +58,21 @@ const CumRap: React.FC = () => {
         renderItem={(item: any) => (
           <List.Item
             key={item.id}
-            extra={<img width={272} alt="logo" src={item.image} />}
+            extra={
+              <img
+                className={styles.img}
+                width={272}
+                alt="logo"
+                src={item.image}
+              />
+            }
           >
             <List.Item.Meta
-              title={<a href={item.href}>{item.name}</a>}
+              title={
+                <a className={styles.title_movie} href={item.href}>
+                  {item.name}
+                </a>
+              }
               description={<p>Địa Chỉ: {item.address}</p>}
             />
             <Collapse defaultActiveKey={["1"]} onChange={onChange}>

@@ -117,7 +117,12 @@ const ListMovieStop: React.FC = () => {
                       <Meta
                         className={styles.meta}
                         title={
-                          <p style={{ fontSize: "1.3rem" }}>{item.title}</p>
+                          <p
+                            className={styles.title_movie}
+                            // style={{ fontSize: "2.5rem" }}
+                          >
+                            {item.title}
+                          </p>
                         }
                       />
                       <div className={styles.btnMovie}>
@@ -168,7 +173,12 @@ const ListMovieStop: React.FC = () => {
                       <Meta
                         className={styles.meta}
                         title={
-                          <p style={{ fontSize: "1.3rem" }}>{item.title}</p>
+                          <p
+                            className={styles.title_movie}
+                            // style={{ fontSize: "2.5rem" }}
+                          >
+                            {item.title}
+                          </p>
                         }
                       />
                       <div className={styles.btnMovie}>

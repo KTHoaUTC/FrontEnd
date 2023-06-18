@@ -253,14 +253,14 @@ const AdminIndex: React.FC = () => {
         }}
         gutter={16}
       >
-        {mostFrequentMovieId && (
+        {/* {mostFrequentMovieId && (
           <Col className={styles.doanhthu} offset={2} span={10}>
             <Statistic
               title={<p className={styles.title}>Phim Bán Chạy Nhất</p>}
               value={getMovieName(parseInt(mostFrequentMovieId))}
             />
           </Col>
-        )}
+        )} */}
         <Col className={styles.doanhthu} offset={2} span={10}>
           <Statistic
             title={<p className={styles.title}>Tổng Vé Đã Đặt</p>}

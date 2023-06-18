@@ -1,17 +1,15 @@
 import {
   DesktopOutlined,
   FileOutlined,
-  PieChartOutlined,
-  UserOutlined,
+  QrcodeOutlined,
+  UserOutlined
 } from "@ant-design/icons";
-import { Button, Layout, Menu, MenuProps, theme } from "antd";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import styles from "./style.module.scss";
-import { useRouter } from "next/router";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Layout, Menu, MenuProps, theme } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import styles from "./style.module.scss";
 
 const { Sider } = Layout;
 
@@ -117,6 +115,13 @@ const items: MenuItem[] = [
       <i className="fas fa-regular fa-comment"></i>
     </Link>
   ),
+  getItem(
+    "In Hóa Đơn",
+    "12",
+    <Link href={"/checkQRCode"}>
+      <QrcodeOutlined />{" "}
+    </Link>
+  ),
 ];
 const SiderAdmin: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -124,7 +129,6 @@ const SiderAdmin: React.FC = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const router = useRouter();
-  const { email } = router.query;
 
   return (
     <Sider
@@ -134,18 +138,6 @@ const SiderAdmin: React.FC = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      {/* <Link legacyBehavior href={"/trangchu/infor"}>
-        <div
-          style={{
-            height: 22,
-            margin: 26,
-            textAlign: "center",
-          }}
-        >
-          <Button>Thông tin </Button>
-        </div>
-      </Link> */}
-
       <Menu
         theme="light"
         defaultSelectedKeys={["1"]}

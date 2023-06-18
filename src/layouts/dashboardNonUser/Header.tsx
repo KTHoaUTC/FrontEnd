@@ -5,7 +5,16 @@ import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import UserContext from "@/contexts/context";
 import User from "@/apis/auth";
-import { DownOutlined, SmileOutlined, ToolOutlined } from "@ant-design/icons";
+import {
+  DownOutlined,
+  HomeOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  SearchOutlined,
+  SmileOutlined,
+  ToolOutlined,
+} from "@ant-design/icons";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 const Header = () => {
   const router = useRouter();
@@ -71,6 +80,23 @@ const Header = () => {
 
       icon: <ToolOutlined />,
     },
+    {
+      key: "3",
+
+      label: (
+        <Link legacyBehavior href="/login">
+          <p className={styles.btn_logout_drop} onClick={handleLogout}>
+            Đăng Xuất
+          </p>
+        </Link>
+      ),
+
+      icon: (
+        <p className={styles.btn_logout_drop}>
+          <LogoutOutlined />
+        </p>
+      ),
+    },
   ];
 
   return (
@@ -81,26 +107,34 @@ const Header = () => {
         </Col>
         <Col className={styles.center} span={10}>
           <ul>
-            /
             <li>
               <Link legacyBehavior href="/auth">
-                <a>Home</a>
+                <a>
+                  <i className="fas fa-home"></i> <p> Home</p>
+                </a>
               </Link>
             </li>
             <li>
               <Link legacyBehavior href="/auth/search">
-                <a>Tìm Kiếm </a>
+                <a>
+                  <i className="fas fa-search"></i> <p>Tìm Kiếm </p>
+                </a>
               </Link>
             </li>
             <li>
               <Link legacyBehavior href="/cumrap">
-                <a>Hệ Thống Rạp</a>
+                <a>
+                  <i className="fas fa-landmark"></i> <p>Hệ Thống Rạp </p>
+                </a>
               </Link>
             </li>
             {isLoggedIn && (
               <li>
                 <Link legacyBehavior href="/lichsu">
-                  <a>Lịch sử</a>
+                  <a>
+                    <i className="fas fa-barcode"></i>
+                    <p> Lịch sử</p>
+                  </a>
                 </Link>
               </li>
             )}
@@ -122,6 +156,7 @@ const Header = () => {
                     <a onClick={(e) => e.preventDefault()}>
                       <Space className={styles.space}>
                         <Image
+                          className={styles.image}
                           style={{ borderRadius: "25px" }}
                           width={50}
                           src={detail?.image}
@@ -141,7 +176,7 @@ const Header = () => {
                 <Col span={9}>
                   <Link legacyBehavior href="/login">
                     <Button
-                      className={styles.btn_login_auth}
+                      className={styles.btn_logout}
                       onClick={handleLogout}
                     >
                       Đăng Xuất
@@ -159,6 +194,19 @@ const Header = () => {
                     onClick={handleLogout}
                   >
                     Đăng Nhập
+                  </Button>
+                </Link>
+                <Link legacyBehavior href="/dangky">
+                  <Button className={styles.btn_logout_auth}>Đăng Ký</Button>
+                </Link>
+              </div>
+              <div className={styles.btn_icon}>
+                <Link legacyBehavior href="/login">
+                  <Button
+                    className={styles.btn_login_auth}
+                    onClick={handleLogout}
+                  >
+                    <LoginOutlined />
                   </Button>
                 </Link>
                 <Link legacyBehavior href="/dangky">

@@ -41,6 +41,7 @@ declare global {
       map?: any;
       key?: string;
       updatedAt?: Date;
+      createdAt?: Date;
     }
     export interface Rap {
       name?: string;

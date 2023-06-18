@@ -42,7 +42,7 @@ const EditNhanVien: React.FC = () => {
   useEffect(() => {
     if (router.query) {
       setAccountId(id);
-      console.log("id", id);
+      // console.log("id", id);
     }
   }, [router, id]);
 

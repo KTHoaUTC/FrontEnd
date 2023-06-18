@@ -44,7 +44,7 @@ const EditPhim: React.FC = () => {
   useEffect(() => {
     if (router.query) {
       setAccountId(id);
-      console.log("id", id);
+      // console.log("id", id);
     }
   }, [router, id]);
 
@@ -64,7 +64,7 @@ const EditPhim: React.FC = () => {
         form.setFieldValue("trailer_url", result?.movies!.trailer_url);
         form.setFieldValue("poster_url", result?.movies!.poster_url);
       }
-      console.log("image", detail?.image_url);
+      // console.log("image", detail?.image_url);
     }
     fetchData();
   }, [form, id]);

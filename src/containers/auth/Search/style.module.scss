@@ -58,22 +58,58 @@
         margin: 2rem 4rem !important;
         white-space: pre-line;
 
-        @include screen_sm {
+        @include screen_md {
             width: 100%;
+            margin: 1rem 0 !important;
+        }
+
+        @include screen_sm {
+            margin: 2rem 4rem !important;
+
         }
 
         .card_item {
+
             .meta {
                 margin-bottom: 2rem;
                 font-size: 3rem !important;
                 text-align: center;
+                color: rgb(40, 163, 29) !important;
+
             }
+
+            .title_movie {
+                font-size: 1.5rem;
+
+                @include screen_md {
+                    font-size: 1rem !important;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                @include screen_xs {
+                    font-size: 1rem !important;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+
         }
-
-
 
         .btnMovie {
             text-align: center;
+
+            @include screen_md {
+                width: 100%;
+                margin: 0 auto;
+                display: flex;
+                text-align: center;
+                align-items: center;
+                margin-top: -1rem;
+                margin-left: -2rem;
+            }
 
             @include screen_sm {
                 width: 150%;
@@ -98,13 +134,23 @@
                     background-color: rgb(99, 75, 204);
                 }
 
-                @include screen_sm {
 
+                @include screen_md {
+                    text-align: center;
+                    align-items: center;
+                    font-size: 0.7rem;
+                    padding: 0 0.5rem;
+                    height: 1.5rem;
+                    margin-right: 5rem;
+                }
+
+                @include screen_sm {
                     font-size: 1rem;
                     padding: 0 0.5rem;
                     margin: 0 auto;
                     margin-right: 0.5rem;
                     height: 2rem;
+                    margin-right: 3rem;
                 }
             }
 
@@ -112,6 +158,7 @@
 
     }
 }
+
 
 
 //modal detail 
@@ -212,9 +259,14 @@
     align-items: center;
     width: 50%;
 
+    @include screen_md {
+        width: 100%;
+        margin-top: -2rem;
+    }
+
     @include screen_sm {
         width: 100%;
-        margin-top: 2rem;
+        margin-top: -3rem;
     }
 
 }
@@ -235,7 +287,8 @@
     margin-top: 3rem;
     margin-bottom: 3rem;
     font-size: 3rem;
-    @include screen_sm{
+
+    @include screen_sm {
         font-size: 1rem;
         margin: 1rem 0;
     }

@@ -6,7 +6,6 @@ import ShowTimeApi from "@/apis/showtime";
 import UserContext from "@/contexts/context";
 import { LeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
-
 import {
   Button,
   Col,
@@ -28,9 +27,7 @@ import QRCode from "qrcode.react";
 import axios from "axios";
 import User from "@/apis/auth";
 import Ticket from "@/apis/ticket";
-
 import { CLIENT_ID } from "../../../config/config";
-// import React, { useState, useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const { Panel } = Collapse;
@@ -203,35 +200,6 @@ const BookTicker: React.FC = () => {
     setCurrent(1);
   };
   const [selectedSeatIds, setSelectedSeatIds] = useState<string[]>([]);
-  // const [lastCreatedSeatId, setLastCreatedSeatId] = useState<string | null>(
-  //   null
-  // );
-  // const [deletionCountdown, setDeletionCountdown] = useState(60); // Giá trị ban đầu là 60 giây
-  // useEffect(() => {
-  //   let timer: any = null;
-
-  //   if (deletionCountdown > 0) {
-  //     timer = setTimeout(() => {
-  //       setDeletionCountdown((prevCountdown) => prevCountdown - 1);
-  //     }, 3000); // Mỗi 1 giây (1000 milliseconds) giảm giá trị biến đếm ngược đi 1 đơn vị
-  //   }
-
-  //   return () => clearTimeout(timer);
-  // }, [deletionCountdown]);
-  // const scheduleSeatDeletion = (seatId: string) => {
-  //   setTimeout(() => {
-  //     deleteSeat(seatId)
-  //       .then(() => {
-  //         console.log("Deleted seat:", seatId);
-  //         setSelectedSeatIds((prevIds) =>
-  //           prevIds.filter((id) => id !== seatId)
-  //         );
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error deleting seat:", error);
-  //       });
-  //   }, 3 * 60 * 1000); // 10 minutes in milliseconds
-  // };
 
   const handleSeatSelection = (seatNumber: number) => {
     if (selectedSeats.includes(seatNumber)) {
@@ -242,19 +210,6 @@ const BookTicker: React.FC = () => {
         const updatedPrice = selectedShowtime?.gia_ve ?? 0;
         return prevPrice - updatedPrice;
       });
-      // if (lastCreatedSeatId !== null) {
-      //   deleteSeat(lastCreatedSeatId)
-      //     .then(() => {
-      //       setSelectedSeatIds((prevIds) =>
-      //         prevIds.filter((id) => id !== lastCreatedSeatId)
-      //       );
-      //       console.log("Deleted seat:", lastCreatedSeatId);
-      //       setLastCreatedSeatId(null);
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error deleting seat:", error);
-      //     });
-      // }
     } else {
       setSelectedSeats((prevSeats) => [...prevSeats, seatNumber]);
       setTotalPrice((prevPrice) => {
@@ -272,20 +227,10 @@ const BookTicker: React.FC = () => {
         .then((response) => {
           const result = response.data.seat;
           setSelectedSeatIds((prevIds) => [...prevIds, result]);
-          // setLastCreatedSeatId(result);
-
           console.log("idseat", result);
-          // scheduleSeatDeletion(result);
         })
         .catch((error) => {});
     }
-  };
-  const deleteSeat = (seatId: any) => {
-    return axios.delete("http://localhost:8888/gateway/api/v1/delete-seat", {
-      data: {
-        id: seatId,
-      },
-    });
   };
   const creatSeat = (newData: AdminCore.Seat) => {
     return axios.post(
@@ -389,7 +334,6 @@ const BookTicker: React.FC = () => {
   //payment
 
   const [show, setShow] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
   const [orderID, setOrderID] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -426,10 +370,6 @@ const BookTicker: React.FC = () => {
       // setSuccess(true);
       setOrderID(id);
     });
-  };
-  //capture likely error
-  const onError = (data: any, actions: any) => {
-    setErrorMessage("An Error occured with your payment ");
   };
 
   useEffect(() => {
@@ -606,20 +546,19 @@ const BookTicker: React.FC = () => {
                     <p className={`${styles.img} ${styles.blink}`}>
                       <img style={{ width: "100%" }} src="/gggg.jpg"></img>
                     </p>
-                    {/* <div>Time remaining: {deletionCountdown} seconds</div> */}
 
                     <h2>Phòng: {tenPhongChieu}</h2>
                     <div className={styles.list_seat}>
-                      {Array.from({ length: sum_seat }, (_, index) => {
+                      {/* {Array.from({ length: sum_seat }, (_, index) => {
                         const seatNumber = index + 1;
                         const seat = seatList.find(
                           (seat) => seat.row === seatNumber
                         );
+
                         const isSelected = selectedSeats.includes(seatNumber);
                         const seatClass = isSelected
                           ? styles.seat_button_selected
                           : styles.seat_button;
-
                         const isSold =
                           seat &&
                           typeof seat.status === "number" &&
@@ -629,6 +568,48 @@ const BookTicker: React.FC = () => {
                           ? styles.seat_button_sold
                           : "";
                         const isDisabled = isSold ? true : false;
+                        console.log("seatlist", seatList);
+                        console.log("seatteat", seat);
+
+                        return (
+                          <div className={styles.button_} key={seatNumber}>
+                            <Button
+                              className={`${seatClass} ${seatStatusClass}`}
+                              onClick={() => handleSeatSelection(seatNumber)}
+                              disabled={isDisabled}
+                            >
+                              {seatNumber}
+                            </Button>
+                          </div>
+                        );
+                      })} */}
+                      {Array.from({ length: sum_seat }, (_, index) => {
+                        const seatNumber = index + 1;
+                        const seatsWithMatchingShowtime = seatList.filter(
+                          (seat) =>
+                            seat.row === seatNumber &&
+                            seat.showtime_id === selectedShowtime?.id
+                        );
+
+                        const isSelected = selectedSeats.includes(seatNumber);
+                        const seatClass = isSelected
+                          ? styles.seat_button_selected
+                          : styles.seat_button;
+                        const isSold = seatsWithMatchingShowtime.some(
+                          (seat) =>
+                            typeof seat.status === "number" && seat.status === 1
+                        );
+                        const seatStatusClass = isSold
+                          ? styles.seat_button_sold
+                          : "";
+                        const isDisabled = isSold ? true : false;
+
+                        console.log("seatlist", seatList);
+                        console.log(
+                          "seatsWithMatchingShowtime",
+                          seatsWithMatchingShowtime
+                        );
+
                         return (
                           <div className={styles.button_} key={seatNumber}>
                             <Button

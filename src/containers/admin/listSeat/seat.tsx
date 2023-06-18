@@ -83,24 +83,22 @@ export default function ListSeatStatus({}: any, props: any) {
       } catch (e) {}
     })();
   }, []);
+
   const getRoomIdByShowtimeId = (showtimeId: any) => {
-    const showtime = showTimeList.find(
-      (showtime) => showtime.id === showtimeId
-    );
+    const showtime = showTimeList.find((show) => show.id === showtimeId);
     return showtime ? showtime.phongchieu_id : "";
   };
-  const getRoomIdByShowtimeMovie = (showtimeId: any) => {
-    const showtime = showTimeList.find(
-      (showtime) => showtime.id === showtimeId
-    );
+
+  const getRoomIdByShowtimeMovie = (movieId: any) => {
+    const showtime = showTimeList.find((show) => show.id === movieId);
     return showtime ? showtime.movie_id : "";
   };
-  const getSeatCountByMovieId = (roomId: any) => {
-    const room = movieList.find((room) => room.id === roomId);
+  const getSeatCountByMovieId = (nameId: any) => {
+    const room = movieList.find((room) => room.id === nameId);
     return room ? room.title : 0;
   };
-  const getSeatCountByRoomId = (roomId: any) => {
-    const room = roomList.find((room) => room.id === roomId);
+  const getSeatCountByRoomId = (seatId: any) => {
+    const room = roomList.find((room) => room.id === seatId);
     return room ? room.sum_seat : 0;
   };
   const getNameByRoomId = (roomId: any) => {
@@ -117,16 +115,16 @@ export default function ListSeatStatus({}: any, props: any) {
     {
       title: "Phòng chiếu",
       dataIndex: "showtime_id",
-      key: "showtime_id",
+      key: "room",
       align: "center",
-      render: (showtimeId) => {
+      render: (showtimeId, record) => {
         const roomId = getRoomIdByShowtimeId(showtimeId);
         const seatCount = getSeatCountByRoomId(roomId);
         const roomName = getNameByRoomId(roomId);
+        console.log("showtimeId", showtimeId);
 
         return (
           <span>
-            {" "}
             {roomName} - {seatCount} ghế
           </span>
         );
@@ -135,7 +133,7 @@ export default function ListSeatStatus({}: any, props: any) {
     {
       title: "Phim",
       dataIndex: "showtime_id",
-      key: "showtime_id",
+      key: "movie",
       align: "center",
       render: (showtimeId) => {
         const roomId = getRoomIdByShowtimeMovie(showtimeId);
@@ -144,6 +142,7 @@ export default function ListSeatStatus({}: any, props: any) {
         return <span>{seatCount}</span>;
       },
     },
+
     {
       title: "Tổng Ghế Đã Bán",
       dataIndex: "seat_count",
@@ -159,13 +158,15 @@ export default function ListSeatStatus({}: any, props: any) {
 
     {
       title: "Trạng Thái",
-      dataIndex: "status",
-      key: "status",
       align: "center",
-      render: (status, record, showtimeId) => {
+      render: (showtimeId,record) => {
         const seatCount = record.seat_count;
-        const roomId = getRoomIdByShowtimeId(showtimeId);
+        const roomId = getRoomIdByShowtimeId(showtimeId.showtime_id);
         const seatCountSum = getSeatCountByRoomId(roomId);
+        console.log("showtimeId", showtimeId.showtime_id);
+        console.log("seatCount", seatCount);
+        console.log("seatCountSum", seatCountSum);
+
         if (seatCountSum === seatCount) {
           return <Tag color="#f50">Đã bán hết</Tag>;
         } else {
@@ -181,8 +182,6 @@ export default function ListSeatStatus({}: any, props: any) {
 
   return (
     <>
-      {/* <h1 className={styles.title}>Danh Sách Ghế</h1> */}
-
       <Table
         bordered
         className={styles.table_list}

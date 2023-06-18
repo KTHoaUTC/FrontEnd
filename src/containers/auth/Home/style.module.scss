@@ -126,7 +126,7 @@
             margin: 0 auto;
             text-align: center;
             align-items: center;
-            margin-left: -3rem;
+            margin-left: -5rem;
         }
 
         .book_ticket {
@@ -144,7 +144,6 @@
                 background-color: rgb(99, 75, 204);
             }
 
-
             @include screen_md {
                 text-align: center;
                 align-items: center;
@@ -154,7 +153,7 @@
             }
 
             @include screen_sm {
-                font-size: 1rem;
+                font-size: 0.9rem;
                 padding: 0 0.5rem;
                 margin: 0 auto;
                 margin-right: 0.5rem;
@@ -669,10 +668,36 @@
         color: rgb(202, 72, 72);
     }
 }
-.buy_btn{
+
+.buy_btn {
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
-.paypal_btn{
+
+.paypal_btn {
     margin: 0 2rem;
+}
+
+.top_filters {
+    text-align: center;
+    align-items: center;
+
+    .filters {
+        margin-bottom: 2rem;
+    }
+
+    .doanhthuTop {
+        .top {
+            margin: 0 auto;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+
+            .card {
+            
+            }
+        }
+    }
+
 }
