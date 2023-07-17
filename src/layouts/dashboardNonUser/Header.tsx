@@ -69,17 +69,17 @@ const Header = () => {
       ),
       icon: <SmileOutlined />,
     },
-    {
-      key: "2",
+    // {
+    //   key: "2",
 
-      label: (
-        <Link legacyBehavior href={"/changePassword"}>
-          <p className={styles.title_drop}> Đổi mật khẩu </p>
-        </Link>
-      ),
+    //   label: (
+    //     <Link legacyBehavior href={"/changePassword"}>
+    //       <p className={styles.title_drop}> Đổi mật khẩu </p>
+    //     </Link>
+    //   ),
 
-      icon: <ToolOutlined />,
-    },
+    //   icon: <ToolOutlined />,
+    // },
     {
       key: "3",
 

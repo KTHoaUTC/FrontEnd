@@ -8,6 +8,8 @@ import CountUp from "react-countup";
 import styles from "./style.module.scss";
 import { FilterOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 const formatter = (value: any | number) => (
   <CountUp end={value} separator="," />
@@ -30,7 +32,22 @@ const AdminIndex: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<string>(
     moment().format("DD/MM/YYYY")
   );
+  const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(dayjs());
 
+  const handleDateChange = (date: dayjs.Dayjs | null) => {
+    setSelectedDate(date);
+  };
+
+  const filteredBookings = listBookings.filter((booking: any) => {
+    const bookingDate = moment(booking.createdAt).format("YYYY-MM-DD");
+    return bookingDate === selectedDate?.format("YYYY-MM-DD");
+  });
+
+  const totalTicketsSold = filteredBookings.length;
+  const totalRevenue1 = filteredBookings.reduce(
+    (acc: number, booking: any) => acc + parseFloat(booking.total_price),
+    0
+  );
   useEffect(() => {
     (async () => {
       try {
@@ -173,7 +190,7 @@ const AdminIndex: React.FC = () => {
     <>
       <h1 className={styles.title_home}> Thống Kê Doanh Thu </h1>
 
-      <p className={styles.date}>Ngày {currentDate}</p>
+      <p className={styles.date}>Doanh Thu Ngày {currentDate}</p>
       <Row className={styles.filterRow}>
         <Col className={styles.doanhthu_ticket} span={6}>
           <Statistic
@@ -190,7 +207,44 @@ const AdminIndex: React.FC = () => {
           />
         </Col>
       </Row>
-      {/* <hr className={styles.line} /> */}
+      <hr className={styles.line} />
+
+      <p
+        style={{
+          fontSize: "1.4rem",
+          marginLeft: "2rem",
+          marginBottom: "1rem",
+          textAlign: "center",
+        }}
+      >
+        Thống Kê Doanh Thu Ngày
+      </p>
+      <Row className={styles.filterRow}>
+        <Col span={6} offset={3}>
+          <DatePicker
+            size="large"
+            value={selectedDate}
+            onChange={handleDateChange}
+            format="DD/MM/YYYY"
+          />
+        </Col>
+      </Row>
+      <Row className={styles.filterRow}>
+        <Col className={styles.doanhthu_ticket} span={6}>
+          <Statistic
+            title={<p className={styles.title}>Vé Đã Đặt</p>}
+            value={totalTicketsSold}
+            formatter={formatter}
+          />
+        </Col>
+        <Col className={styles.doanhthu_sum} span={6}>
+          <Statistic
+            title={<p className={styles.title}>Doanh Thu</p>}
+            value={totalRevenue1}
+            formatter={formatter}
+          />
+        </Col>
+      </Row>
       <div className={styles.doanhthu_year}>
         <Row className={styles.chart}>
           <Col span={5} className={styles.col_filter}>
@@ -253,14 +307,6 @@ const AdminIndex: React.FC = () => {
         }}
         gutter={16}
       >
-        {/* {mostFrequentMovieId && (
-          <Col className={styles.doanhthu} offset={2} span={10}>
-            <Statistic
-              title={<p className={styles.title}>Phim Bán Chạy Nhất</p>}
-              value={getMovieName(parseInt(mostFrequentMovieId))}
-            />
-          </Col>
-        )} */}
         <Col className={styles.doanhthu} offset={2} span={10}>
           <Statistic
             title={<p className={styles.title}>Tổng Vé Đã Đặt</p>}

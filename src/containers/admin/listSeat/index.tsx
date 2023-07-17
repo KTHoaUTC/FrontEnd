@@ -103,28 +103,28 @@ export default function ListSeat({}: any, props: any) {
         );
       },
     },
-    {
-      title: "Thao Tác",
-      key: "",
-      align: "center",
-      width: "10%",
-      render: (_, record: any) => (
-        <Space size="middle">
-          <Popconfirm
-            title="Bạn chắc chắn muốn xóa?"
-            onConfirm={() => handleDelete(record.id)}
-          >
-            <Button
-              className={styles.btn_delete}
-              style={{ float: "right", margin: "0px" }}
-              type="primary"
-            >
-              <DeleteOutlined className={styles.icon} />
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
+    // {
+    //   title: "Thao Tác",
+    //   key: "",
+    //   align: "center",
+    //   width: "10%",
+    //   render: (_, record: any) => (
+    //     <Space size="middle">
+    //       <Popconfirm
+    //         title="Bạn chắc chắn muốn xóa?"
+    //         onConfirm={() => handleDelete(record.id)}
+    //       >
+    //         <Button
+    //           className={styles.btn_delete}
+    //           style={{ float: "right", margin: "0px" }}
+    //           type="primary"
+    //         >
+    //           <DeleteOutlined className={styles.icon} />
+    //         </Button>
+    //       </Popconfirm>
+    //     </Space>
+    //   ),
+    // },
   ];
   if (isLoading) {
     return <Skeleton active> </Skeleton>;
